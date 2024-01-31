@@ -1,2 +1,21 @@
-# Trabalho-ASM-2023-2024
-Repositório do trabalho prático no âmbito da UC de Agentes e Sistemas Multiagente (ASM) - Mestrado em Engenharia Informática (MEI/MIEI) - Universidade do Minho (UMinho)
+<img src='EEUM_logo.png' width="30%"/>
+
+<h3 align="center">Mestrado em Engenharia Informática <br> Perfil de Sistemas Inteligentes <br> Trabalho prático de Agentes e Sistemas Multiagente <br> 2023/2024 </h3>
+
+---
+<h3 align="center"> Colaboradores &#129309 </h2>
+
+<div align="center">
+
+| Nome                           | Número  |
+|--------------------------------|---------|
+| Miguel Silva Pinto             | PG54105 |
+| Orlando José da Cunha Palmeira | PG54123 |
+| Pedro Miguel Castilho Martins  | PG54146 |
+
+</div>
+
+### Nota: X/20
+
+<h3><i>Keywords</i></h3>
+ASM, Agentes e Sistemas Multiagente, agentes e sistemas multiagente, uminho, miei, mei, engenharia informatica
