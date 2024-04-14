@@ -5,7 +5,7 @@ class GeoDistance:
     def __init__(self):
         self.geolocator = Nominatim(user_agent="city_distance_calculator")
 
-    def __get_coordinates(self, city_name):
+    def get_coordinates(self, city_name):
         location = self.geolocator.geocode(city_name)
         if location:
             return location.latitude, location.longitude
@@ -15,8 +15,8 @@ class GeoDistance:
 
     def calculate_distance(self, city1, city2):
         """Retorna a distância entre duas cidades em quilômetros. Caso haja um erro com o nome das cidades, retorna None."""
-        coords1 = self.__get_coordinates(city1)
-        coords2 = self.__get_coordinates(city2)
+        coords1 = self.get_coordinates(city1)
+        coords2 = self.get_coordinates(city2)
 
         if coords1 and coords2:
             distance = geodesic(coords1, coords2).kilometers
