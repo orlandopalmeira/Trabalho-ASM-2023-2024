@@ -1,6 +1,6 @@
 
 class Config:
-    DOMAIN = "laptop-140rfmpg.home" #! Meter este valor a ser lido de um .env
+    DOMAIN = "laptop-140rfmpg.home" #! Meter este valor a ser lido de um .env (talvez)
     central_jid = f"central@{DOMAIN}"
 
     @staticmethod
