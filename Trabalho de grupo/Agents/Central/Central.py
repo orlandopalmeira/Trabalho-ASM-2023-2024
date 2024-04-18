@@ -1,6 +1,6 @@
 from random import random
 from spade.agent import Agent
-# from Behaviors.send_request_behav import SendRequestBehav
+from Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
 
 class Central(Agent):
 
@@ -12,7 +12,6 @@ class Central(Agent):
 
     
     async def setup(self) -> None:
-        pass
-        # a = SendRequestBehav(period=2)
-        # self.add_behaviour(a)
+        a = GenerateFlightsBehav(period=self.interval)
+        self.add_behaviour(a)
     

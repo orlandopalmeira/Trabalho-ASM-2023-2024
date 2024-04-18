@@ -7,10 +7,10 @@ import random
 import jsonpickle
 
 # Agents
-from Agents.Central import Central
-from Agents.Airport import Airport
-from Agents.Hangar import Hangar
-from Agents.Plane import Plane
+from Agents.Central.Central import Central
+from Agents.Airport.Airport import Airport
+from Agents.Hangar.Hangar import Hangar
+from Agents.Plane.Plane import Plane
 
 # Behaviours
 
@@ -19,11 +19,12 @@ from Classes.Trip import Trip
 
 
 # Utils
-from Utils.TripGenerator import generate_random_trips, generate_random_trip
+from Config import Config as cfg
 import Utils.GeoDistance as geo
 
 # Talvez meter um .env ou algo do genero para organizar melhor isto nos vários pcs
-DOM_NAME = "laptop-140rfmpg.home"
+# DOM_NAME = "laptop-140rfmpg.home"
+DOM_NAME = cfg.get_domain_name()
 
 
 def main():
@@ -34,20 +35,22 @@ def main():
 
     agents = []
 
-    central = Central(f"central@{DOM_NAME}", "NOPASSWORD")
+    central_jid = cfg.get_central_jid()
+    central = Central(central_jid, "NOPASSWORD", AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
     central.start().result()
     agents.append(central)
 
     for location in AIRPORT_LOCATIONS:
-        airport = Airport(f"airport_{location}@{DOM_NAME}", "NOPASSWORD")
+        airport = Airport(cfg.get_airport_jid(location), "NOPASSWORD", location)
         airport.start().result()
         agents.append(airport)
-        hangar = Hangar(f"hangar_{location}@{DOM_NAME}", "NOPASSWORD")
+        hangar = Hangar(cfg.get_hangar_jid(location), "NOPASSWORD", location)
         hangar.start().result()
         agents.append(hangar)
 
+    #! Maneira de criar aviões terá de ser feita consoante os hangares para adicionar os jids aos hangares
     for i in range(NUM_PLANES):
-        plane = Plane(f"plane{i}@{DOM_NAME}", "NOPASSWORD")
+        plane = Plane(cfg.get_plane_jid(i), "NOPASSWORD")
         plane.start().result()
         agents.append(plane)
 

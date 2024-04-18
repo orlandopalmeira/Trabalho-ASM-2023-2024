@@ -1,6 +1,8 @@
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 
+#! Talvez estas funcionalidades pudessem ir para dentro da classe Trip
+
 
 def get_coordinates(city_name):
     geolocator = Nominatim(user_agent="GeoDistance")
