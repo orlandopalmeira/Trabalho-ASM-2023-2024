@@ -54,11 +54,7 @@ def main():
     # while True:
     while any(agent.is_alive() for agent in agents):
         try:
-            for i in range(NUM_OF_FLIGHTS_PER_INTERVAL):
-                trip = generate_random_trip(AIRPORT_LOCATIONS)
-
-
-            time.sleep(INTERVAL)
+            time.sleep(5)
         except KeyboardInterrupt:
             print("Terminating agents...")
             for agent in agents:

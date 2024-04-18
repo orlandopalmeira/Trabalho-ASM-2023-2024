@@ -2,6 +2,9 @@
 
 from spade.behaviour import CyclicBehaviour, PeriodicBehaviour, OneShotBehaviour, Behaviour
 from spade.message import Message
+import jsonpickle
+# from 
+
 
 class ReceiveRequestBehav(CyclicBehaviour):
     async def run(self):
