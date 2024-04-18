@@ -57,14 +57,14 @@ def main():
     # while True:
     while any(agent.is_alive() for agent in agents):
         try:
-            time.sleep(5)
+            time.sleep(3)
         except KeyboardInterrupt:
             print("Terminating agents...")
             for agent in agents:
                 agent.stop()
             break
     
-    print(f"\n\nAgents terminated.")
+    print(f"\nAgents terminated.\n")
 
 
 if __name__ == "__main__":

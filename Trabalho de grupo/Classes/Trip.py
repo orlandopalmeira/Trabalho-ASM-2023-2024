@@ -1,6 +1,6 @@
 import random
 import sys
-sys.path.append("./")
+# sys.path.append("./")
 import Utils.GeoDistance as geo
 
 class Trip:
@@ -35,7 +35,8 @@ class Trip:
 
 
     def __str__(self):
-        return f"({self.c_id}) {self.origin} -> {self.destination}"
+        # return f"({self.c_id}) {self.origin} -> {self.destination}"
+        return f"{self.origin} -> {self.destination}"
 
 if __name__ == "__main__":
     trip = Trip("Lisboa", "Porto")

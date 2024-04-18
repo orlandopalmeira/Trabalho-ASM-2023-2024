@@ -1,6 +1,6 @@
-from random import random
 from spade.agent import Agent
-from Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
+from random import random
+from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
 
 class Central(Agent):
 

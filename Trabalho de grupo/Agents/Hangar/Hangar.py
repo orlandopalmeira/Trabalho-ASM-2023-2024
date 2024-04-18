@@ -1,6 +1,6 @@
 from random import random
 from spade.agent import Agent
-# from Behaviors.ReceiveFlightsBehav import ReceiveFlightsBehav
+# from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
 
 class Hangar(Agent):
     
