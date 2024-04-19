@@ -5,6 +5,8 @@ from spade.behaviour import OneShotBehaviour, CyclicBehaviour, PeriodicBehaviour
 from spade.message import Message
 import random
 import jsonpickle
+from dotenv import load_dotenv
+load_dotenv()
 
 # Agents
 from Agents.Central.Central import Central
@@ -24,8 +26,8 @@ import Utils.GeoDistance as geo
 
 # DOM_NAME = "laptop-140rfmpg.home"
 # Talvez meter um .env ou algo do genero para organizar melhor isto nos vários pcs
-DOM_NAME = cfg.get_domain_name() #* Para por a correr nos vossos pcs tindes de mudar o DOMAIN_NAME no Config.py
-
+DOM_NAME = cfg.DOMAIN #* Para por a correr nos vossos pcs tendes de mudar o DOMAIN_NAME no .env
+PASSWORD = cfg.PASSWORD
 
 def main():
     AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]}
@@ -36,18 +38,18 @@ def main():
     agents = []
 
     central_jid = cfg.get_central_jid()
-    central = Central(central_jid, "NOPASSWORD", AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
     central.start().result()
     agents.append(central)
 
     for location in AIRPORT_LOCATIONS:
-        airport = Airport(cfg.get_airport_jid(location), "NOPASSWORD", location)
+        airport = Airport(cfg.get_airport_jid(location), PASSWORD, location)
         airport.start().result()
         agents.append(airport)
 
     current_plane_id = 1
     for location in AIRPORT_LOCATIONS:
-        hangar = Hangar(cfg.get_hangar_jid(location), "NOPASSWORD", location)
+        hangar = Hangar(cfg.get_hangar_jid(location), PASSWORD, location)
         hangar.start().result()
         agents.append(hangar)
         num_planes, hangar_capacity = AIRPORT_PLANES[location]
@@ -56,7 +58,7 @@ def main():
             plane_name = cfg.get_plane_jid(current_plane_id)
             current_plane_id += 1
             hangar.add_plane(plane_name)
-            plane = Plane(plane_name, "NOPASSWORD")
+            plane = Plane(plane_name, PASSWORD)
             plane.start().result()
             agents.append(plane)
 
