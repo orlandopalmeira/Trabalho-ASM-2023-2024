@@ -1,7 +1,7 @@
 import os
 
 class Config:
-    DOMAIN = os.getenv("DOM_NAME")
+    DOMAIN = os.getenv("DOMAIN")
     PASSWORD = os.getenv("PASSWORD")
     central_jid = f"central@{DOMAIN}"
 
