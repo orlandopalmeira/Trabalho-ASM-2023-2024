@@ -1,6 +1,8 @@
+import os
 
 class Config:
-    DOMAIN = "laptop-140rfmpg.home" #! Meter este valor a ser lido de um .env (talvez)
+    DOMAIN = os.getenv("DOM_NAME")
+    PASSWORD = os.getenv("PASSWORD")
     central_jid = f"central@{DOMAIN}"
 
     @staticmethod
