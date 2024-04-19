@@ -4,10 +4,10 @@ from spade.agent import Agent
 
 class Hangar(Agent):
     
-    def __init__(self, jid, password, location, capacity=5, planes=[]):
+    def __init__(self, jid, password, location, capacity=5, planes=None):
         super().__init__(jid, password)
         self.location = location
-        self.planes = planes # Lista de strings que serão os jids dos avioes
+        self.planes = [] if planes is None else planes # Lista de strings que serão os jids dos avioes
         self.capacity = capacity
 
     async def setup(self) -> None:
