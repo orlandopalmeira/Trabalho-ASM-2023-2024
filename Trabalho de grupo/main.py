@@ -26,7 +26,7 @@ import Utils.GeoDistance as geo
 
 # DOM_NAME = "laptop-140rfmpg.home"
 # Talvez meter um .env ou algo do genero para organizar melhor isto nos vários pcs
-DOM_NAME = cfg.get_domain_name() #* Para por a correr nos vossos pcs tindes de mudar o DOMAIN_NAME no Config.py
+DOM_NAME = cfg.DOMAIN #* Para por a correr nos vossos pcs tendes de mudar o DOMAIN_NAME no .env
 PASSWORD = cfg.PASSWORD
 
 def main():

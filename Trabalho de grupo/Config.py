@@ -10,6 +10,10 @@ class Config:
         return Config.DOMAIN
     
     @staticmethod
+    def get_password():
+        return Config.PASSWORD
+    
+    @staticmethod
     def get_central_jid():
         return Config.central_jid
     
