@@ -1,7 +1,7 @@
 from random import random
 from spade.agent import Agent
 # from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
-
+from Agents.Hangar.Behaviors.RecvPlaneRequests import RecvPlaneRequests
 class Hangar(Agent):
     
     def __init__(self, jid, password, location, capacity=5, planes=None):
@@ -12,7 +12,7 @@ class Hangar(Agent):
 
     async def setup(self) -> None:
         print(f'Hangar agent {self.location} starting...')
-        
+        self.add_behaviour(RecvPlaneRequests())
         # a = SendRequestBehav(period=2)
         # self.add_behaviour(a)
     

@@ -3,18 +3,23 @@ from spade.message import Message
 import jsonpickle
 from Classes.Trip import Trip
 from Config import Config as cfg
+import time
 
 class PlaneRequest(OneShotBehaviour):
 
     async def run(self):
-        hangar_name = cfg.get_hangar_jid(self.location)
-        msg = Message(to=hangar_name, body="Plane request", metadata={"performative": "request"})
+        hangar_name = cfg.get_hangar_jid(self.agent.location)
+        msg_body = {
+            'type': 'plane_request'
+        }
+        msg = Message(to=hangar_name, body=jsonpickle.encode(msg_body), metadata={"performative": "request"})
         # body = RequestPlane(self_id, x_pos, y_pos, x_dest, y_dest) #> Não sei se é necessaria uma classe para isto. Ou sequer um body
         # msg.body = jsonpickle.encode(body)
 
         await self.send(msg)
-        print(f"Airport {self.agent.name} requested a plane to hangar {hangar_name}.")
-        
+            
+
+
         #> Parte que será passada para o behaviour de receção de mensagens
         # TIMEOUT = 10
         # msg = await self.receive(timeout=TIMEOUT)
