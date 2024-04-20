@@ -6,7 +6,6 @@
 ## Torre de Controlo (CT)
 Irá gerir a ocupação das runways e o estado do tempo.
 
-
 - Receber avião vindo do hangar e começar a viagem (pedidos de descolagem)
 - Receber pedidos de aterragem dos aviões perto do aeroporto destino (pedidos de aterragem)
 

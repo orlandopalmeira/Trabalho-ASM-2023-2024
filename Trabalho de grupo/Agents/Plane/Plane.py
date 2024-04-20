@@ -3,7 +3,7 @@ from spade.agent import Agent
 import asyncio
 from Config import Config as cfg
 
-from Agents.Plane.Behaviors.RecvRequests import RecvRequests
+from Agents.Plane.Behaviors.PlaneRecv import RecvRequests
 
 class Plane(Agent):
     LANDED = 0
