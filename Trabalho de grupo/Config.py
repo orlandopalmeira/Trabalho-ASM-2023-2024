@@ -35,4 +35,8 @@ class Config:
     @staticmethod
     def get_plane_jid(id):
         return f"plane_{id}@{Config.DOMAIN}"
+    
+    @staticmethod
+    def get_control_tower_jid():
+        return f"ct_{id}@{Config.DOMAIN}"
 
