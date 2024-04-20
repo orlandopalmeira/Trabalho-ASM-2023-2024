@@ -16,8 +16,14 @@ class RecvRequests(CyclicBehaviour):
             return
         msg_body = jsonpickle.decode(msg.body)
         
-        if msg.metadata["performative"] == "request": # Pedidos do aeroporto para começar uma viagem
+        if msg.metadata["performative"] == "inform": #> Use case 1: passo 4
             trip = msg_body
             print(f"\n{self.agent.name} starting flight: {trip}\n")
             self.agent.set_trip(trip)
             self.agent.add_behaviour(StartFlight())
+
+        # elif msg.metadata["performative"] == "request": # Pedidos do aeroporto para começar uma viagem
+        #     trip = msg_body
+        #     print(f"\n{self.agent.name} starting flight: {trip}\n")
+        #     self.agent.set_trip(trip)
+        #     self.agent.add_behaviour(StartFlight())

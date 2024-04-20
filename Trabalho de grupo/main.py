@@ -8,6 +8,7 @@ from Agents.Central.Central import Central
 from Agents.Airport.Airport import Airport
 from Agents.Hangar.Hangar import Hangar
 from Agents.Plane.Plane import Plane
+from Agents.ControlTower.ControlTower import ControlTower
 
 # Behaviours
 
@@ -36,6 +37,12 @@ def main():
         airport = Airport(cfg.get_airport_jid(location), PASSWORD, location)
         airport.start().result()
         agents.append(airport)
+
+    # Control Towers
+    for location in AIRPORT_LOCATIONS:
+        ct = ControlTower(cfg.get_control_tower_jid(location), PASSWORD, location)
+        ct.start().result()
+        agents.append(ct)
 
     # Hangars and Planes
     current_plane_id = 1
