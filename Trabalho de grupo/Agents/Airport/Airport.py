@@ -1,6 +1,6 @@
 from random import random
 from spade.agent import Agent
-from Agents.Airport.Behaviors.ReceiveFlightsBehav import ReceiveFlightsBehav
+# from Agents.Airport.Behaviors.ReceiveFlightsBehav import ReceiveFlightsBehav
 from Agents.Airport.Behaviors.RecvRequests import RecvRequests
 class Airport(Agent):
 

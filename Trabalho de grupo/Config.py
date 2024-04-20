@@ -1,7 +1,10 @@
 import os
 
 class Config:
+
     DOMAIN = os.getenv("DOMAIN")
+    if not DOMAIN:
+        print("ERROR: DOMAIN not found in .env file")
     PASSWORD = os.getenv("PASSWORD")
     central_jid = f"central@{DOMAIN}"
 

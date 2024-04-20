@@ -18,19 +18,19 @@ class RecvRequests(CyclicBehaviour):
         
         if msg_body['type'] == 'plane_from_hangar': #> Recebeu uma resposta (do hangar) ao pedido de avião feito ao hangar
             if msg.metadata["performative"] == "refuse":
-                print(f"{msg.sender} refused to send a plane")
+                print(f"{msg.sender.localpart} has no planes available. Retrying in 1 second...")
                 time.sleep(1)
                 self.agent.add_behaviour(PlaneRequest()) #> Volta a tentar pedir um avião ao hangar
             elif msg.metadata["performative"] == "accept":
-                print(f"{self.agent.jid} received plane {msg_body['plane']} from {msg.sender}")
+                print(f"{self.agent.name} received plane {msg_body['plane']} from {msg.sender}")
 
         elif msg_body['type'] == 'generate_flight' and msg.metadata['performative'] == 'request': #> Recebeu um voo gerado da central
             trip = msg_body['trip']
-            print(f"{self.agent.location} received flight: {trip}")
+            print(f"{self.agent.name} received flight: {trip}")
             self.agent.add_behaviour(PlaneRequest()) #> Pede um avião ao hangar
             
         else:
-            print(f"{self.agent.location} received message: {msg.body}")
+            print(f"{self.agent.name} received message: {msg.body}")
         
 
 

@@ -24,29 +24,25 @@ from Classes.Trip import Trip
 from Config import Config as cfg
 import Utils.GeoDistance as geo
 
-# DOM_NAME = "laptop-140rfmpg.home"
-# Talvez meter um .env ou algo do genero para organizar melhor isto nos vários pcs
-DOM_NAME = cfg.DOMAIN #* Para por a correr nos vossos pcs tendes de mudar o DOMAIN no .env
+# DOMAIN = "laptop-140rfmpg.home"
+DOMAIN = cfg.DOMAIN #* Para por a correr nos vossos pcs tendes de mudar o DOMAIN no .env
 PASSWORD = cfg.PASSWORD
 
 def main():
-    AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]}
+    AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
     AIRPORT_LOCATIONS = list(AIRPORT_PLANES.keys())
     INTERVAL = 5
     NUM_OF_FLIGHTS_PER_INTERVAL = 2
 
     agents = []
 
-    central_jid = cfg.get_central_jid()
-    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
-    central.start().result()
-    agents.append(central)
-
+    # Airports
     for location in AIRPORT_LOCATIONS:
         airport = Airport(cfg.get_airport_jid(location), PASSWORD, location)
         airport.start().result()
         agents.append(airport)
 
+    # Hangars and Planes
     current_plane_id = 1
     for location in AIRPORT_LOCATIONS:
         hangar = Hangar(cfg.get_hangar_jid(location), PASSWORD, location)
@@ -61,6 +57,12 @@ def main():
             plane = Plane(plane_name, PASSWORD)
             plane.start().result()
             agents.append(plane)
+
+    # Central
+    central_jid = cfg.get_central_jid()
+    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    central.start().result()
+    agents.append(central)
 
     # while True:
     while any(agent.is_alive() for agent in agents):

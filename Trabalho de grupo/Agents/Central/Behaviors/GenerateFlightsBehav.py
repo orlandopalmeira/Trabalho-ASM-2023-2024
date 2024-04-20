@@ -6,10 +6,19 @@ from Config import Config as cfg
 
 class GenerateFlightsBehav(PeriodicBehaviour):
     async def run(self):
-        # print(f'Central: Generating flights')
+        trips = []
         for _ in range(self.agent.num_of_flights_per_interval):
             trip = Trip.generate_random_trip(self.agent.airport_locations)
+            trips.append(trip)
+
+        # Pretty Printing das viagens geradas
+        print()
+        for trip in trips:
             print("Flight generated:", trip)
+        print()
+        ###
+        
+        for trip in trips:
             airport_name = cfg.get_airport_jid(trip.get_origin())
             msg_body = {
                 'type': 'generate_flight',

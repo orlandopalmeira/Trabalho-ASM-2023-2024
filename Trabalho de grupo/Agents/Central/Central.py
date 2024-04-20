@@ -12,6 +12,7 @@ class Central(Agent):
 
     
     async def setup(self) -> None:
+        print(f'\nCentral agent starting...')
         a = GenerateFlightsBehav(period=self.interval)
         self.add_behaviour(a)
     
