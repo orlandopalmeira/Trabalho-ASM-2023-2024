@@ -16,16 +16,26 @@ class RecvRequests(CyclicBehaviour):
             return
         msg_body = jsonpickle.decode(msg.body)
         
-        if msg_body['type'] == 'plane_from_hangar': # Recebeu uma resposta (do hangar) ao pedido de avião feito ao hangar
-            plane_jid = msg_body['plane']
-            if msg.metadata["performative"] == "accept":
-                print(f"{self.agent.name} received {cfg.get_jid_name(plane_jid)} from {msg.sender}")
-            else:
-                print("Mensagem desconhecida RECVEQUESTS!")
+        # Aterragem de avião
+        if msg.metadata["performative"] == "inform":
+            print(f"{msg.sender} landed in {self.agent.name}")
+            #! Meter avião no hangar
 
-        elif msg_body['type'] == 'generate_flight' and msg.metadata['performative'] == 'request': # Recebeu um voo gerado da central
+        # Recebeu uma resposta (do hangar) ao pedido de avião feito ao hangar
+        elif msg_body['type'] == 'plane_from_hangar' and msg.metadata["performative"] == "accept":
+            plane_jid = msg_body['plane']
+
+            print(f"{self.agent.name} received {cfg.get_jid_name(plane_jid)} from {msg.sender.localpart}")
+            trip = self.agent.pop_flight()
+            # print(f"{plane_jid} starting flight: {trip}")
+            msg = Message(to=plane_jid, body=jsonpickle.encode(trip), metadata={"performative": "request"})
+            await self.send(msg)
+
+        # Recebeu um flight gerado da central
+        elif msg_body['type'] == 'generate_flight' and msg.metadata['performative'] == 'request': 
             trip = msg_body['trip']
             print(f"{self.agent.name} received flight: {trip}")
+            self.agent.push_flight(trip)
             self.agent.add_behaviour(PlaneRequest()) # Pede um avião ao hangar
             
         else:

@@ -8,6 +8,7 @@ class Airport(Agent):
         super().__init__(jid, password)
         self.location = location # Localização (cidade) do aeroporto
         self.runways = runways # Pistas de deslocagem/aterragem
+        self.flights_queue = [] # Fila de Trips (voos) a serem processados
     
     async def setup(self) -> None:
         print(f'Airport agent {self.location} starting...')
@@ -15,3 +16,15 @@ class Airport(Agent):
         # b = ReceiveFlightsBehav()
         b = RecvRequests()
         self.add_behaviour(b)
+
+    def get_location(self):
+        return self.location
+    
+    def get_runways(self):
+        return self.runways
+    
+    def push_flight(self, flight):
+        self.flights_queue.append(flight)
+
+    def pop_flight(self):
+        return self.flights_queue.pop(0)

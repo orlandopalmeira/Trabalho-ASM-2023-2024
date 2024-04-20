@@ -1,13 +1,13 @@
 import random
 import sys
-# sys.path.append("./")
 import Utils.GeoDistance as geo
 
 class Trip:
     def __init__(self, origin, destination):
         self.c_id = random.randint(0, 10000)
-        self.origin = origin
-        self.destination = destination
+        self.origin = origin # String
+        self.destination = destination # String
+        self.distance = geo.calculate_distance(origin, destination)
     
     def get_origin(self) -> str:
         return self.origin
@@ -22,7 +22,7 @@ class Trip:
         return self.c_id
     
     def get_distance(self) -> float:
-        return geo.calculate_distance(self.origin, self.destination)
+        return self.distance
 
     @staticmethod    
     def generate_random_trip(locations):

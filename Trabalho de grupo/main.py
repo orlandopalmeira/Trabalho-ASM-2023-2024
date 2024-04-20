@@ -1,10 +1,5 @@
 import time
-import asyncio
 from spade.agent import Agent
-from spade.behaviour import OneShotBehaviour, CyclicBehaviour, PeriodicBehaviour
-from spade.message import Message
-import random
-import jsonpickle
 from dotenv import load_dotenv
 load_dotenv()
 
