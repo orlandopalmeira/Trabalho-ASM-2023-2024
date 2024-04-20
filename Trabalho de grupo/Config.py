@@ -17,6 +17,10 @@ class Config:
         return Config.PASSWORD
     
     @staticmethod
+    def get_jid_name(jid):
+        return jid.split("@")[0]
+    
+    @staticmethod
     def get_central_jid():
         return Config.central_jid
     
