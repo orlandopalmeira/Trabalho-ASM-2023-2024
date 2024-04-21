@@ -36,7 +36,7 @@ class Trip:
 
     def __str__(self):
         # return f"({self.c_id}) {self.origin} -> {self.destination}"
-        return f"{self.origin} -> {self.destination}"
+        return f"({self.origin} -> {self.destination})"
 
 if __name__ == "__main__":
     trip = Trip("Lisboa", "Porto")

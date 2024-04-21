@@ -2,6 +2,7 @@ from random import random
 from spade.agent import Agent
 import asyncio
 from Config import Config as cfg
+from Classes.Trip import Trip
 
 from Agents.Plane.Behaviors.PlaneRecv import RecvRequests
 
@@ -32,6 +33,10 @@ class Plane(Agent):
 
     def get_trip(self):
         return self.trip
+    
+    # Usado para identificar a CT à qual tem de mandar a mensagem de descolagem
+    def get_location(self):
+        return self.trip.get_origin()
     
     def get_status(self):
         return self.status

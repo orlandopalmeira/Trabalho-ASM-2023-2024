@@ -14,7 +14,7 @@ class GenerateFlightsBehav(PeriodicBehaviour):
         # Pretty Printing das viagens geradas
         print()
         for trip in trips:
-            print("Flight generated:", trip)
+            print("CENTRAL: Flight generated", trip)
         print()
         ###
         

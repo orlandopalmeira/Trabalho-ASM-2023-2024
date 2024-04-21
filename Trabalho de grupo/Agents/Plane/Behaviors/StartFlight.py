@@ -10,15 +10,23 @@ import asyncio
 class StartFlight(OneShotBehaviour):
 
     async def run(self):
+        #> Descolagem do avião
+        TEMPO_DE_DESCOLAGEM = 1
+        await asyncio.sleep(TEMPO_DE_DESCOLAGEM)
+        # Mensagem de confirmação de descolagem
+        msg = Message(to=cfg.get_control_tower_jid(self.agent.get_location()), body=jsonpickle.encode(None), metadata={"performative": "confirm"})
         self.agent.set_flying()
+
+        #> Voo do avião
+        # Simulação de demora de tempo
         distance = self.agent.get_trip().get_distance()
         tempo = self.agent.CONVERSION_KM_TO_SECS * distance
         tempo = round(tempo, 2)
         print(f"{self.agent.name} starting flight to {self.agent.trip.get_destination()} ({distance} km) (time: {tempo}s)")
-        
-        # Simulação de demora de tempo
         await asyncio.sleep(tempo)
 
+
+        #> Aterragem do avião
         destination = self.agent.get_trip().get_destination()
         destination_jid = cfg.get_airport_jid(destination)
         

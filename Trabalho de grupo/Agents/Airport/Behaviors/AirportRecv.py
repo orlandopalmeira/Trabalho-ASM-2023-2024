@@ -10,18 +10,18 @@ class RecvRequests(CyclicBehaviour):
     async def run(self):
         msg = await self.receive(timeout=20)
         if not msg:
-            print("No message received")
+            # print("No message received")
             return
         msg_body = jsonpickle.decode(msg.body)
         
         # Aterragem de avião
         if msg.metadata["performative"] == "inform":
-            print(f"{msg.sender} landed in {self.agent.name}")
+            print(f"{self.agent.name}: {cfg.get_jid_name(msg.sender)} landed")
             #! Meter avião no hangar
         # Recebeu um pedido de flight da central #> (Use case 1: passo 1)
         elif msg.metadata["performative"] == "request": 
             trip = msg_body
-            print(f"{self.agent.name} received flight: {trip}")
+            print(f"{self.agent.name}: Received flight {trip}")
             self.agent.push_flight(trip)
             #! Não usei o behav PlaneRequest porque não lhe podemos dar argumentos, temos de ver melhor como fazer isto
             hangar_name = cfg.get_hangar_jid(self.agent.location)
@@ -47,7 +47,7 @@ class RecvRequests(CyclicBehaviour):
         #     self.agent.add_behaviour(PlaneRequest()) # Pede um avião ao hangar
             
         else:
-            print(f"{self.agent.name} received message: {msg.body}")
+            print(f"{self.agent.name}: WARNING received message: {msg.body}!")
         
 
 
