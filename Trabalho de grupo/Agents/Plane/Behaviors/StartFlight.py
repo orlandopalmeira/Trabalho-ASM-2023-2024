@@ -13,6 +13,7 @@ class StartFlight(OneShotBehaviour):
         self.agent.set_flying()
         distance = self.agent.get_trip().get_distance()
         tempo = self.agent.CONVERSION_KM_TO_SECS * distance
+        tempo = round(tempo, 2)
         print(f"{self.agent.name} starting flight to {self.agent.trip.get_destination()} ({distance} km) (time: {tempo}s)")
         
         # Simulação de demora de tempo

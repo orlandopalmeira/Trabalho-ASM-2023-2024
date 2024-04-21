@@ -26,11 +26,14 @@ Irá gerir a ocupação das runways e o estado do tempo.
 - (WIP) Pedidos de gestão de stock do hangar para balancear hangares WIP
 
 # Use cases
-## 1. Realizar um flight
+## 1. Realizar um flight (DESCOLAGEM)
 1. A **central** envia um flight ao **aeroporto**. (performative: *request*, body: *Trip*)
 2. O **aeroporto** envia um pedido de avião ao **hangar**. (performative: *request*, body: *Trip*)
 3. O **hangar** envia o jid do avião selecionado à **CT**. (performative: *inform*, body: *{plane_jid: String, trip: Trip}*)
 4. A **CT** envia mensagem para descolar ao **Plane**. (performative: *inform*, body: *Trip*)
+    - A CT reserva uma runway para a descolagem e fica à espera que o avião indique que a descolagem acabou.
+?-5. O **Plane** envia mensagem de descolagem à **CT**. (performative: *inform*, body: *plane_jid*)
+
 
 Notas:
 - Flight: (Central -> (Trip) -> Aeroporto -> (Trip) -> Hangar -> (Trip,Avião) -> CT -> (Trip) -> Avião)

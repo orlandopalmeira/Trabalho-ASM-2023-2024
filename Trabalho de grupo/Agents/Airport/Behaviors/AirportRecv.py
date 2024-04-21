@@ -18,7 +18,8 @@ class RecvRequests(CyclicBehaviour):
         if msg.metadata["performative"] == "inform":
             print(f"{msg.sender} landed in {self.agent.name}")
             #! Meter avião no hangar
-        elif msg.metadata["performative"] == "request": #> Use case 1: passo 1
+        # Recebeu um pedido de flight da central #> (Use case 1: passo 1)
+        elif msg.metadata["performative"] == "request": 
             trip = msg_body
             print(f"{self.agent.name} received flight: {trip}")
             self.agent.push_flight(trip)

@@ -21,9 +21,3 @@ class RecvRequests(CyclicBehaviour):
             print(f"\n{self.agent.name} starting flight: {trip}\n")
             self.agent.set_trip(trip)
             self.agent.add_behaviour(StartFlight())
-
-        # elif msg.metadata["performative"] == "request": # Pedidos do aeroporto para começar uma viagem
-        #     trip = msg_body
-        #     print(f"\n{self.agent.name} starting flight: {trip}\n")
-        #     self.agent.set_trip(trip)
-        #     self.agent.add_behaviour(StartFlight())
