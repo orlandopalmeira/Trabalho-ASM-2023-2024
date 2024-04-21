@@ -9,13 +9,13 @@ class RecvPlaneRequests(CyclicBehaviour):
     async def run(self):
         msg = await self.receive(timeout=20)
         if not msg:
-            print("No message received")
+            # print("No message received")
             return
 
         # Pedido de avião vindo do aeroporto para enviar um avião à control Tower #> Use case 1: passo 2
         if msg.metadata["performative"] == "request":
             trip = jsonpickle.decode(msg.body)
-            print(f"Received plane request from {cfg.get_jid_name(msg.sender)} for {trip}")
+            print(f"{self.agent.name}: Received plane request from {cfg.get_jid_name(msg.sender)} for {trip}")
             plane = await self.get_plane()
             ct_jid = cfg.get_control_tower_jid(self.agent.location)
             plane_and_trip = {

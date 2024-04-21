@@ -22,7 +22,7 @@ class ControlTower(Agent):
         # self.queue_landings = []
 
     async def setup(self) -> None:
-        print(f'ControlTower agent {self.location} starting...')
+        print(f'{self.name} starting...')
         self.add_behaviour(RecvRequests())
 
     # def set_weather(self, weather):
