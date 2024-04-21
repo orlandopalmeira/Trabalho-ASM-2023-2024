@@ -1,5 +1,6 @@
 from spade.agent import Agent
 
+from Agents.ControlTower.Behaviours.CTRecv import RecvRequests
 class ControlTower(Agent):
     def __init__(self, jid, password, location, runways=1):
         super().__init__(jid, password)
@@ -8,6 +9,7 @@ class ControlTower(Agent):
 
     async def setup(self) -> None:
         print(f'ControlTower agent {self.location} starting...')
+        self.add_behaviour(RecvRequests())
 
     def add_runway(self):
         self.runways += 1

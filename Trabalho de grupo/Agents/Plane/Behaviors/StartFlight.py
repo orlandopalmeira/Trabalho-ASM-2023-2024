@@ -22,7 +22,7 @@ class StartFlight(OneShotBehaviour):
         destination_jid = cfg.get_airport_jid(destination)
         
         # Mensagem de aviso de chegada ao aeroporto destino
-        msg = Message(body=None, 
+        msg = Message(body=jsonpickle.encode(None), 
                       to=destination_jid, 
                       metadata={"performative": "inform"})
         await self.send(msg)

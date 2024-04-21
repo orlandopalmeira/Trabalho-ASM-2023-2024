@@ -20,9 +20,5 @@ class GenerateFlightsBehav(PeriodicBehaviour):
         
         for trip in trips:
             airport_name = cfg.get_airport_jid(trip.get_origin())
-            msg_body = {
-                'type': 'generate_flight',
-                'trip': trip
-            }
-            msg = Message(to=airport_name, metadata={'performative':'request'}, body=jsonpickle.encode(msg_body))
-            await self.send(msg)
+            msg = Message(to=airport_name, metadata={'performative':'request'}, body=jsonpickle.encode(trip))
+            await self.send(msg) #> Use case 1: passo 1
