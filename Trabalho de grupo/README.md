@@ -1,33 +1,26 @@
 # Receções de mensagem
 ## Airport
 
-#### Descolagem
 - Receber flights (origem -> destino) vindos da central (performative: *request*, body: *Trip*)
 
 ## Torre de Controlo (CT)
 
-#### Descolagem
 - Receber avião vindo do hangar e começar a viagem (performative: *inform*, body: *Trip*)
 - Receber confirmação de descolagem do avião (performative: *confirm*, body: *"plane_jid"*)
 
-#### Aterragem
-- Receber pedidos de aterragem dos aviões perto do aeroporto destino (performative: *???*, body: *???*)
+- Receber pedidos de aterragem dos aviões perto do aeroporto destino (performative: *request*, body: *"plane_jid"*)
 
 ## Plane
 
-#### Descolagem
 - Recebe mensagem da CT origem para começar a viagem (performative: *inform*, body: *Trip*)
 
-#### Aterragem
 - Recebe mensagem da CT destino para aterrar (performative: *???*, body: *???*)
 
 
 ## Hangar
 
-#### Descolagem
 - Recebe mensagem do aeroporto origem para disponibilizar avião à CT origem (performative: *request*, body: *Trip*)
 
-#### Aterragem
 - Recebe mensagem da CT destino para armazenar avião (performative: *???*, body: *???*)
 
 
@@ -48,6 +41,11 @@
 Notas:
 - Flight: (Central -> (Trip) -> Aeroporto -> (Trip) -> Hangar -> (Trip,Avião) -> CT -> (Trip) -> Avião)
 - CT mantém estado de ocupação do hangar para fazer uma espécie de reserva de lugares e não permite aterragens quando o hangar está cheio.
+
+# 2. Realizar um flight (ATERRAGEM)
+1. A **CT** recebe um pedido de aterragem de um **avião**. (performative: *request*, body: *"plane_jid"*)
+2. 
+
 
 # ideia de gestão do CT
 
