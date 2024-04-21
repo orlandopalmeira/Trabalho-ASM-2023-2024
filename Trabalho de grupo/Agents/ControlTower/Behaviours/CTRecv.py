@@ -4,6 +4,8 @@ from spade.message import Message
 from Config import Config as cfg
 import asyncio
 
+from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
+
 class RecvRequests(CyclicBehaviour):
     async def run(self):
         msg = await self.receive(timeout=20)
@@ -43,10 +45,6 @@ class RecvRequests(CyclicBehaviour):
 
     # without constant checking of the runway availability #! WIP
     async def order_plane_to_takeoff_v2(self, plane_jid, trip):
-        reserved = self.agent.reserve_runway() #> Use case 1: passo 4
-        while not reserved:
-            print(f"{self.agent.name}: {plane_jid} for trip {trip} is waiting for a runway to be available.")
-            await asyncio.sleep(5)
-            reserved = self.agent.reserve_runway()
-        msg = Message(to=plane_jid, body=jsonpickle.encode(trip), metadata={"performative": "inform"})
-        await self.send(msg) #> Use case 1: passo 4
+        # Adicionar à fila de descolagens (este método irá dar trigger ao behavior DispatchPlanes)
+        self.agent.add_to_takeoff_queue(plane_jid, trip)
+

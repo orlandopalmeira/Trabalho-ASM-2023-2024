@@ -52,5 +52,5 @@ Notas:
 
 # ideia de gestão do CT
 
-- sempre que um hangar manda pedido de voo para a CT, a CT guarda o pedido numa queue. Sempre que é adicionado um pedido à queue, é lançado um oneshotbehavior(TakeoffPlanes) que checka a queue e faz um `for flight in queue: if all_condition_are_met: descolar_aviao()`. Este behavior dá prioridade aos voos que estão há mais tempo na queue e também que são de levantar, para que depois não haja deadlocks ao tentar aterrar um avião e o hangar estar cheio.
-Este TakeoffPlanes tbm é acionado sempre que um avião é posto no hangar e ele estava vazio. Tbm sempre que as condições meteorologicas passem a estar boas, o TakeoffPlanes é acionado.
+- sempre que um hangar manda pedido de voo para a CT, a CT guarda o pedido numa queue. Sempre que é adicionado um pedido à queue, é lançado um oneshotbehavior(DispatchPlanes) que checka a queue e faz um `for flight in queue: if all_condition_are_met: descolar_aviao()`. Este behavior dá prioridade aos voos que estão há mais tempo na queue e também que são de levantar, para que depois não haja deadlocks ao tentar aterrar um avião e o hangar estar cheio.
+Este DispatchPlanes tbm é acionado sempre que um avião é posto no hangar e ele estava vazio. Tbm sempre que as condições meteorologicas passem a estar boas, o DispatchPlanes é acionado.
