@@ -13,7 +13,7 @@ class RecvPlaneRequests(CyclicBehaviour):
             return
 
         # Pedido de avião vindo do aeroporto para enviar um avião à control Tower #> Use case 1: passo 2
-        if msg.metadata["performative"] == "request":
+        if msg.metadata["performative"] == "request" and cfg.identify(msg.sender) == "airport":
             trip = jsonpickle.decode(msg.body)
             print(f"{self.agent.name}: Received plane request from {cfg.get_jid_name(msg.sender)} for {trip}")
             plane = await self.get_plane()

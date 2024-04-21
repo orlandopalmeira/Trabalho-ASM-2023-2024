@@ -12,7 +12,7 @@ class RecvRequests(CyclicBehaviour):
             return
         
         # Mensagem vinda do hangar que contém o avião e a trip #> Use case 1: passo 3
-        if msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "hangar": 
+        if msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "hangar":
             # Interpretação da mensagem
             msg_body = jsonpickle.decode(msg.body)
             plane_jid = msg_body['plane_jid']
