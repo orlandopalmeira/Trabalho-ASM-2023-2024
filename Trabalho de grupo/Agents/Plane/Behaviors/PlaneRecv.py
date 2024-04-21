@@ -18,6 +18,6 @@ class RecvRequests(CyclicBehaviour):
         
         if msg.metadata["performative"] == "inform": #> Use case 1: passo 4
             trip = msg_body
-            print(f"\n{self.agent.name} starting flight: {trip}\n")
+            # print(f"\n{self.agent.name} starting flight: {trip}\n")
             self.agent.set_trip(trip)
             self.agent.add_behaviour(StartFlight())

@@ -11,7 +11,7 @@ class ControlTower(Agent):
     # STORMY = 2
 
 
-    def __init__(self, jid, password, location, runways=1):
+    def __init__(self, jid, password, location, runways=4):
         super().__init__(jid, password)
         self.location = location # Localização (cidade) do aeroporto onde a torre está
         self.runways_capacity = runways # Pistas de descolagem/aterragem

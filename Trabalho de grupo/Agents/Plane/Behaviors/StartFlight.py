@@ -14,7 +14,8 @@ class StartFlight(OneShotBehaviour):
         TEMPO_DE_DESCOLAGEM = 1
         await asyncio.sleep(TEMPO_DE_DESCOLAGEM)
         # Mensagem de confirmação de descolagem
-        msg = Message(to=cfg.get_control_tower_jid(self.agent.get_location()), body=jsonpickle.encode(None), metadata={"performative": "confirm"})
+        destin = cfg.get_ct_jid(self.agent.get_location())
+        msg = Message(to=destin, body=jsonpickle.encode(None), metadata={"performative": "confirm"})
         self.agent.set_flying()
 
         #> Voo do avião

@@ -11,8 +11,8 @@ class Hangar(Agent):
         self.capacity = capacity
         self.waiting_requests = 0
 
-    async def setup(self) -> None:
-        print(f'Hangar agent {self.location} starting...')
+    async def setup(self):
+        print(f'{self.name} starting...')
         self.add_behaviour(RecvPlaneRequests())
     
 

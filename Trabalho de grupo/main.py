@@ -40,7 +40,7 @@ def main():
 
     # Control Towers
     for location in AIRPORT_LOCATIONS:
-        ct = ControlTower(cfg.get_control_tower_jid(location), PASSWORD, location)
+        ct = ControlTower(cfg.get_ct_jid(location), PASSWORD, location)
         ct.start().result()
         agents.append(ct)
 

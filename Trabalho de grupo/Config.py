@@ -29,16 +29,19 @@ class Config:
     @staticmethod
     def get_airport_jid(location):
         """Dado uma localização, retorna o jid do aeroporto dessa localização"""
+        location = location.lower()
         return f"airport_{location}@{Config.DOMAIN}"
     
     @staticmethod
     def get_hangar_jid(location):
         """Dado uma localização, retorna o jid do hangar dessa localização"""
+        location = location.lower()
         return f"hangar_{location}@{Config.DOMAIN}"
     
     @staticmethod
-    def get_control_tower_jid(location):
+    def get_ct_jid(location):
         """Dado uma localização, retorna o jid da control tower dessa localização"""
+        location = location.lower()
         return f"ct_{location}@{Config.DOMAIN}"
     
     @staticmethod

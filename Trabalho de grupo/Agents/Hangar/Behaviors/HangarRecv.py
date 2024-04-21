@@ -17,7 +17,7 @@ class RecvPlaneRequests(CyclicBehaviour):
             trip = jsonpickle.decode(msg.body)
             print(f"{self.agent.name}: Received plane request from {cfg.get_jid_name(msg.sender)} for {trip}")
             plane = await self.get_plane()
-            ct_jid = cfg.get_control_tower_jid(self.agent.location)
+            ct_jid = cfg.get_ct_jid(self.agent.location)
             plane_and_trip = {
                 'plane_jid': plane, 
                 'trip': trip
