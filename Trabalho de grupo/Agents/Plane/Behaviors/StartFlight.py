@@ -15,7 +15,8 @@ class StartFlight(OneShotBehaviour):
         await asyncio.sleep(TEMPO_DE_DESCOLAGEM)
         # Mensagem de confirmação de descolagem
         destin = cfg.get_ct_jid(self.agent.get_location())
-        msg = Message(to=destin, body=jsonpickle.encode(None), metadata={"performative": "confirm"})
+        msg = Message(to=destin, body=jsonpickle.encode("avião"), metadata={"performative": "confirm"})
+        await self.send(msg)
         self.agent.set_flying()
 
         #> Voo do avião
@@ -23,7 +24,7 @@ class StartFlight(OneShotBehaviour):
         distance = self.agent.get_trip().get_distance()
         tempo = self.agent.CONVERSION_KM_TO_SECS * distance
         tempo = round(tempo, 2)
-        print(f"{self.agent.name} starting flight to {self.agent.trip.get_destination()} ({distance} km) (time: {tempo}s)")
+        print(f"{self.agent.name}: Starting flight to {self.agent.trip.get_destination()} ({distance} km) (time: {tempo}s)")
         await asyncio.sleep(tempo)
 
 

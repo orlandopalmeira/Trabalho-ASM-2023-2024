@@ -27,7 +27,7 @@ class RecvRequests(CyclicBehaviour):
             # Interpretação da mensagem
             plane_jid = jsonpickle.decode(msg.body)
             self.agent.release_runway()
-            print(f"{self.agent.name}: Plane took-off {cfg.get_jid_name(msg.sender)} ({trip})")
+            print(f"{self.agent.name}: Plane took-off {cfg.get_jid_name(msg.sender)}")
 
 
     async def order_plane_to_takeoff(self, plane_jid, trip):

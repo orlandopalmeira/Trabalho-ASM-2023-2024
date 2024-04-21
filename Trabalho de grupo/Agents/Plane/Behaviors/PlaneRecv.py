@@ -12,11 +12,11 @@ class RecvRequests(CyclicBehaviour):
     async def run(self):
         msg = await self.receive(timeout=20)
         if not msg:
-            print(f"{self.agent.name}: No message received")
+            # print(f"{self.agent.name}: No message received")
             return
         msg_body = jsonpickle.decode(msg.body)
         
-        if msg.metadata["performative"] == "inform": #> Use case 1: passo 4
+        if msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "ct": #> Use case 1: passo 4
             trip = msg_body
             # print(f"\n{self.agent.name} starting flight: {trip}\n")
             self.agent.set_trip(trip)
