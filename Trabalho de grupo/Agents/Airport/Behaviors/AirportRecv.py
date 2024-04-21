@@ -24,7 +24,7 @@ class RecvRequests(CyclicBehaviour):
             await self.send(msg) #> Use case 1: passo 2
 
         else:
-            print(f"{self.agent.name}: WARNING received unknown message: {msg.body}!")
+            print(f"{self.agent.name}: WARNING received unknown message from {msg.sender}!")
         
 
 

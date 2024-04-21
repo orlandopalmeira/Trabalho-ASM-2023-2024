@@ -28,7 +28,7 @@ def main():
     AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
     AIRPORT_LOCATIONS = list(AIRPORT_PLANES.keys())
     INTERVAL = 5
-    NUM_OF_FLIGHTS_PER_INTERVAL = 2
+    NUM_OF_FLIGHTS_PER_INTERVAL = 1
 
     agents = []
 

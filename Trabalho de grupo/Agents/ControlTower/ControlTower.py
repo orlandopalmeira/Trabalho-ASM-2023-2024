@@ -36,7 +36,9 @@ class ControlTower(Agent):
     
     def release_runway(self):
         self.runways_available += 1
-        self.add_behaviour(DispatchPlanes()) #! WIP - talvez especificar melhor a condição de chamada
+        # Se não havia runways disponíveis, os aviões potencialmente à espera podem ser despachados
+        if self.runways_available == 1:
+            self.add_behaviour(DispatchPlanes()) 
 
     def reserve_runway(self):
         """Reserve a runway for a plane to take off. Returns False if """
@@ -53,3 +55,17 @@ class ControlTower(Agent):
     def add_to_landing_queue(self, plane_jid, trip): #! WIP
         self.queue_landings.append((plane_jid, trip))
         self.add_behaviour(DispatchPlanes())
+
+    def pop_from_takeoff_queue(self):
+        """Retorna o primeiro elemento da fila de descolagens. Retorna None se a fila estiver vazia."""
+        try:
+            return self.queue_takeoffs.pop(0)
+        except IndexError:
+            return None
+    
+    def pop_from_landing_queue(self):
+        """Retorna o primeiro elemento da fila de aterragens. Retorna None se a fila estiver vazia."""
+        try:
+            return self.queue_landings.pop(0)
+        except IndexError:
+            return None

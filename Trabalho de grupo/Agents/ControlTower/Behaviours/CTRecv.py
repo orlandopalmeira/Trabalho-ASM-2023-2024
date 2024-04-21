@@ -22,7 +22,7 @@ class RecvRequests(CyclicBehaviour):
             print(f"{self.agent.name}: Received takeoff request from {cfg.get_jid_name(msg.sender)} for {cfg.get_jid_name(plane_jid)} {trip}")
 
             # Lógica de descolagem
-            await self.order_plane_to_takeoff(plane_jid, trip)
+            await self.order_plane_to_takeoff_v2(plane_jid, trip)
 
         # Confirmação da descolagem #> Use case 1: passo 5
         elif msg.metadata["performative"] == "confirm" and cfg.identify(msg.sender) == "plane":
@@ -30,6 +30,9 @@ class RecvRequests(CyclicBehaviour):
             plane_jid = jsonpickle.decode(msg.body)
             self.agent.release_runway()
             print(f"{self.agent.name}: Plane took-off {cfg.get_jid_name(msg.sender)}")
+        
+        elif msg.metadata["performative"] == "request" and cfg.identify(msg.sender) == "plane":
+            print(f"{self.agent.name}:Lógica de aterragem TODO!")
 
 
     async def order_plane_to_takeoff(self, plane_jid, trip):

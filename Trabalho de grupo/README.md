@@ -44,7 +44,7 @@ Notas:
 - CT mantém estado de ocupação do hangar para fazer uma espécie de reserva de lugares e não permite aterragens quando o hangar está cheio.
 
 # 2. Realizar um flight (ATERRAGEM)
-1. O **Plane** envia mensagem de aterragem à **CT**. (performative: *request*, body: *"plane_jid"*)
+1. O **Plane** envia mensagem de pedido de aterragem à **CT**. (performative: *request*, body: *"plane_jid"*)
 2. A **CT** verifica se as condições permitem aterrar, e envia mensagem ao **Plane**. (performative: *confirm*, body: *None*)
     - As condições são: runways disponíveis, hangares disponíveis, condições meteorológicas favoráveis.
 3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)

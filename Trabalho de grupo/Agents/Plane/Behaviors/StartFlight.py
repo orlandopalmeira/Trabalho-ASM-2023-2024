@@ -30,12 +30,12 @@ class StartFlight(OneShotBehaviour):
 
         #> Aterragem do avião
         destination = self.agent.get_trip().get_destination()
-        destination_jid = cfg.get_airport_jid(destination)
+        ct_jid = cfg.get_ct_jid(destination)
         
         # Mensagem de aviso de chegada ao aeroporto destino
-        msg = Message(body=jsonpickle.encode(None), 
-                      to=destination_jid, 
-                      metadata={"performative": "inform"})
+        msg = Message(to=ct_jid, 
+                      metadata={"performative": "request"},
+                      body=jsonpickle.encode(self.agent.jid))
         await self.send(msg)
 
 
