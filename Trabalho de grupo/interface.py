@@ -1,5 +1,7 @@
+import time
 import tkinter as tk
 
+import random
 
 
 UPDATE_TIMER = 1
@@ -17,12 +19,20 @@ class Central():
         self.num_of_flights_per_interval = num_of_flights_per_interval
         self.interval = interval
 
+    def change_random(self):
+        self.num_of_flights_per_interval = random.randint(1,10)
+        self.interval = random.randint(1,10)
+
     
 class Airport():
     def __init__(self, location, runways=1):
         self.location = location
         self.runways = runways
         self.flights_queue = []
+
+    def change_random(self):
+        self.runways = random.randint(1, 10)
+        self.location = random.choince(["Lisboa", "Porto", "Faro"])
 
 
 class GUI():
@@ -51,6 +61,9 @@ class GUI():
             elif agent.__class__.__name__ == "Plane":
                 self.planes.append(agent)
 
+        self.updateInterface()
+
+    def updateInterface(self):
         self.display_central(self.central)
         self.display_aiports(self.airports)
         self.display_controltowers(self.controltowers)
@@ -112,3 +125,8 @@ if __name__ == "__main__":
     a = Airport("Lisboa")
     gui = GUI([c, a])
     gui.root.mainloop()
+
+    for _ in range(20):
+        a.change_random()
+        c.change_random()
+        time.sleep(1)
