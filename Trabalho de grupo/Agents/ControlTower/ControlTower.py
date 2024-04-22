@@ -3,6 +3,8 @@ from spade.agent import Agent
 from Agents.ControlTower.Behaviours.CTRecv import RecvRequests
 from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 
+import tkinter as tk
+
 
 class ControlTower(Agent):
     # SUNNY = 0
@@ -14,10 +16,10 @@ class ControlTower(Agent):
         self.location = location # Localização (cidade) do aeroporto onde a torre está
         self.runways_capacity = runways # Pistas de descolagem/aterragem
         self.runways_available = runways # Pistas disponíveis
-        #! WIP
-        # self.weather = ControlTower.SUNNY
         self.queue_takeoffs = []
         self.queue_landings = []
+        #! WIP
+        # self.weather = ControlTower.SUNNY
 
     async def setup(self) -> None:
         print(f'{self.name} starting...')
@@ -69,3 +71,38 @@ class ControlTower(Agent):
             return self.queue_landings.pop(0)
         except IndexError:
             return None
+        
+    def create_display(self, root):
+        label = tk.Label(root, text=f"Control Tower {self.location}")
+        label.pack(padx=5, pady=5)
+
+        frame = tk.Frame(root)
+        frame.pack(padx=10, pady=10)
+        # self.location = location # Localização (cidade) do aeroporto onde a torre está
+        self.queue_takeoffs = []
+        self.queue_landings = []
+
+        runways = f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
+        runways_label = tk.Label(frame, text=runways)
+        runways_label.grid(column=0, row=0, padx=5, pady=5)
+
+        queue_takeoffs = f"Queue take-offs: {str(self.queue_takeoffs)}"
+        queue_takeoffs_label = tk.Label(frame, text=queue_takeoffs)
+        queue_takeoffs_label.grid(column=0, row=1, padx=5, pady=5)
+        
+        queue_landings = f"Queue take-offs: {str(self.queue_landings)}"
+        queue_landings_label = tk.Label(frame, text=queue_landings)
+        queue_landings_label.grid(column=0, row=1, padx=5, pady=5)
+
+        return self.CentralLabels(runways_label, queue_takeoffs_label, queue_landings_label)
+    
+    def update_display(self, labels_obj):
+        labels_obj.runways_label.       config(text=f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}")
+        labels_obj.queue_takeoffs_label.config(text=f"Queue take-offs: {str(self.queue_takeoffs)}")
+        labels_obj.queue_landings_label.config(text=f"Queue take-offs: {str(self.queue_landings)}")
+    
+    class CTLabels():
+        def __init__(self, runways_label, queue_takeoffs_label, queue_landings_label):
+            self.runways_label = runways_label
+            self.queue_takeoffs_label = queue_takeoffs_label
+            self.queue_landings_label = queue_landings_label

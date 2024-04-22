@@ -4,11 +4,9 @@ from spade.agent import Agent
 from Agents.Airport.Behaviors.AirportRecv import RecvRequests
 class Airport(Agent):
 
-    def __init__(self, jid, password, location, runways=1):
+    def __init__(self, jid, password, location):
         super().__init__(jid, password)
         self.location = location # Localização (cidade) do aeroporto
-        self.runways = runways # Pistas de deslocagem/aterragem
-        self.flights_queue = [] # Fila de Trips (voos) a serem processados
     
     async def setup(self) -> None:
         print(f'Airport agent {self.location} starting...')
@@ -20,11 +18,6 @@ class Airport(Agent):
     def get_location(self):
         return self.location
     
-    def get_runways(self):
-        return self.runways
+    def set_location(self, location):
+        self.location = location
     
-    def push_flight(self, flight):
-        self.flights_queue.append(flight)
-
-    def pop_flight(self):
-        return self.flights_queue.pop(0)
