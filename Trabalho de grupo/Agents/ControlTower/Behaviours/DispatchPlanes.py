@@ -18,6 +18,7 @@ class DispatchPlanes(OneShotBehaviour): #! WIP
             plane_jid, trip = plane_req
             msg = Message(to=plane_jid, metadata={"performative": "inform"}, body=jsonpickle.encode(trip))
             await self.send(msg)
+            # Não é preciso release_runway pq o avião é que faz o release
         while True:
             reserved = self.agent.reserve_runway()
             if not reserved:

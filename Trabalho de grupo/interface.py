@@ -1,11 +1,10 @@
-import time
 import tkinter as tk
-
+import time
+import threading
 import random
-
+import sys
 
 UPDATE_TIMER = 1
-
 
 
 AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
@@ -23,6 +22,7 @@ class Central():
         self.num_of_flights_per_interval = random.randint(1,10)
         self.interval = random.randint(1,10)
 
+
     def display(self, root):
         label = tk.Label(root, text="Central")
         label.pack(padx=5, pady=5)
@@ -38,7 +38,7 @@ class Central():
         flights_label = tk.Label(frame, text=num_of_flights_per_interval)
         flights_label.grid(column=0, row=1, padx=5, pady=5)
 
-        interval_value = f"Inverval: {str(self.interval)}"
+        interval_value = f"Interval: {str(self.interval)}"
         interval_label = tk.Label(frame, text=interval_value)
         interval_label.grid(column=0, row=2, padx=5, pady=5)
 
@@ -58,7 +58,7 @@ class Airport():
 
     def change_random(self):
         self.runways = random.randint(1, 10)
-        self.location = random.choince(["Lisboa", "Porto", "Faro"])
+        self.location = random.choice(["Lisboa", "Porto", "Faro"])
 
     
 
@@ -94,27 +94,9 @@ class GUI():
 
     def update_loop(self):
         self.central.update_display(self.airport_label, self.flights_label, self.interval_label)
-        self.central.change_random()
         self.root.after(1000, self.update_loop)
         
     
-    def display_central(self, central):
-        label = tk.Label(self.root, text="Central")
-        label.pack(padx=5, pady=5)
-
-        frame = tk.Frame(self.root)
-        frame.pack(padx=10, pady=10)
-
-        airport_locations = f"Airport Locations: {str(central.airport_locations)}"
-        airports = tk.Label(frame, text=airport_locations).grid(column=0, row=0, padx=5, pady=5)
-
-        num_of_flights_per_interval = f"Number of flights per interval: {str(central.num_of_flights_per_interval)}"
-        flights = tk.Label(frame, text=num_of_flights_per_interval).grid(column=0, row=1, padx=5, pady=5)
-
-        interval_value = f"Inverval: {str(central.interval)}"
-        interval = tk.Label(frame, text=interval_value).grid(column=0, row=2, padx=5, pady=5)
-
-
     def display_aiports(self, airports):
         for i, airport in enumerate(airports):
             label = tk.Label(self.root, text=f"Aeroporto {i}", font=("Arial", 12))
@@ -127,10 +109,16 @@ class GUI():
             runways = tk.Label(frame, text=f"Runways: {airport.runways}").grid(column=0, row=1)
 
 
-
-
     def display_controltowers(self, controltowers):
-        pass
+        for i, ct in enumerate(controltowers):
+            label = tk.Label(self.root, text=f"CT {i}", font=("Arial", 12))
+            label.pack(padx=10, pady=10)
+
+            frame = tk.Frame(self.root)
+            frame.pack(padx=10, pady=10)
+
+            location = tk.Label(frame, text=f"Location: {ct.location}").grid(column=0, row=0)
+            runways = tk.Label(frame, text=f"Runways: {ct.runways}").grid(column=0, row=1)
 
 
     def display_hangars(self, hangars):
@@ -141,14 +129,24 @@ class GUI():
         pass
 
 
-
-
-
+def changes():
+    while not stop:
+        time.sleep(1)
+        a.change_random()
+        c.change_random()
 
 
 
 if __name__ == "__main__":
     c = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
     a = Airport("Lisboa")
+
+    stop = False
+    t = threading.Thread(target=changes)
+    t.start()
+
     gui = GUI([c, a])
     gui.root.mainloop()
+    
+    stop = True
+    print("Acabou!")
