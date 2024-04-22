@@ -77,13 +77,20 @@ class GUI():
         self.root = tk.Tk()
 
         self.agents = agents
-        self.agent_labels = []
 
         self.central = None
+
         self.airports = []
+        self.airport_labels = []
+
         self.controltowers = []
+        self.ct_labels = []
+
         self.hangars = []
+        self.hangar_labels = []
+
         self.planes = []
+        self.plane_labels = []
 
         self.root.title("Agentes")
         self.root.geometry("500x500")
@@ -110,11 +117,11 @@ class GUI():
         # ControlTowers
         for ct in self.controltowers:
             labels = ct.create_display(self.root)
-            self.agent_labels.append(labels)
+            self.ct_labels.append(labels)
 
         for h in self.hangars:
             labels = h.create_display(self.root)
-            self.agent_labels.append(labels)
+            self.hangar_labels.append(labels)
 
         #TODO - resto dos agentes
 
@@ -126,10 +133,10 @@ class GUI():
         #     a.update_display(self.agent_labels[i])
 
         for i, ct in enumerate(self.controltowers):
-            ct.update_display(self.agent_labels[i])
+            ct.update_display(self.ct_labels[i])
 
         for i, h in enumerate(self.hangars):
-            h.update_display(self.agent_labels[i])
+            h.update_display(self.hangar_labels[i])
 
         #TODO - resto dos agentes
         

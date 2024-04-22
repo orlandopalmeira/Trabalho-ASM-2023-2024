@@ -3,6 +3,8 @@ from spade.agent import Agent
 # from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
 from Agents.Hangar.Behaviors.HangarRecv import RecvPlaneRequests
 
+from Config import Config as cfg
+
 import tkinter as tk
 
 class Hangar(Agent):
