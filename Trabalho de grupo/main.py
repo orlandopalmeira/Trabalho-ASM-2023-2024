@@ -1,4 +1,7 @@
 import time
+import tkinter as tk
+import threading
+
 from spade.agent import Agent
 from dotenv import load_dotenv
 load_dotenv()
@@ -15,14 +18,24 @@ from Agents.ControlTower.ControlTower import ControlTower
 # Messages
 from Classes.Trip import Trip
 
-
 # Utils
 from Config import Config as cfg
 import Utils.GeoDistance as geo
+from interface import GUI
 
 # DOMAIN = "laptop-140rfmpg.home"
 DOMAIN = cfg.DOMAIN #* Para por a correr nos vossos pcs tendes de mudar o DOMAIN no .env
 PASSWORD = cfg.PASSWORD
+
+
+#* Função que lança a interface numa nova thread
+stop_thread = False
+def gui(agents):
+    global stop_thread
+    gui = GUI(agents)
+    gui.root.mainloop()
+    stop_thread = True
+
 
 def main():
     AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
@@ -66,7 +79,14 @@ def main():
     central.start().result()
     agents.append(central)
 
+    #* Lancamento da interface
+    INTERFACE = True
+    if INTERFACE == True:
+        t = threading.Thread(target=gui, args=(agents,))
+        t.start()
+
     # while True:
+    # while stop_thread == False:
     while any(agent.is_alive() for agent in agents):
         try:
             time.sleep(3)
@@ -75,6 +95,9 @@ def main():
             for agent in agents:
                 agent.stop()
             break
+    
+    if INTERFACE == True:
+        t.join()
     
     print(f"\nAgents terminated.\n")
 

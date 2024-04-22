@@ -72,6 +72,8 @@ class ControlTower(Agent):
         except IndexError:
             return None
         
+    #> GUI methods
+    # Abstract method implementation
     def create_display(self, root):
         label = tk.Label(root, text=f"Control Tower {self.location}")
         label.pack(padx=5, pady=5)
@@ -82,27 +84,46 @@ class ControlTower(Agent):
         self.queue_takeoffs = []
         self.queue_landings = []
 
-        runways = f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
+        # runways = f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
+        runways = self.present_runways()
         runways_label = tk.Label(frame, text=runways)
         runways_label.grid(column=0, row=0, padx=5, pady=5)
 
-        queue_takeoffs = f"Queue take-offs: {str(self.queue_takeoffs)}"
+        # queue_takeoffs = f"Queue take-offs: {str(self.queue_takeoffs)}"
+        queue_takeoffs = self.present_queue_takeoffs()
         queue_takeoffs_label = tk.Label(frame, text=queue_takeoffs)
         queue_takeoffs_label.grid(column=0, row=1, padx=5, pady=5)
         
-        queue_landings = f"Queue take-offs: {str(self.queue_landings)}"
+        # queue_landings = f"Queue landings: {str(self.queue_landings)}"
+        queue_landings = self.present_queue_landings()
         queue_landings_label = tk.Label(frame, text=queue_landings)
         queue_landings_label.grid(column=0, row=1, padx=5, pady=5)
 
-        return self.CentralLabels(runways_label, queue_takeoffs_label, queue_landings_label)
+        return self.CTLabels(runways_label, queue_takeoffs_label, queue_landings_label)
     
+    # Abstract method implementation
     def update_display(self, labels_obj):
-        labels_obj.runways_label.       config(text=f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}")
-        labels_obj.queue_takeoffs_label.config(text=f"Queue take-offs: {str(self.queue_takeoffs)}")
-        labels_obj.queue_landings_label.config(text=f"Queue take-offs: {str(self.queue_landings)}")
+        # labels_obj.runways_label.config(text=f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}")
+        # labels_obj.queue_takeoffs_label.config(text=f"Queue take-offs: {str(self.queue_takeoffs)}")
+        # labels_obj.queue_landings_label.config(text=f"Queue landings: {str(self.queue_landings)}")
+        labels_obj.runways_label.config(text=self.present_runways())
+        labels_obj.queue_takeoffs_label.config(text=self.present_queue_takeoffs())
+        labels_obj.queue_landings_label.config(text=self.present_queue_landings())
+
+    # Tem o texto que é para ser apresentado de forma modular
+    def present_runways(self) -> str:
+        return f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
+    
+    def present_queue_takeoffs(self) -> str:
+        return f"Queue take-offs: {str(self.queue_takeoffs)}"
+    
+    def present_queue_landings(self) -> str:
+        return f"Queue landings: {str(self.queue_landings)}"
     
     class CTLabels():
         def __init__(self, runways_label, queue_takeoffs_label, queue_landings_label):
             self.runways_label = runways_label
             self.queue_takeoffs_label = queue_takeoffs_label
             self.queue_landings_label = queue_landings_label
+
+        

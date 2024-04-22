@@ -14,6 +14,7 @@ NUM_OF_FLIGHTS_PER_INTERVAL = 2
 
 class Central():
     def __init__(self, airport_locations, num_of_flights_per_interval, interval):
+        self.name = "Central"
         self.airport_locations = airport_locations
         self.num_of_flights_per_interval = num_of_flights_per_interval
         self.interval = interval
@@ -23,7 +24,7 @@ class Central():
         self.interval = random.randint(1,10)
 
 
-    def display(self, root):
+    def create_display(self, root):
         label = tk.Label(root, text="Central")
         label.pack(padx=5, pady=5)
 
@@ -60,6 +61,7 @@ class Central():
     
 class Airport():
     def __init__(self, location, runways=1):
+        self.name = "Airport0"
         self.location = location
         self.runways = runways
         self.flights_queue = []
@@ -68,13 +70,15 @@ class Airport():
         self.runways = random.randint(1, 10)
         self.location = random.choice(["Lisboa", "Porto", "Faro"])
 
-    
 
 
 class GUI():
     def __init__(self, agents):
         self.root = tk.Tk()
+
         self.agents = agents
+        self.agent_labels = []
+
         self.central = None
         self.airports = []
         self.controltowers = []
@@ -83,7 +87,6 @@ class GUI():
 
         self.root.title("Agentes")
         self.root.geometry("500x500")
-
 
         for agent in agents:
             if agent.__class__.__name__ == "Central":
@@ -97,63 +100,57 @@ class GUI():
             elif agent.__class__.__name__ == "Plane":
                 self.planes.append(agent)
 
-        self.central_labels = self.central.display(self.root)
+        #* Creating displays for all the agents
+        #TODO - terminar de implementar os métodos create_display e update_display nos restantes agentes
+        # Airports
+        # for a in self.airports:
+        #     labels = a.create_display(self.root)
+        #     self.agent_labels.append(labels)
+
+        # ControlTowers
+        for ct in self.controltowers:
+            labels = ct.create_display(self.root)
+            self.agent_labels.append(labels)
+
+        #TODO - resto dos agentes
+
         self.update_loop()
 
     def update_loop(self):
-        self.central.update_display(self.central_labels)
+        #TODO
+        # for i, a in enumerate(self.airports):
+        #     a.update_display(self.agent_labels[i])
+
+        for i, ct in enumerate(self.controltowers):
+            ct.update_display(self.agent_labels[i])
+
+        #TODO - resto dos agentes
+        
         self.root.after(1000, self.update_loop)
         
-    
-    def display_aiports(self, airports):
-        for i, airport in enumerate(airports):
-            label = tk.Label(self.root, text=f"Aeroporto {i}", font=("Arial", 12))
-            label.pack(padx=10, pady=10)
-
-            frame = tk.Frame(self.root)
-            frame.pack(padx=10, pady=10)
-
-            location = tk.Label(frame, text=f"Airport Location: {airport.location}").grid(column=0, row=0)
-            runways = tk.Label(frame, text=f"Runways: {airport.runways}").grid(column=0, row=1)
-
-
-    def display_controltowers(self, controltowers):
-        for i, ct in enumerate(controltowers):
-            label = tk.Label(self.root, text=f"CT {i}", font=("Arial", 12))
-            label.pack(padx=10, pady=10)
-
-            frame = tk.Frame(self.root)
-            frame.pack(padx=10, pady=10)
-
-            location = tk.Label(frame, text=f"Location: {ct.location}").grid(column=0, row=0)
-            runways = tk.Label(frame, text=f"Runways: {ct.runways}").grid(column=0, row=1)
-
-
-    def display_hangars(self, hangars):
-        pass
-
-
-    def display_planes(self, planes):
-        pass
-
+list_agents = []    
 
 def changes():
+    global list_agents
     while not stop:
         time.sleep(1)
-        a.change_random()
-        c.change_random()
+        for a in list_agents:
+            a.change_random()
 
 
 
 if __name__ == "__main__":
-    c = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
-    a = Airport("Lisboa")
+    c  = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    c2 = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    c3 = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    # a = Airport("Lisboa")
+    list_agents = [c, c2, c3]
 
     stop = False
     t = threading.Thread(target=changes)
     t.start()
 
-    gui = GUI([c, a])
+    gui = GUI(list_agents)
     gui.root.mainloop()
     
     stop = True
