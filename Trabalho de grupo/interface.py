@@ -19,9 +19,28 @@ class Central():
         self.num_of_flights_per_interval = num_of_flights_per_interval
         self.interval = interval
 
+
     def change_random(self):
         self.num_of_flights_per_interval = random.randint(1,10)
         self.interval = random.randint(1,10)
+
+    def display(self, root):
+        label = tk.Label(root, text="Central")
+        label.pack(padx=5, pady=5)
+
+        frame = tk.Frame(root)
+        frame.pack(padx=10, pady=10)
+
+        airport_locations = f"Airport Locations: {str(self.airport_locations)}"
+        airports = tk.Label(frame, text=airport_locations).grid(column=0, row=0, padx=5, pady=5)
+
+        num_of_flights_per_interval = f"Number of flights per interval: {str(self.num_of_flights_per_interval)}"
+        flights = tk.Label(frame, text=num_of_flights_per_interval).grid(column=0, row=1, padx=5, pady=5)
+
+        interval_value = f"Inverval: {str(self.interval)}"
+        interval = tk.Label(frame, text=interval_value).grid(column=0, row=2, padx=5, pady=5)
+    
+
 
     
 class Airport():
@@ -33,6 +52,8 @@ class Airport():
     def change_random(self):
         self.runways = random.randint(1, 10)
         self.location = random.choince(["Lisboa", "Porto", "Faro"])
+
+    
 
 
 class GUI():
@@ -61,14 +82,19 @@ class GUI():
             elif agent.__class__.__name__ == "Plane":
                 self.planes.append(agent)
 
-        self.updateInterface()
+        self.update_loop()
 
-    def updateInterface(self):
-        self.display_central(self.central)
-        self.display_aiports(self.airports)
-        self.display_controltowers(self.controltowers)
-        self.display_hangars(self.hangars)
-        self.display_planes(self.planes)
+    # def updateInterface(self):
+    #     self.display_central(self.central)
+    #     self.display_aiports(self.airports)
+    #     self.display_controltowers(self.controltowers)
+    #     self.display_hangars(self.hangars)
+    #     self.display_planes(self.planes)
+
+    def update_loop(self):
+        self.central.display(self.root)
+        self.central.change_random()
+        self.root.after(1000, self.update_loop)
         
     
     def display_central(self, central):
@@ -125,8 +151,3 @@ if __name__ == "__main__":
     a = Airport("Lisboa")
     gui = GUI([c, a])
     gui.root.mainloop()
-
-    for _ in range(20):
-        a.change_random()
-        c.change_random()
-        time.sleep(1)
