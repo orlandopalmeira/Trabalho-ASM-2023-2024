@@ -42,12 +42,20 @@ class Central():
         interval_label = tk.Label(frame, text=interval_value)
         interval_label.grid(column=0, row=2, padx=5, pady=5)
 
-        return (airport_label, flights_label, interval_label)
+        return self.CentralLabels(airport_label, flights_label, interval_label)
 
-    def update_display(self, airport_label, flights_label, interval_label):
-        airport_label.config(text=f"Airport Locations: {str(self.airport_locations)}")
-        flights_label.config(text=f"Number of flights per interval: {str(self.num_of_flights_per_interval)}")
-        interval_label.config(text=f"Inverval: {str(self.interval)}")
+    def update_display(self, labels_obj):
+        labels_obj.airport_label.config(text=f"Airport Locations: {str(self.airport_locations)}")
+        labels_obj.flights_label.config(text=f"Number of flights per interval: {str(self.num_of_flights_per_interval)}")
+        labels_obj.interval_label.config(text=f"Inverval: {str(self.interval)}")
+
+    class CentralLabels():
+        def __init__(self, airport_label, flights_label, interval_label):
+            self.airport_label = airport_label
+            self.flights_label = flights_label
+            self.interval_label = interval_label
+
+        
 
     
 class Airport():
@@ -89,11 +97,11 @@ class GUI():
             elif agent.__class__.__name__ == "Plane":
                 self.planes.append(agent)
 
-        self.airport_label, self.flights_label, self.interval_label = self.central.display(self.root)
+        self.central_labels = self.central.display(self.root)
         self.update_loop()
 
     def update_loop(self):
-        self.central.update_display(self.airport_label, self.flights_label, self.interval_label)
+        self.central.update_display(self.central_labels)
         self.root.after(1000, self.update_loop)
         
     
