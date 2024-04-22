@@ -41,3 +41,8 @@ class Plane(Agent):
     def get_status(self):
         return self.status
     
+    def __str__ (self):
+        return f"{self.name}"
+    
+    def __repr__(self) -> str:
+        return f"{self.name}"

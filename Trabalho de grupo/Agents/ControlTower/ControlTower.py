@@ -72,6 +72,12 @@ class ControlTower(Agent):
         except IndexError:
             return None
         
+    def takeoff_queue_empty(self):
+        return len(self.queue_takeoffs) == 0
+    
+    def landing_queue_empty(self):
+        return len(self.queue_landings) == 0
+        
     #> GUI methods
     # Abstract method implementation
     def create_display(self, root):
@@ -80,9 +86,6 @@ class ControlTower(Agent):
 
         frame = tk.Frame(root)
         frame.pack(padx=10, pady=10)
-        # self.location = location # Localização (cidade) do aeroporto onde a torre está
-        self.queue_takeoffs = []
-        self.queue_landings = []
 
         # runways = f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
         runways = self.present_runways()
@@ -97,7 +100,7 @@ class ControlTower(Agent):
         # queue_landings = f"Queue landings: {str(self.queue_landings)}"
         queue_landings = self.present_queue_landings()
         queue_landings_label = tk.Label(frame, text=queue_landings)
-        queue_landings_label.grid(column=0, row=1, padx=5, pady=5)
+        queue_landings_label.grid(column=0, row=2, padx=5, pady=5)
 
         return self.CTLabels(runways_label, queue_takeoffs_label, queue_landings_label)
     
