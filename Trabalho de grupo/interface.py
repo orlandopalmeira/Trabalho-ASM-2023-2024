@@ -19,10 +19,6 @@ class Central():
         self.num_of_flights_per_interval = num_of_flights_per_interval
         self.interval = interval
 
-        self.airport_label = None
-        self.flights_label = None
-        self.interval_label = None
-
     def change_random(self):
         self.num_of_flights_per_interval = random.randint(1,10)
         self.interval = random.randint(1,10)
@@ -35,21 +31,23 @@ class Central():
         frame.pack(padx=10, pady=10)
 
         airport_locations = f"Airport Locations: {str(self.airport_locations)}"
-        self.airport_label = tk.Label(frame, text=airport_locations)
-        self.airport_label.grid(column=0, row=0, padx=5, pady=5)
+        airport_label = tk.Label(frame, text=airport_locations)
+        airport_label.grid(column=0, row=0, padx=5, pady=5)
 
         num_of_flights_per_interval = f"Number of flights per interval: {str(self.num_of_flights_per_interval)}"
-        self.flights_label = tk.Label(frame, text=num_of_flights_per_interval)
-        self.flights_label.grid(column=0, row=1, padx=5, pady=5)
+        flights_label = tk.Label(frame, text=num_of_flights_per_interval)
+        flights_label.grid(column=0, row=1, padx=5, pady=5)
 
         interval_value = f"Inverval: {str(self.interval)}"
-        self.interval_label = tk.Label(frame, text=interval_value)
-        self.interval_label.grid(column=0, row=2, padx=5, pady=5)
+        interval_label = tk.Label(frame, text=interval_value)
+        interval_label.grid(column=0, row=2, padx=5, pady=5)
 
-    def update_display(self):
-        self.airport_label.config(text=f"Airport Locations: {str(self.airport_locations)}")
-        self.flights_label.config(text=f"Number of flights per interval: {str(self.num_of_flights_per_interval)}")
-        self.interval_label.config(text=f"Inverval: {str(self.interval)}")
+        return (airport_label, flights_label, interval_label)
+
+    def update_display(self, airport_label, flights_label, interval_label):
+        airport_label.config(text=f"Airport Locations: {str(self.airport_locations)}")
+        flights_label.config(text=f"Number of flights per interval: {str(self.num_of_flights_per_interval)}")
+        interval_label.config(text=f"Inverval: {str(self.interval)}")
 
     
 class Airport():
@@ -91,18 +89,11 @@ class GUI():
             elif agent.__class__.__name__ == "Plane":
                 self.planes.append(agent)
 
-        self.central.display(self.root)
+        self.airport_label, self.flights_label, self.interval_label = self.central.display(self.root)
         self.update_loop()
 
-    # def updateInterface(self):
-    #     self.display_central(self.central)
-    #     self.display_aiports(self.airports)
-    #     self.display_controltowers(self.controltowers)
-    #     self.display_hangars(self.hangars)
-    #     self.display_planes(self.planes)
-
     def update_loop(self):
-        self.central.update_display()
+        self.central.update_display(self.airport_label, self.flights_label, self.interval_label)
         self.central.change_random()
         self.root.after(1000, self.update_loop)
         
