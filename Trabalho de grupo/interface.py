@@ -112,6 +112,10 @@ class GUI():
             labels = ct.create_display(self.root)
             self.agent_labels.append(labels)
 
+        for h in self.hangars:
+            labels = h.create_display(self.root)
+            self.agent_labels.append(labels)
+
         #TODO - resto dos agentes
 
         self.update_loop()
@@ -123,6 +127,9 @@ class GUI():
 
         for i, ct in enumerate(self.controltowers):
             ct.update_display(self.agent_labels[i])
+
+        for i, h in enumerate(self.hangars):
+            h.update_display(self.agent_labels[i])
 
         #TODO - resto dos agentes
         
