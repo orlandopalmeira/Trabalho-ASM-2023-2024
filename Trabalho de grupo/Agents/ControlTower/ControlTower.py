@@ -4,7 +4,7 @@ from Agents.ControlTower.Behaviours.CTRecv import RecvRequests
 from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 
 import tkinter as tk
-
+from Classes.Trip import Trip
 
 class ControlTower(Agent):
     # SUNNY = 0
@@ -50,12 +50,12 @@ class ControlTower(Agent):
         else:
             return False
 
-    def add_to_takeoff_queue(self, plane_jid, trip): 
+    def add_to_takeoff_queue(self, plane_jid: str, trip: Trip): #! Ver melhor se não seria melhor apenas armazenar o plane_jid e fazer com que o hangar já envie ao avião a sua trip a realizar.
         self.queue_takeoffs.append((plane_jid, trip))
         self.add_behaviour(DispatchPlanes())
 
-    def add_to_landing_queue(self, plane_jid, trip): 
-        self.queue_landings.append((plane_jid, trip))
+    def add_to_landing_queue(self, plane_jid: str): 
+        self.queue_landings.append(plane_jid)
         self.add_behaviour(DispatchPlanes())
 
     def pop_from_takeoff_queue(self):
@@ -77,7 +77,8 @@ class ControlTower(Agent):
     
     def landing_queue_empty(self):
         return len(self.queue_landings) == 0
-        
+
+
     #> GUI methods
     # Abstract method implementation
     def create_display(self, element):

@@ -12,7 +12,7 @@ class RecvPlaneRequests(CyclicBehaviour):
             # print("No message received")
             return
 
-        # Pedido de avião vindo do aeroporto para enviar um avião à control Tower #> Use case 1: passo 2
+        # 1.2. O **aeroporto** envia um pedido de avião ao **hangar**. (performative: *request*, body: *Trip*)
         if msg.metadata["performative"] == "request" and cfg.identify(msg.sender) == "airport":
             trip = jsonpickle.decode(msg.body)
             print(f"{self.agent.name}: Received plane request from {cfg.get_jid_name(msg.sender)} for {trip}")
@@ -22,16 +22,23 @@ class RecvPlaneRequests(CyclicBehaviour):
                 'plane_jid': plane, 
                 'trip': trip
             }
-            msg = Message(to=ct_jid, body=jsonpickle.encode(plane_and_trip), metadata={"performative": "inform"}) #> Use case 1: passo 3
+            msg = Message(to=ct_jid, body=jsonpickle.encode(plane_and_trip), metadata={"performative": "inform"})
             await self.send(msg)
+
+        # 3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)
+        elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "plane":
+            plane_jid = jsonpickle.decode(msg.body)
+            print(f"{self.agent.name}: {cfg.get_jid_name(plane_jid)} estationated.")
+            self.agent.add_plane(plane_jid)
 
 
     async def get_plane(self):
+        INTERVAL = 5
         plane = self.agent.pop_plane()
         while plane is None:
             #! Talvez aqui seja o lugar para enviar uma mensagem à central a indicar falta de aviões
-            print(f"{self.agent.name} has no planes available. Retrying in 10 seconds...")
-            await asyncio.sleep(10)
+            print(f"{self.agent.name} has no planes available. Retrying in {INTERVAL} seconds...")
+            await asyncio.sleep(INTERVAL)
             plane = self.agent.pop_plane()
         return plane
 

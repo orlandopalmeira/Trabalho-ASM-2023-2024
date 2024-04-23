@@ -1,12 +1,27 @@
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
+from geopy.exc import GeocoderTimedOut
 
 #! Talvez estas funcionalidades pudessem ir para dentro da classe Trip
 
 
+def geocode_city(city_name):
+    """Alternativa a geolocator.geocode(city_name) com retries para tentar resolver problema dos timeouts."""
+    geocoder = Nominatim(user_agent="my_geocoder")
+    max_retries = 3
+    retry_count = 0
+    while retry_count < max_retries:
+        try:
+            location = geocoder.geocode(city_name)
+            return location
+        except GeocoderTimedOut:
+            retry_count += 1
+            print("Geocoder service timed out. Retrying...")
+    print("Unable to geocode the location after multiple attempts.")
+    return None
+
 def get_coordinates(city_name):
-    geolocator = Nominatim(user_agent="GeoDistance")
-    location = geolocator.geocode(city_name)
+    location = geocode_city(city_name)
     if location:
         return location.latitude, location.longitude
     else:
@@ -28,9 +43,8 @@ def calculate_distance(city1, city2):
 
 def ponto_progresso_caminho(cidade_A, cidade_B, progresso: float):
     # Obter as coordenadas geográficas das cidades A e B
-    geolocator = Nominatim(user_agent="GeoDistance")
-    coordenadas_A = geolocator.geocode(cidade_A)
-    coordenadas_B = geolocator.geocode(cidade_B)
+    coordenadas_A = geocode_city(cidade_A)
+    coordenadas_B = geocode_city(cidade_B)
 
     # Verificar se as coordenadas foram encontradas
     if coordenadas_A is None or coordenadas_B is None:

@@ -1,11 +1,14 @@
 from spade.behaviour import CyclicBehaviour
 from spade.message import Message
+
 import jsonpickle
+import asyncio
+
 from Classes.Trip import Trip
 from Config import Config as cfg
-import time
 
-from Agents.Plane.Behaviors.StartFlight import StartFlight
+from Agents.Plane.Behaviors.ExecuteFlight import ExecuteFlight
+
 
 class RecvRequests(CyclicBehaviour):
 
@@ -16,8 +19,28 @@ class RecvRequests(CyclicBehaviour):
             return
         msg_body = jsonpickle.decode(msg.body)
         
-        if msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "ct": #> Use case 1: passo 4
+        # 1.4. A **CT** envia mensagem para descolar ao **Plane**. (performative: *inform*, body: *Trip*)
+        if msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "ct": 
             trip = msg_body
-            # print(f"\n{self.agent.name} starting flight: {trip}\n")
             self.agent.set_trip(trip)
-            self.agent.add_behaviour(StartFlight())
+            self.agent.add_behaviour(ExecuteFlight())
+
+        # 2.2. A **CT** verifica se as condições permitem aterrar, e envia mensagem de confirmação ao **Plane**. (performative: *confirm*, body: *None*)
+        elif msg.metadata["performative"] == "confirm" and cfg.identify(msg.sender) == "ct":
+            LANDING_TIME = self.agent.LANDING_TIME
+            await asyncio.sleep(LANDING_TIME)
+            destination = self.agent.trip.get_destination()
+            print(f"{self.agent.name}: Finished landing at {destination}")
+            self.agent.set_landed()
+            self.agent.set_trip(None)
+
+            # 3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)
+            hangar_destin = cfg.get_hangar_jid(destination)
+            ct_destin = cfg.get_ct_jid(destination)
+            plane_jid = str(self.agent.jid)
+            msg = Message(to=ct_destin, metadata={"performative": "inform"}, body=jsonpickle.encode(self.agent.jid))
+            await self.send(msg)
+            msg = Message(to=hangar_destin, metadata={"performative": "inform"}, body=jsonpickle.encode(self.agent.jid))
+            await self.send(msg)
+            
+

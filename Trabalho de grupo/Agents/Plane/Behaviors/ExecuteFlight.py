@@ -7,11 +7,11 @@ import asyncio
 
 # from Agents.Plane.Behaviors.PlaneRequest import PlaneRequest
 
-class StartFlight(OneShotBehaviour):
+class ExecuteFlight(OneShotBehaviour):
 
     async def run(self):
         #> Descolagem do avião
-        TEMPO_DE_DESCOLAGEM = 1
+        TEMPO_DE_DESCOLAGEM = self.agent.TAKEOFF_TIME
         await asyncio.sleep(TEMPO_DE_DESCOLAGEM)
         # Mensagem de confirmação de descolagem
         destin = cfg.get_ct_jid(self.agent.get_location())
@@ -32,10 +32,10 @@ class StartFlight(OneShotBehaviour):
         destination = self.agent.get_trip().get_destination()
         ct_jid = cfg.get_ct_jid(destination)
         
-        # Mensagem de aviso de chegada ao aeroporto destino
+        # Pedido de aterragem à CT destino
         msg = Message(to=ct_jid, 
                       metadata={"performative": "request"},
-                      body=jsonpickle.encode(self.agent.jid))
+                      body=jsonpickle.encode(str(self.agent.jid)))
         await self.send(msg)
 
 

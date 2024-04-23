@@ -13,6 +13,8 @@ class Plane(Agent):
     LANDED = 0
     FLYING = 1
     CONVERSION_KM_TO_SECS = 0.01 # 1 km = 0.01 sec
+    LANDING_TIME = 1 # Tempo de aterragem
+    TAKEOFF_TIME = 1 # Tempo de descolagem
     
     async def setup(self) -> None:
         self.trip = None

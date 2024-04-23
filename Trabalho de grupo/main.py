@@ -68,10 +68,10 @@ def main():
         for _ in range(num_planes):
             plane_name = cfg.get_plane_jid(current_plane_id)
             current_plane_id += 1
-            hangar.add_plane(plane_name)
             plane = Plane(plane_name, PASSWORD)
             plane.start().result()
             agents.append(plane)
+            hangar.add_plane(plane_name)
 
     # Central
     central_jid = cfg.get_central_jid()

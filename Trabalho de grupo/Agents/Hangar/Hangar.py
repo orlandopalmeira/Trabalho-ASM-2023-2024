@@ -14,7 +14,7 @@ class Hangar(Agent):
         self.location = location
         self.planes = [] if planes is None else planes # Lista de strings que serão os jids dos avioes
         self.capacity = capacity
-        self.waiting_requests = 0
+        self.waiting_requests = [] # TODO: Implementar a lista de trips que ainda não foram atendidas (talvez implementar estratégia similar à dispatch planes)
 
     async def setup(self):
         print(f'{self.name} starting...')
@@ -22,13 +22,17 @@ class Hangar(Agent):
     
 
     def add_plane(self, plane_jid):
-        self.planes.append(plane_jid)
+        plane_jid_str = str(plane_jid)
+        self.planes.append(plane_jid_str)
 
-    def increment_waiting_requests(self):
-        self.waiting_requests += 1
+    def pop_waiting_requests(self):
+        try:
+            return self.waiting_requests.pop()
+        except IndexError:
+            return None
 
-    def decrement_waiting_requests(self):
-        self.waiting_requests -= 1
+    def add_waiting_request(self, trip):
+        self.waiting_requests.append(trip)
 
     def pop_plane(self):
         """Caso não haja aviões disponíveis, retorna None. Caso contrário, retorna o jid do avião."""
@@ -75,7 +79,7 @@ class Hangar(Agent):
 
     # Tem o texto que é para ser apresentado de forma modular
     def present_capacity(self) -> str:
-        return f"Capacity: {str(self.capacity)}"
+        return f"Capacity: {len(self.planes)}/{str(self.capacity)}"
     
     def present_waiting_requests(self) -> str:
         return f"Number of waiting requests: {str(self.waiting_requests)}"

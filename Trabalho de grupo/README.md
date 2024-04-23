@@ -36,7 +36,7 @@
 3. O **hangar** envia o jid do avião selecionado à **CT**. (performative: *inform*, body: *{plane_jid: String, trip: Trip}*)
 4. A **CT** envia mensagem para descolar ao **Plane**. (performative: *inform*, body: *Trip*)
     - A CT reserva uma runway para a descolagem e fica à espera que o avião indique que a descolagem acabou.
-5. O **Plane** envia mensagem de descolagem à **CT**. (performative: *confirm*, body: *"plane_jid"*)
+5. O **Plane** envia mensagem de confirmação de descolagem à **CT**. (performative: *confirm*, body: *"plane_jid"*)
 
 
 Notas:

@@ -8,6 +8,7 @@ class Trip:
         self.origin = origin # String
         self.destination = destination # String
         self.distance = geo.calculate_distance(origin, destination)
+        # self.distance = 500 #! TEST 
     
     def get_origin(self) -> str:
         return self.origin
