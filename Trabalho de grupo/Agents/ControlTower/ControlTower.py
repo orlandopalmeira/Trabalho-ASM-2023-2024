@@ -50,11 +50,11 @@ class ControlTower(Agent):
         else:
             return False
 
-    def add_to_takeoff_queue(self, plane_jid, trip): #! WIP
+    def add_to_takeoff_queue(self, plane_jid, trip): 
         self.queue_takeoffs.append((plane_jid, trip))
         self.add_behaviour(DispatchPlanes())
 
-    def add_to_landing_queue(self, plane_jid, trip): #! WIP
+    def add_to_landing_queue(self, plane_jid, trip): 
         self.queue_landings.append((plane_jid, trip))
         self.add_behaviour(DispatchPlanes())
 
