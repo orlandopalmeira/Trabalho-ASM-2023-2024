@@ -5,6 +5,7 @@ from Config import Config as cfg
 from Classes.Trip import Trip
 
 import tkinter as tk
+from tkinter import ttk
 
 from Agents.Plane.Behaviors.PlaneRecv import RecvRequests
 
@@ -53,7 +54,7 @@ class Plane(Agent):
     #> GUI methods
     # Abstract method implementation
     def create_display(self, element):
-        main_frame = tk.Frame(element, width=100, height=100, highlightbackground="black", highlightthickness=2)
+        main_frame = tk.Frame(element.scrollable_frame, width=100, height=100, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
         label = tk.Label(main_frame, text=f"Plane {self.name}")

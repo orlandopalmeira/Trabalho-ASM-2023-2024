@@ -3,6 +3,7 @@ import time
 import threading
 import random
 import sys
+from tkinter import ttk
 
 UPDATE_TIMER = 1
 
@@ -95,11 +96,11 @@ class GUI():
 
         self.planes = []
         self.plane_labels = []
-        self.plane_frame = tk.Frame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
+        self.plane_frame = ScrollableFrame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
         self.plane_frame.grid(column=2, row=0, padx=5, pady=5)
 
         self.root.title("Agentes")
-        self.root.geometry("800x800")
+        self.root.geometry("1500x1500")
 
 
         for agent in agents:
@@ -165,6 +166,23 @@ def changes():
         for a in list_agents:
             a.change_random()
 
+
+class ScrollableFrame(ttk.Frame):
+    def __init__(self, container, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+        canvas = tk.Canvas(self)
+        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
+        self.scrollable_frame = ttk.Frame(canvas)
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
 
 
 if __name__ == "__main__":
