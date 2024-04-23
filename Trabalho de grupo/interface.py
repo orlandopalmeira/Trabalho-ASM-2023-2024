@@ -96,7 +96,7 @@ class GUI():
 
         self.planes = []
         self.plane_labels = []
-        self.plane_frame = ScrollableFrame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
+        self.plane_frame = ScrollableFrame(self.root, width=220, height=500, relief=tk.RAISED, borderwidth=2)
         self.plane_frame.grid(column=2, row=0, padx=5, pady=5)
 
         self.root.title("Agentes")
@@ -170,7 +170,7 @@ def changes():
 class ScrollableFrame(ttk.Frame):
     def __init__(self, container, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
-        canvas = tk.Canvas(self)
+        canvas = tk.Canvas(self, **kwargs)
         scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
         self.scrollable_frame = ttk.Frame(canvas)
         self.scrollable_frame.bind(
