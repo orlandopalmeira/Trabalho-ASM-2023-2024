@@ -80,11 +80,14 @@ class ControlTower(Agent):
         
     #> GUI methods
     # Abstract method implementation
-    def create_display(self, root):
-        label = tk.Label(root, text=f"Control Tower {self.location}")
+    def create_display(self, element):
+        main_frame = tk.Frame(element, width=100, height=100, highlightbackground="black", highlightthickness=2)
+        main_frame.pack(padx=5, pady=5)
+
+        label = tk.Label(main_frame, text=f"Control Tower {self.location}")
         label.pack(padx=5, pady=5)
 
-        frame = tk.Frame(root)
+        frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
         # runways = f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"

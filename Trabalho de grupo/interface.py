@@ -85,15 +85,20 @@ class GUI():
 
         self.controltowers = []
         self.ct_labels = []
+        self.ct_frame = tk.Frame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
+        self.ct_frame.grid(column=0, row=0, padx=5, pady=5)
 
         self.hangars = []
         self.hangar_labels = []
+        self.hangar_frame = tk.Frame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
+        self.hangar_frame.grid(column=1, row=0, padx=5, pady=5)
 
         self.planes = []
         self.plane_labels = []
 
         self.root.title("Agentes")
-        self.root.geometry("500x500")
+        self.root.geometry("800x800")
+
 
         for agent in agents:
             if agent.__class__.__name__ == "Central":
@@ -116,11 +121,11 @@ class GUI():
 
         # ControlTowers
         for ct in self.controltowers:
-            labels = ct.create_display(self.root)
+            labels = ct.create_display(self.ct_frame)
             self.ct_labels.append(labels)
 
         for h in self.hangars:
-            labels = h.create_display(self.root)
+            labels = h.create_display(self.hangar_frame)
             self.hangar_labels.append(labels)
 
         #TODO - resto dos agentes
