@@ -4,6 +4,8 @@ import asyncio
 from Config import Config as cfg
 from Classes.Trip import Trip
 
+import tkinter as tk
+
 from Agents.Plane.Behaviors.PlaneRecv import RecvRequests
 
 class Plane(Agent):
@@ -46,3 +48,58 @@ class Plane(Agent):
     
     def __repr__(self) -> str:
         return f"{self.name}"
+    
+
+    #> GUI methods
+    # Abstract method implementation
+    def create_display(self, element):
+        main_frame = tk.Frame(element, width=100, height=100, highlightbackground="black", highlightthickness=2)
+        main_frame.pack(padx=5, pady=5)
+
+        label = tk.Label(main_frame, text=f"Plane {self.name}")
+        label.pack(padx=5, pady=5)
+
+        frame = tk.Frame(main_frame)
+        frame.pack(padx=10, pady=10)
+
+        trip = self.present_trip()
+        trip_label = tk.Label(frame, text=trip)
+        trip_label.grid(column=0, row=0, padx=5, pady=5)
+
+        percentage_complete = self.present_percentage_complete()
+        percentage_complete_label = tk.Label(frame, text=percentage_complete)
+        percentage_complete_label.grid(column=0, row=1, padx=5, pady=5)
+        
+        status = self.present_status()
+        status_label = tk.Label(frame, text=status)
+        status_label.grid(column=0, row=2, padx=5, pady=5)
+
+        return self.PLabels(trip_label, percentage_complete_label, status_label)
+    
+    # Abstract method implementation
+    def update_display(self, labels_obj):
+        labels_obj.trip_label.config(text=self.present_trip())
+        labels_obj.percentage_complete_label.config(text=self.present_percentage_complete())
+        labels_obj.status_label.config(text=self.present_status())
+
+    # Tem o texto que é para ser apresentado de forma modular
+    def present_trip(self) -> str:
+        return f"Trip: {str(self.trip)}"
+    
+    def present_percentage_complete(self) -> str:
+        return f"Percentage complete: {str(self.percentage_complete)}"
+    
+    def present_status(self) -> str:
+        if self.status == 0:
+            str = "Landed"
+        elif self.status == 1:
+            str = "Flying"
+        else:
+            str = "Erro"
+        return f"Status: {str}"
+    
+    class PLabels():
+        def __init__(self, trip_label, percentage_complete_label, status_label):
+            self.trip_label = trip_label
+            self.percentage_complete_label = percentage_complete_label
+            self.status_label = status_label

@@ -95,6 +95,8 @@ class GUI():
 
         self.planes = []
         self.plane_labels = []
+        self.plane_frame = tk.Frame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
+        self.plane_frame.grid(column=2, row=0, padx=5, pady=5)
 
         self.root.title("Agentes")
         self.root.geometry("800x800")
@@ -128,6 +130,10 @@ class GUI():
             labels = h.create_display(self.hangar_frame)
             self.hangar_labels.append(labels)
 
+        for p in self.planes:
+            labels = p.create_display(self.plane_frame)
+            self.plane_labels.append(labels)
+
         #TODO - resto dos agentes
 
         self.update_loop()
@@ -142,6 +148,9 @@ class GUI():
 
         for i, h in enumerate(self.hangars):
             h.update_display(self.hangar_labels[i])
+        
+        for i, p in enumerate(self.planes):
+            p.update_display(self.plane_labels[i])
 
         #TODO - resto dos agentes
         

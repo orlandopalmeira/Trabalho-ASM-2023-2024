@@ -82,7 +82,7 @@ class Hangar(Agent):
     
     def present_planes(self) -> str:
         str = "\n".join(self.planes)
-        return f"Planes:\n{str}"
+        return f"Planes:\n{cfg.get_jid_name(str)}"
     
     class HLabels():
         def __init__(self, capacity_label, waiting_request_label, planes_label):
