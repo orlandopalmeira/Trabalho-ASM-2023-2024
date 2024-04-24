@@ -1,6 +1,7 @@
 import time
 import tkinter as tk
 import threading
+import json
 
 from spade.agent import Agent
 from dotenv import load_dotenv
@@ -37,14 +38,24 @@ def gui(agents):
     gui.root.mainloop()
     stop_thread = True
 
+def remove_comments(json_str):
+    lines = json_str.split("\n")
+    lines = [line for line in lines if not line.strip().startswith("//")]
+    return "\n".join(lines)
 
 def main():
-    AIRPORT_PLANES = {"Lisboa": [3,5,4], "Porto": [3,5,3], "Faro": [3,5,2]} # {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
-    AIRPORT_LOCATIONS = list(AIRPORT_PLANES.keys())
+    #* Configuração
+    with open("inputs/input.json", "r") as json_file:
+        json_cont = json_file.read()
+        json_cont = remove_comments(json_cont)
+        config = json.loads(json_cont)
+    # AIRPORT_PLANES = {"Lisboa": [3,5,4], "Porto": [3,5,3], "Faro": [3,5,2]} # {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
+    AIRPORTS_CONFIG = config["airports"]
+    AIRPORT_LOCATIONS = list(AIRPORTS_CONFIG.keys())
     INTERVAL = 10
     NUM_OF_FLIGHTS_PER_INTERVAL = 1
 
-
+    # WEB interface
     HOSTNAME = "127.0.0.1"
     CT_PORT = 1000
     H_PORT = 2000
@@ -61,7 +72,7 @@ def main():
     current_plane_id = 1
     for location in AIRPORT_LOCATIONS:
         # Interpretação da configuração
-        num_planes, hangar_capacity, runways = AIRPORT_PLANES[location]
+        num_planes, hangar_capacity, runways = AIRPORTS_CONFIG[location]
         hangar_availability = hangar_capacity - num_planes
         # Criação do agente CT
         ct = ControlTower(cfg.get_ct_jid(location), PASSWORD, location, runways, hangar_availability)
@@ -86,12 +97,19 @@ def main():
             plane.start().result()
             agents.append(plane)
             hangar.add_plane(plane_name)
-
-    # Central
+        
+    
+    # Central - Só a inicializo aqui para dar tempo aos outros agentes de se inicializarem
     central_jid = cfg.get_central_jid()
-    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    # Flight generation config
+    # NUM_OF_FLIGHTS_PER_INTERVAL = flight_config["num_of_flights_per_interval"]
+    # INTERVAL = flight_config["interval"]
+    flight_config = config["flights"]
+    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL, flight_config)
     central.start().result()
     agents.append(central)
+
+    
 
     #* Lancamento da interface
     INTERFACE = True

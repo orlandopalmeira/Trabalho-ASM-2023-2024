@@ -1,0 +1,11 @@
+// {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
+{
+    "airports": {
+        "Lisboa": [3, 5, 4],
+        "Porto": [3, 5, 3],
+        "Faro": [3, 5, 2]
+    },
+    "flights": {
+        "random": true
+    }
+}
