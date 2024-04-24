@@ -24,6 +24,6 @@
                 "reps": 1
             }
         ],
-        "repeat": true
+        "repeat": false
     }
 }

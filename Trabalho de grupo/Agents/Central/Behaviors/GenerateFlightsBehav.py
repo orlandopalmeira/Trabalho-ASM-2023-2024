@@ -14,7 +14,7 @@ class GenerateFlightsBehav(PeriodicBehaviour):
                 idx = self.agent.flight_plan_index
                 if not self.agent.repeat_flight_plan and idx >= len(self.agent.flight_plan):
                     self.kill()
-                    #? return
+                    return
                 origin, dest = self.agent.flight_plan[idx]
                 trip = Trip(origin, dest)
                 self.agent.flight_plan_index = (idx + 1)

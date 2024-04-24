@@ -36,8 +36,6 @@ class Hangar(Agent):
         # Functionality
         self.planes.append(plane_jid_str)
         
-
-
     
     def pop_plane(self):
         """Caso não haja aviões disponíveis, retorna None. Caso contrário, retorna o jid do avião."""
