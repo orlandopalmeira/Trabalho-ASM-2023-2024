@@ -112,9 +112,9 @@ class ControlTower(Agent):
         runways_label.grid(column=0, row=1, padx=5, pady=5)
 
         tk.Label(frame, text="Hangar availability: ", font='Impact 12 bold').grid(column=0, row=2)
-        runways = self.present_hangar_availability()
-        runways_label = tk.Label(frame, text=runways)
-        runways_label.grid(column=0, row=3, padx=5, pady=5)
+        hangar_availability = self.present_hangar_availability()
+        hangar_availability_label = tk.Label(frame, text=hangar_availability)
+        hangar_availability_label.grid(column=0, row=3, padx=5, pady=5)
 
         # queue_takeoffs = f"Queue take-offs: {str(self.queue_takeoffs)}"
         tk.Label(frame, text="Queue take-offs: ", font='Impact 12 bold').grid(column=0, row=4)
@@ -128,7 +128,7 @@ class ControlTower(Agent):
         queue_landings_label = tk.Label(frame, text=queue_landings)
         queue_landings_label.grid(column=0, row=7, padx=5, pady=5)
 
-        return self.CTLabels(runways_label, queue_takeoffs_label, queue_landings_label)
+        return self.CTLabels(runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label)
     
     # Abstract method implementation
     def update_display(self, labels_obj):
@@ -136,6 +136,7 @@ class ControlTower(Agent):
         # labels_obj.queue_takeoffs_label.config(text=f"Queue take-offs: {str(self.queue_takeoffs)}")
         # labels_obj.queue_landings_label.config(text=f"Queue landings: {str(self.queue_landings)}")
         labels_obj.runways_label.config(text=self.present_runways())
+        labels_obj.hangar_availability_label.config(text=self.present_hangar_availability())
         labels_obj.queue_takeoffs_label.config(text=self.present_queue_takeoffs())
         labels_obj.queue_landings_label.config(text=self.present_queue_landings())
 
@@ -159,8 +160,9 @@ class ControlTower(Agent):
         return f"{final_str}"
     
     class CTLabels():
-        def __init__(self, runways_label, queue_takeoffs_label, queue_landings_label):
+        def __init__(self, runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label):
             self.runways_label = runways_label
+            self.hangar_availability_label = hangar_availability_label
             self.queue_takeoffs_label = queue_takeoffs_label
             self.queue_landings_label = queue_landings_label
 
