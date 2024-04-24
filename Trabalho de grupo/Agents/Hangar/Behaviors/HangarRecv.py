@@ -3,6 +3,7 @@ from spade.message import Message
 import jsonpickle
 from Classes.Trip import Trip
 from Config import Config as cfg
+from Utils.Prints import *
 import asyncio
 
 class RecvPlaneRequests(CyclicBehaviour):
@@ -37,7 +38,7 @@ class RecvPlaneRequests(CyclicBehaviour):
         plane = self.agent.pop_plane()
         while plane is None:
             #! Talvez aqui seja o lugar para enviar uma mensagem à central a indicar falta de aviões
-            print(f"{self.agent.name} has no planes available. Retrying in {INTERVAL} seconds...")
+            print_warning(f"{self.agent.name} has no planes available. Retrying in {INTERVAL} seconds...")
             await asyncio.sleep(INTERVAL)
             plane = self.agent.pop_plane()
         return plane

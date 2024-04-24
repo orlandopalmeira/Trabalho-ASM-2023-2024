@@ -1,8 +1,10 @@
 from spade.behaviour import CyclicBehaviour
 from spade.message import Message
 import jsonpickle
+
 from Classes.Trip import Trip
 from Config import Config as cfg
+from Utils.Prints import *
 
 class RecvRequests(CyclicBehaviour):
 
@@ -23,7 +25,7 @@ class RecvRequests(CyclicBehaviour):
             await self.send(msg) #> Use case 1: passo 2
 
         else:
-            print(f"{self.agent.name}: WARNING received unknown message from {msg.sender}!")
+            print_error(f"{self.agent.name}: WARNING received unknown message from {msg.sender}!")
         
 
 

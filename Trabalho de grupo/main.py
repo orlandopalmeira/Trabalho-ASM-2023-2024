@@ -21,6 +21,7 @@ from Classes.Trip import Trip
 # Utils
 from Config import Config as cfg
 import Utils.GeoDistance as geo
+from Utils.Prints import *
 from interface import GUI
 
 # DOMAIN = "laptop-140rfmpg.home"
@@ -104,7 +105,7 @@ def main():
         try:
             time.sleep(3)
         except KeyboardInterrupt:
-            print("Terminating agents...")
+            print_warning("Terminating agents...")
             for agent in agents:
                 agent.stop()
             break
@@ -112,7 +113,7 @@ def main():
     if INTERFACE == True:
         t.join()
     
-    print(f"\nAgents terminated.\n")
+    print_warning(f"\nAgents terminated.\n")
 
 
 if __name__ == "__main__":

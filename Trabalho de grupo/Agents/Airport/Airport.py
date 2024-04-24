@@ -1,7 +1,11 @@
 from random import random
 from spade.agent import Agent
-# from Agents.Airport.Behaviors.ReceiveFlightsBehav import ReceiveFlightsBehav
+
+from Utils.Prints import *
+
 from Agents.Airport.Behaviors.AirportRecv import RecvRequests
+
+
 class Airport(Agent):
 
     def __init__(self, jid, password, location):
@@ -9,7 +13,7 @@ class Airport(Agent):
         self.location = location # Localização (cidade) do aeroporto
     
     async def setup(self) -> None:
-        print(f'Airport agent {self.location} starting...')
+        print_info(f'Airport agent {self.location} starting...')
 
         # b = ReceiveFlightsBehav()
         b = RecvRequests()

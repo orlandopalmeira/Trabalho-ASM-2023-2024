@@ -1,8 +1,9 @@
-from spade.behaviour import CyclicBehaviour, PeriodicBehaviour, OneShotBehaviour
+from spade.behaviour import PeriodicBehaviour
 from spade.message import Message
 import jsonpickle
 from Classes.Trip import Trip
 from Config import Config as cfg
+from Utils.Prints import *
 
 class GenerateFlightsBehav(PeriodicBehaviour):
     async def run(self):
@@ -14,7 +15,7 @@ class GenerateFlightsBehav(PeriodicBehaviour):
         # Pretty Printing das viagens geradas
         print()
         for trip in trips:
-            print("CENTRAL: Flight generated", trip)
+            print_info(f"CENTRAL: Flight generated {trip}")
         print()
         ###
         
@@ -22,3 +23,5 @@ class GenerateFlightsBehav(PeriodicBehaviour):
             airport_name = cfg.get_airport_jid(trip.get_origin())
             msg = Message(to=airport_name, metadata={'performative':'request'}, body=jsonpickle.encode(trip))
             await self.send(msg) #> Use case 1: passo 1
+            self.agent.add_to_historic(trip)
+

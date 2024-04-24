@@ -2,6 +2,8 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from geopy.exc import GeocoderTimedOut
 
+from Utils.Prints import *
+
 #! Talvez estas funcionalidades pudessem ir para dentro da classe Trip
 
 
@@ -16,8 +18,8 @@ def geocode_city(city_name):
             return location
         except GeocoderTimedOut:
             retry_count += 1
-            print("Geocoder service timed out. Retrying...")
-    print("Unable to geocode the location after multiple attempts.")
+            print_warning("Geocoder service timed out. Retrying...")
+    print_error("Unable to geocode the location after multiple attempts.")
     return None
 
 def get_coordinates(city_name):
@@ -25,7 +27,7 @@ def get_coordinates(city_name):
     if location:
         return location.latitude, location.longitude
     else:
-        print(f"Coordinates for {city_name} not found.")
+        print_error(f"Coordinates for {city_name} not found.")
         return None
 
 def calculate_distance(city1, city2):
@@ -37,7 +39,7 @@ def calculate_distance(city1, city2):
         distance = geodesic(coords1, coords2).kilometers
         distance = round(distance, 2)
     else:
-        print(f"ERROR:({city1}-{city2}) Cannot calculate distance due to missing coordinates from one city.")
+        print_error(f"ERROR:({city1}-{city2}) Cannot calculate distance due to missing coordinates from one city.")
         distance = None
     return distance
 
@@ -48,7 +50,8 @@ def ponto_progresso_caminho(cidade_A, cidade_B, progresso: float):
 
     # Verificar se as coordenadas foram encontradas
     if coordenadas_A is None or coordenadas_B is None:
-        return "Não foi possível encontrar as coordenadas para uma ou ambas as cidades fornecidas."
+        print_error("Não foi possível encontrar as coordenadas para uma ou ambas as cidades fornecidas.")
+        return None
 
     # Extrair as coordenadas das cidades A e B
     coordenadas_A = (coordenadas_A.latitude, coordenadas_A.longitude)
@@ -81,7 +84,7 @@ def get_name_by_coords(latitude, longitude):
         else:
             return localizacao.raw['address']['town']
     except Exception as e:
-        print("Erro ao obter o nome da cidade:", e)
+        print_error("Erro ao obter o nome da cidade:", e)
         return None
 
 if __name__ == "__main__":

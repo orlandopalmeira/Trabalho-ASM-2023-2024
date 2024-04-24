@@ -1,8 +1,9 @@
 import jsonpickle
+import asyncio
 from spade.behaviour import CyclicBehaviour
 from spade.message import Message
 from Config import Config as cfg
-import asyncio
+from Utils.Prints import *
 
 # from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 
@@ -42,7 +43,7 @@ class RecvRequests(CyclicBehaviour):
             self.agent.release_runway()
 
         else:
-            print(f"{self.agent.name}: WARNING - Received unknown message from {cfg.get_jid_name(msg.sender)}")
+            print_warning(f"{self.agent.name}: WARNING - Received unknown message from {cfg.get_jid_name(msg.sender)}")
 
 
     # OLD VERSION: with constant checking of the runway availability
