@@ -65,20 +65,24 @@ class Plane(Agent):
         frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
-        tk.Label(frame, text="Trip: ", font='Arial 8 bold').grid(column=0, row=0)
+        row = 0
+        tk.Label(frame, text="Trip: ", font='Arial 10 bold').grid(column=0, row=row)
         trip = self.present_trip()
         trip_label = tk.Label(frame, text=trip)
-        trip_label.grid(column=0, row=1, padx=5, pady=5)
+        trip_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
 
-        tk.Label(frame, text="Percentage complete: ", font='Arial 8 bold').grid(column=0, row=2)
+        tk.Label(frame, text="Percentage complete: ", font='Arial 10 bold').grid(column=0, row=row)
         percentage_complete = self.present_percentage_complete()
         percentage_complete_label = tk.Label(frame, text=percentage_complete)
-        percentage_complete_label.grid(column=0, row=3, padx=5, pady=5)
+        percentage_complete_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
         
-        tk.Label(frame, text="Status: ", font='Arial 8 bold').grid(column=0, row=4)
+        tk.Label(frame, text="Status: ", font='Arial 10 bold').grid(column=0, row=row)
         status = self.present_status()
         status_label = tk.Label(frame, text=status)
-        status_label.grid(column=0, row=5, padx=5, pady=5)
+        status_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
 
         return self.PLabels(trip_label, percentage_complete_label, status_label)
     

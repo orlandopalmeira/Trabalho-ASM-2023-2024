@@ -86,17 +86,17 @@ class GUI():
 
         self.controltowers = []
         self.ct_labels = []
-        self.ct_frame = tk.Frame(self.root, width=250, height=800, relief=tk.RAISED, borderwidth=2)
+        self.ct_frame = ScrollableFrame(self.root, width=280, height=800, relief=tk.RAISED, borderwidth=2)
         self.ct_frame.grid(column=0, row=0, padx=5, pady=5)
 
         self.hangars = []
         self.hangar_labels = []
-        self.hangar_frame = tk.Frame(self.root, width=250, height=800, relief=tk.RAISED, borderwidth=2)
+        self.hangar_frame = ScrollableFrame(self.root, width=170, height=800, relief=tk.RAISED, borderwidth=2)
         self.hangar_frame.grid(column=1, row=0, padx=5, pady=5)
 
         self.planes = []
         self.plane_labels = []
-        self.plane_frame = ScrollableFrame(self.root, width=250, height=800, relief=tk.RAISED, borderwidth=2)
+        self.plane_frame = ScrollableFrame(self.root, width=200, height=800, relief=tk.RAISED, borderwidth=2)
         self.plane_frame.grid(column=2, row=0, padx=5, pady=5)
 
         self.root.title("Agentes")
@@ -180,7 +180,7 @@ class ScrollableFrame(ttk.Frame):
         )
         canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.pack(side="left", fill="both", expand=True)
+        canvas.pack(side="left", fill=tk.BOTH, expand=True)
         scrollbar.pack(side="right", fill="y")
 
 

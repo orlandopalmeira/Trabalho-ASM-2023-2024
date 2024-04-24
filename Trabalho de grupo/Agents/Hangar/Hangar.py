@@ -62,7 +62,7 @@ class Hangar(Agent):
     #> GUI methods
     # Abstract method implementation
     def create_display(self, element):
-        main_frame = tk.Frame(element, highlightbackground="black", highlightthickness=2)
+        main_frame = tk.Frame(element.scrollable_frame, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
         label = tk.Label(main_frame, text=f"Hangar {self.location}", font='Arial 12 bold', fg="black")
@@ -71,20 +71,24 @@ class Hangar(Agent):
         frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
-        tk.Label(frame, text="Capacity: ", font='Arial 8 bold').grid(column=0, row=0)
+        row = 0
+        tk.Label(frame, text="Capacity: ", font='Arial 10 bold').grid(column=0, row=row)
         capacity = self.present_capacity()
         capacity_label = tk.Label(frame, text=capacity)
-        capacity_label.grid(column=0, row=1, padx=5, pady=5)
+        capacity_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
 
-        # tk.Label(frame, text="Waiting requests: ", font='Arial 8 bold').grid(column=0, row=2)
+        # tk.Label(frame, text="Waiting requests: ", font='Arial 10 bold').grid(column=0, row=row)
         # waiting_request = self.present_waiting_requests()
         # waiting_request_label = tk.Label(frame, text=waiting_request)
-        # waiting_request_label.grid(column=0, row=3, padx=5, pady=5)
+        # waiting_request_label.grid(column=0, row=row+1, padx=5, pady=5)
+        # row+=2
         
-        tk.Label(frame, text="Planes: ", font='Arial 8 bold').grid(column=0, row=4)
+        tk.Label(frame, text="Planes: ", font='Arial 10 bold').grid(column=0, row=row)
         planes = self.present_planes()
         planes_label = tk.Label(frame, text=planes)
-        planes_label.grid(column=0, row=3, padx=5, pady=5)
+        planes_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
 
         return self.HLabels(capacity_label, 
                             # waiting_request_label, 

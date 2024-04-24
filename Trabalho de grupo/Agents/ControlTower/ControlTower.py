@@ -96,7 +96,7 @@ class ControlTower(Agent):
     #> GUI methods
     # Abstract method implementation
     def create_display(self, element):
-        main_frame = tk.Frame(element, highlightbackground="black", highlightthickness=2)
+        main_frame = tk.Frame(element.scrollable_frame, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
         label = tk.Label(main_frame, text=f"Control Tower {self.location}", font='Arial 12 bold', fg="black")
@@ -106,25 +106,30 @@ class ControlTower(Agent):
         frame.pack(padx=10, pady=10)
 
         #> Nota: As rows vão em numeros impares 
-        tk.Label(frame, text="Runways: ", font='Arial 8 bold').grid(column=0, row=0)
+        row = 0
+        tk.Label(frame, text="Runways: ", font='Arial 10 bold').grid(column=0, row=row)
         runways = self.present_runways()
         runways_label = tk.Label(frame, text=runways)
-        runways_label.grid(column=0, row=1, padx=5, pady=5)
+        runways_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
 
-        tk.Label(frame, text="Hangar availability: ", font='Arial 8 bold').grid(column=0, row=2)
+        tk.Label(frame, text="Hangar availability: ", font='Arial 10 bold').grid(column=0, row=row)
         hangar_availability = self.present_hangar_availability()
         hangar_availability_label = tk.Label(frame, text=hangar_availability)
-        hangar_availability_label.grid(column=0, row=3, padx=5, pady=5)
+        hangar_availability_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
 
-        tk.Label(frame, text="Queue take-offs: ", font='Arial 8 bold').grid(column=0, row=4)
+        tk.Label(frame, text="Queue take-offs: ", font='Arial 10 bold').grid(column=0, row=row)
         queue_takeoffs = self.present_queue_takeoffs()
         queue_takeoffs_label = tk.Label(frame, text=queue_takeoffs)
-        queue_takeoffs_label.grid(column=0, row=5, padx=5, pady=5)
+        queue_takeoffs_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
         
-        tk.Label(frame, text="Queue landings: ", font='Arial 8 bold').grid(column=0, row=6)
+        tk.Label(frame, text="Queue landings: ", font='Arial 10 bold').grid(column=0, row=row)
         queue_landings = self.present_queue_landings()
         queue_landings_label = tk.Label(frame, text=queue_landings)
-        queue_landings_label.grid(column=0, row=7, padx=5, pady=5)
+        queue_landings_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
 
         return self.CTLabels(runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label)
     
