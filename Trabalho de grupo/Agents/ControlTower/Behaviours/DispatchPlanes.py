@@ -43,3 +43,7 @@ class DispatchPlanes(OneShotBehaviour):
             msg = Message(to=plane_jid, metadata={"performative": "confirm"}, body=jsonpickle.encode(None))
             await self.send(msg)
             # Não é preciso release_runway pq o avião é que indica quando acaba de aterrar e liberta a runway
+
+#! Tecnicamente pode haver uma incongruência se houver dois aviões para aterrar e houver runways disponiveis para ambos, mas apenas um hangar disponivel, é possivel que duas threads verifiquem na reserve_runway que é possivel aterrarem ambos, no entanto não haver espaço.
+#! A solução passaria por ter um lock na função reserve_runway, mais concretamente um lock a englobar a verificação da possibilidade de reserva e a alteração no valor da hangar_availability. Isto irá fazer com que a reserve_runway tenha de passar a receber algum argumento que indique se deva aumentar ou reduzir a hangar_availability
+#! Outra solução mais fácil, seria meter um lock como variavel de classe da DispatchPlanes, fazendo com que cada vez que o run era chamado, era garantido que apenas uma thread correria. Isto simplificaria a estrutura do código da DispatchPlanes também.
