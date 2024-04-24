@@ -55,4 +55,3 @@ class RecvRequests(CyclicBehaviour):
     #     msg = Message(to=plane_jid, metadata={"performative": "inform"}, body=jsonpickle.encode(trip))
     #     await self.send(msg)
 
-

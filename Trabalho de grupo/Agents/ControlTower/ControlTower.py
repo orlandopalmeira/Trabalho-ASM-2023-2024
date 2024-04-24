@@ -45,9 +45,17 @@ class ControlTower(Agent):
         if self.runways_available == 1:
             self.add_behaviour(DispatchPlanes()) 
 
-    def reserve_runway(self):
+    def reserve_runway_for_landing(self):
         """Reserve a runway for a plane to take off. Returns False if no hangars or runways are available, and if meteo conditions are bad."""
         if self.runways_available > 0 and self.hangar_availability > 0: #! e mais (trazer info de meteorologia)
+            self.runways_available -= 1
+            return True
+        else:
+            return False
+        
+    def reserve_runway_for_takeoff(self):
+        """Reserve a runway for a plane to take off. Returns False if no hangars or runways are available, and if meteo conditions are bad."""
+        if self.runways_available > 0: #! e mais (trazer info de meteorologia)
             self.runways_available -= 1
             return True
         else:

@@ -110,8 +110,11 @@ class Hangar(Agent):
         return f"{str_final}"
 
     def present_planes(self) -> str:
-        str_final = "\n".join(self.planes)
-        return f"{cfg.get_jid_name(str_final)}"
+        res = []
+        for plane_jid in self.planes:
+            res.append(f"- {cfg.get_jid_name(plane_jid)}")
+        str_final = "\n".join(res)
+        return f"{str_final}"
     
     class HLabels():
         def __init__(self, 
