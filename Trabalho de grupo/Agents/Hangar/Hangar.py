@@ -1,20 +1,24 @@
 from random import random
 from spade.agent import Agent
-# from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
+
 from Agents.Hangar.Behaviors.HangarRecv import RecvPlaneRequests
 
 from Config import Config as cfg
+from Utils.Prints import *
 
 import tkinter as tk
 
 class Hangar(Agent):
     
-    def __init__(self, jid, password, location, capacity=5, planes=None):
+    def __init__(self, jid, password, location, capacity, planes=None):
         super().__init__(jid, password)
         self.location = location
         self.planes = [] if planes is None else planes # Lista de strings que serão os jids dos avioes
         self.capacity = capacity
         self.waiting_requests = [] # TODO: Implementar a lista de trips que ainda não foram atendidas (talvez implementar estratégia similar à dispatch planes)
+
+    def print(self, msg):
+        print(f"{self.name}: {msg}")
 
     async def setup(self):
         print(f'{self.name} starting...')
@@ -23,7 +27,24 @@ class Hangar(Agent):
 
     def add_plane(self, plane_jid):
         plane_jid_str = str(plane_jid)
+        # Error detection
+        if plane_jid_str in self.planes:
+            self.print(red_text(f"Plane {plane_jid_str} already in hangar {self.location}"))
+        if len(self.planes) == self.capacity:
+            self.print(red_text(f"Plane {plane_jid_str} could not be added to hangar {self.location} due to lack of space"))
+            # return
+        # Functionality
         self.planes.append(plane_jid_str)
+        
+
+
+    
+    def pop_plane(self):
+        """Caso não haja aviões disponíveis, retorna None. Caso contrário, retorna o jid do avião."""
+        try:
+            return self.planes.pop(0)
+        except IndexError:
+            return None
 
     def pop_waiting_requests(self):
         try:
@@ -33,13 +54,6 @@ class Hangar(Agent):
 
     def add_waiting_request(self, trip):
         self.waiting_requests.append(trip)
-
-    def pop_plane(self):
-        """Caso não haja aviões disponíveis, retorna None. Caso contrário, retorna o jid do avião."""
-        try:
-            return self.planes.pop(0)
-        except IndexError:
-            return None
 
     def set_capacity(self, capacity):
         self.capacity = capacity
@@ -82,11 +96,12 @@ class Hangar(Agent):
         return f"Capacity: {len(self.planes)}/{str(self.capacity)}"
     
     def present_waiting_requests(self) -> str:
-        return f"Number of waiting requests: {str(self.waiting_requests)}"
-    
+        str_final = "\n".join(self.waiting_requests)
+        return f"Waiting requests:\n{str_final}"
+
     def present_planes(self) -> str:
-        str = "\n".join(self.planes)
-        return f"Planes:\n{cfg.get_jid_name(str)}"
+        str_final = "\n".join(self.planes)
+        return f"Planes:\n{cfg.get_jid_name(str_final)}"
     
     class HLabels():
         def __init__(self, capacity_label, waiting_request_label, planes_label):
