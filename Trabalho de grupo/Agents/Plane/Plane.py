@@ -56,26 +56,29 @@ class Plane(Agent):
     #> GUI methods
     # Abstract method implementation
     def create_display(self, element):
-        main_frame = tk.Frame(element.scrollable_frame, width=100, height=100, highlightbackground="black", highlightthickness=2)
+        main_frame = tk.Frame(element.scrollable_frame, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
-        label = tk.Label(main_frame, text=f"Plane {self.name}")
+        label = tk.Label(main_frame, text=f"Plane {self.name}", font='Impact 18 bold', fg="black")
         label.pack(padx=5, pady=5)
 
         frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
+        tk.Label(frame, text="Trip: ", font='Impact 12 bold').grid(column=0, row=0)
         trip = self.present_trip()
         trip_label = tk.Label(frame, text=trip)
-        trip_label.grid(column=0, row=0, padx=5, pady=5)
+        trip_label.grid(column=0, row=1, padx=5, pady=5)
 
+        tk.Label(frame, text="Percentage complete: ", font='Impact 12 bold').grid(column=0, row=2)
         percentage_complete = self.present_percentage_complete()
         percentage_complete_label = tk.Label(frame, text=percentage_complete)
-        percentage_complete_label.grid(column=0, row=1, padx=5, pady=5)
+        percentage_complete_label.grid(column=0, row=3, padx=5, pady=5)
         
+        tk.Label(frame, text="Status: ", font='Impact 12 bold').grid(column=0, row=4)
         status = self.present_status()
         status_label = tk.Label(frame, text=status)
-        status_label.grid(column=0, row=2, padx=5, pady=5)
+        status_label.grid(column=0, row=5, padx=5, pady=5)
 
         return self.PLabels(trip_label, percentage_complete_label, status_label)
     
@@ -87,10 +90,10 @@ class Plane(Agent):
 
     # Tem o texto que é para ser apresentado de forma modular
     def present_trip(self) -> str:
-        return f"Trip: {str(self.trip)}"
+        return f"{str(self.trip)}"
     
     def present_percentage_complete(self) -> str:
-        return f"Percentage complete: {str(self.percentage_complete)}"
+        return f"{str(self.percentage_complete)}"
     
     def present_status(self) -> str:
         if self.status == 0:
@@ -99,7 +102,7 @@ class Plane(Agent):
             str = "Flying"
         else:
             str = "Erro"
-        return f"Status: {str}"
+        return f"{str}"
     
     class PLabels():
         def __init__(self, trip_label, percentage_complete_label, status_label):

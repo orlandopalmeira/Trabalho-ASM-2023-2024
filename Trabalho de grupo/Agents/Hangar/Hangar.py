@@ -62,26 +62,29 @@ class Hangar(Agent):
     #> GUI methods
     # Abstract method implementation
     def create_display(self, element):
-        main_frame = tk.Frame(element, width=100, height=100, highlightbackground="black", highlightthickness=2)
+        main_frame = tk.Frame(element, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
-        label = tk.Label(main_frame, text=f"Hangar {self.location}")
+        label = tk.Label(main_frame, text=f"Hangar {self.location}", font='Impact 18 bold', fg="black")
         label.pack(padx=5, pady=5)
 
         frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
+        tk.Label(frame, text="Capacity: ", font='Impact 12 bold').grid(column=0, row=0)
         capacity = self.present_capacity()
         capacity_label = tk.Label(frame, text=capacity)
-        capacity_label.grid(column=0, row=0, padx=5, pady=5)
+        capacity_label.grid(column=0, row=1, padx=5, pady=5)
 
+        tk.Label(frame, text="Waiting requests: ", font='Impact 12 bold').grid(column=0, row=2)
         waiting_request = self.present_waiting_requests()
         waiting_request_label = tk.Label(frame, text=waiting_request)
-        waiting_request_label.grid(column=0, row=1, padx=5, pady=5)
+        waiting_request_label.grid(column=0, row=3, padx=5, pady=5)
         
+        tk.Label(frame, text="Planes: ", font='Impact 12 bold').grid(column=0, row=4)
         planes = self.present_planes()
         planes_label = tk.Label(frame, text=planes)
-        planes_label.grid(column=0, row=2, padx=5, pady=5)
+        planes_label.grid(column=0, row=5, padx=5, pady=5)
 
         return self.HLabels(capacity_label, waiting_request_label, planes_label)
     
@@ -93,15 +96,15 @@ class Hangar(Agent):
 
     # Tem o texto que é para ser apresentado de forma modular
     def present_capacity(self) -> str:
-        return f"Capacity: {len(self.planes)}/{str(self.capacity)}"
+        return f"{len(self.planes)}/{str(self.capacity)}"
     
     def present_waiting_requests(self) -> str:
         str_final = "\n".join(self.waiting_requests)
-        return f"Waiting requests:\n{str_final}"
+        return f"{str_final}"
 
     def present_planes(self) -> str:
         str_final = "\n".join(self.planes)
-        return f"Planes:\n{cfg.get_jid_name(str_final)}"
+        return f"{cfg.get_jid_name(str_final)}"
     
     class HLabels():
         def __init__(self, capacity_label, waiting_request_label, planes_label):

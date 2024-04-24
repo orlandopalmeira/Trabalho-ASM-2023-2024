@@ -96,29 +96,37 @@ class ControlTower(Agent):
     #> GUI methods
     # Abstract method implementation
     def create_display(self, element):
-        main_frame = tk.Frame(element, width=100, height=100, highlightbackground="black", highlightthickness=2)
+        main_frame = tk.Frame(element, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
-        label = tk.Label(main_frame, text=f"Control Tower {self.location}")
+        label = tk.Label(main_frame, text=f"Control Tower {self.location}", font='Impact 18 bold', fg="black")
         label.pack(padx=5, pady=5)
 
         frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
         # runways = f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
+        tk.Label(frame, text="Runways: ", font='Impact 12 bold').grid(column=0, row=0)
         runways = self.present_runways()
         runways_label = tk.Label(frame, text=runways)
-        runways_label.grid(column=0, row=0, padx=5, pady=5)
+        runways_label.grid(column=0, row=1, padx=5, pady=5)
+
+        tk.Label(frame, text="Hangar availability: ", font='Impact 12 bold').grid(column=0, row=2)
+        runways = self.present_hangar_availability()
+        runways_label = tk.Label(frame, text=runways)
+        runways_label.grid(column=0, row=3, padx=5, pady=5)
 
         # queue_takeoffs = f"Queue take-offs: {str(self.queue_takeoffs)}"
+        tk.Label(frame, text="Queue take-offs: ", font='Impact 12 bold').grid(column=0, row=4)
         queue_takeoffs = self.present_queue_takeoffs()
         queue_takeoffs_label = tk.Label(frame, text=queue_takeoffs)
-        queue_takeoffs_label.grid(column=0, row=1, padx=5, pady=5)
+        queue_takeoffs_label.grid(column=0, row=5, padx=5, pady=5)
         
         # queue_landings = f"Queue landings: {str(self.queue_landings)}"
+        tk.Label(frame, text="Queue landings: ", font='Impact 12 bold').grid(column=0, row=6)
         queue_landings = self.present_queue_landings()
         queue_landings_label = tk.Label(frame, text=queue_landings)
-        queue_landings_label.grid(column=0, row=2, padx=5, pady=5)
+        queue_landings_label.grid(column=0, row=7, padx=5, pady=5)
 
         return self.CTLabels(runways_label, queue_takeoffs_label, queue_landings_label)
     
@@ -133,19 +141,22 @@ class ControlTower(Agent):
 
     # Tem o texto que é para ser apresentado de forma modular
     def present_runways(self) -> str:
-        return f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
+        return f"{str(self.runways_available)}/{str(self.runways_capacity)}"
+    
+    def present_hangar_availability(self) -> str:
+        return f"{str(self.hangar_availability)}"
     
     def present_queue_takeoffs(self) -> str:
         final_str = ""
         for plane_jid, trip in self.queue_takeoffs:
             final_str += f"{cfg.get_jid_name(plane_jid)} -> {trip}\n"
-        return f"Queue take-offs: {final_str}"
+        return f"{final_str}"
     
     def present_queue_landings(self) -> str:
         final_str = ""
         for plane_jid in self.queue_landings:
             final_str += f"{cfg.get_jid_name(plane_jid)}\n"
-        return f"Queue landings: {final_str}"
+        return f"{final_str}"
     
     class CTLabels():
         def __init__(self, runways_label, queue_takeoffs_label, queue_landings_label):

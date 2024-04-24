@@ -86,21 +86,21 @@ class GUI():
 
         self.controltowers = []
         self.ct_labels = []
-        self.ct_frame = tk.Frame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
+        self.ct_frame = tk.Frame(self.root, width=250, height=800, relief=tk.RAISED, borderwidth=2)
         self.ct_frame.grid(column=0, row=0, padx=5, pady=5)
 
         self.hangars = []
         self.hangar_labels = []
-        self.hangar_frame = tk.Frame(self.root, width=100, height=100, relief=tk.RAISED, borderwidth=2)
+        self.hangar_frame = tk.Frame(self.root, width=250, height=800, relief=tk.RAISED, borderwidth=2)
         self.hangar_frame.grid(column=1, row=0, padx=5, pady=5)
 
         self.planes = []
         self.plane_labels = []
-        self.plane_frame = ScrollableFrame(self.root, width=220, height=500, relief=tk.RAISED, borderwidth=2)
+        self.plane_frame = ScrollableFrame(self.root, width=250, height=800, relief=tk.RAISED, borderwidth=2)
         self.plane_frame.grid(column=2, row=0, padx=5, pady=5)
 
         self.root.title("Agentes")
-        self.root.geometry("1500x1500")
+        self.root.geometry("1000x1000")
 
 
         for agent in agents:
