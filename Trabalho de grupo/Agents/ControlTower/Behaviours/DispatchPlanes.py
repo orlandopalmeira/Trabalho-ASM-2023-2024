@@ -46,7 +46,7 @@ class DispatchPlanes(OneShotBehaviour):
                 #* Enviar mensagem de confirmação de aterragem ao avião
                 msg = Message(to=plane_jid, metadata={"performative": "confirm"}, body=jsonpickle.encode(None))
                 await self.send(msg)
-                # Não é preciso release_runway pq o avião é que indica quando acaba de aterrar e liberta a runway
+                # Não é preciso release_runway pq o avião é que indica quando é que liberta a runway ao acabar de aterrar
         finally:
             DispatchPlanes.atom_lock.release()
 
