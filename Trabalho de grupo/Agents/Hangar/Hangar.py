@@ -65,33 +65,36 @@ class Hangar(Agent):
         main_frame = tk.Frame(element, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
-        label = tk.Label(main_frame, text=f"Hangar {self.location}", font='Impact 18 bold', fg="black")
+        label = tk.Label(main_frame, text=f"Hangar {self.location}", font='Arial 12 bold', fg="black")
         label.pack(padx=5, pady=5)
 
         frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
-        tk.Label(frame, text="Capacity: ", font='Impact 12 bold').grid(column=0, row=0)
+        tk.Label(frame, text="Capacity: ", font='Arial 8 bold').grid(column=0, row=0)
         capacity = self.present_capacity()
         capacity_label = tk.Label(frame, text=capacity)
         capacity_label.grid(column=0, row=1, padx=5, pady=5)
 
-        tk.Label(frame, text="Waiting requests: ", font='Impact 12 bold').grid(column=0, row=2)
-        waiting_request = self.present_waiting_requests()
-        waiting_request_label = tk.Label(frame, text=waiting_request)
-        waiting_request_label.grid(column=0, row=3, padx=5, pady=5)
+        # tk.Label(frame, text="Waiting requests: ", font='Arial 8 bold').grid(column=0, row=2)
+        # waiting_request = self.present_waiting_requests()
+        # waiting_request_label = tk.Label(frame, text=waiting_request)
+        # waiting_request_label.grid(column=0, row=3, padx=5, pady=5)
         
-        tk.Label(frame, text="Planes: ", font='Impact 12 bold').grid(column=0, row=4)
+        tk.Label(frame, text="Planes: ", font='Arial 8 bold').grid(column=0, row=4)
         planes = self.present_planes()
         planes_label = tk.Label(frame, text=planes)
-        planes_label.grid(column=0, row=5, padx=5, pady=5)
+        planes_label.grid(column=0, row=3, padx=5, pady=5)
 
-        return self.HLabels(capacity_label, waiting_request_label, planes_label)
+        return self.HLabels(capacity_label, 
+                            # waiting_request_label, 
+                            planes_label
+                            )
     
     # Abstract method implementation
     def update_display(self, labels_obj):
         labels_obj.capacity_label.config(text=self.present_capacity())
-        labels_obj.waiting_request_label.config(text=self.present_waiting_requests())
+        # labels_obj.waiting_request_label.config(text=self.present_waiting_requests())
         labels_obj.planes_label.config(text=self.present_planes())
 
     # Tem o texto que é para ser apresentado de forma modular
@@ -107,9 +110,13 @@ class Hangar(Agent):
         return f"{cfg.get_jid_name(str_final)}"
     
     class HLabels():
-        def __init__(self, capacity_label, waiting_request_label, planes_label):
+        def __init__(self, 
+                     capacity_label,
+                    #  waiting_request_label,
+                     planes_label
+                     ):
             self.capacity_label = capacity_label
-            self.waiting_request_label = waiting_request_label
+            # self.waiting_request_label = waiting_request_label
             self.planes_label = planes_label
 
         

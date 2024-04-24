@@ -43,6 +43,11 @@ def main():
     INTERVAL = 10
     NUM_OF_FLIGHTS_PER_INTERVAL = 1
 
+
+    HOSTNAME = "127.0.0.1"
+    CT_PORT = 1000
+    H_PORT = 2000
+
     agents = []
 
     # Airports
@@ -61,10 +66,18 @@ def main():
         ct = ControlTower(cfg.get_ct_jid(location), PASSWORD, location, runways, hangar_availability)
         ct.start().result()
         agents.append(ct)
+        # WEB interface CT
+        # ct.web.start(hostname=HOSTNAME, port=CT_PORT)
+        # CT_PORT += 1
+        
         # Criação do agente Hangar
         hangar = Hangar(cfg.get_hangar_jid(location), PASSWORD, location, hangar_capacity)
         hangar.start().result()
         agents.append(hangar)
+        # WEB interface CT
+        # hangar.web.start(hostname=HOSTNAME, port=H_PORT)
+        # H_PORT += 1
+
         for _ in range(num_planes):
             plane_name = cfg.get_plane_jid(current_plane_id)
             current_plane_id += 1

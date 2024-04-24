@@ -99,31 +99,29 @@ class ControlTower(Agent):
         main_frame = tk.Frame(element, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
-        label = tk.Label(main_frame, text=f"Control Tower {self.location}", font='Impact 18 bold', fg="black")
+        label = tk.Label(main_frame, text=f"Control Tower {self.location}", font='Arial 12 bold', fg="black")
         label.pack(padx=5, pady=5)
 
         frame = tk.Frame(main_frame)
         frame.pack(padx=10, pady=10)
 
-        # runways = f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}"
-        tk.Label(frame, text="Runways: ", font='Impact 12 bold').grid(column=0, row=0)
+        #> Nota: As rows vão em numeros impares 
+        tk.Label(frame, text="Runways: ", font='Arial 8 bold').grid(column=0, row=0)
         runways = self.present_runways()
         runways_label = tk.Label(frame, text=runways)
         runways_label.grid(column=0, row=1, padx=5, pady=5)
 
-        tk.Label(frame, text="Hangar availability: ", font='Impact 12 bold').grid(column=0, row=2)
+        tk.Label(frame, text="Hangar availability: ", font='Arial 8 bold').grid(column=0, row=2)
         hangar_availability = self.present_hangar_availability()
         hangar_availability_label = tk.Label(frame, text=hangar_availability)
         hangar_availability_label.grid(column=0, row=3, padx=5, pady=5)
 
-        # queue_takeoffs = f"Queue take-offs: {str(self.queue_takeoffs)}"
-        tk.Label(frame, text="Queue take-offs: ", font='Impact 12 bold').grid(column=0, row=4)
+        tk.Label(frame, text="Queue take-offs: ", font='Arial 8 bold').grid(column=0, row=4)
         queue_takeoffs = self.present_queue_takeoffs()
         queue_takeoffs_label = tk.Label(frame, text=queue_takeoffs)
         queue_takeoffs_label.grid(column=0, row=5, padx=5, pady=5)
         
-        # queue_landings = f"Queue landings: {str(self.queue_landings)}"
-        tk.Label(frame, text="Queue landings: ", font='Impact 12 bold').grid(column=0, row=6)
+        tk.Label(frame, text="Queue landings: ", font='Arial 8 bold').grid(column=0, row=6)
         queue_landings = self.present_queue_landings()
         queue_landings_label = tk.Label(frame, text=queue_landings)
         queue_landings_label.grid(column=0, row=7, padx=5, pady=5)
@@ -148,12 +146,16 @@ class ControlTower(Agent):
         return f"{str(self.hangar_availability)}"
     
     def present_queue_takeoffs(self) -> str:
+        if len(self.queue_landings) == 0:
+            return "No planes waiting to take off"
         final_str = ""
         for plane_jid, trip in self.queue_takeoffs:
             final_str += f"{cfg.get_jid_name(plane_jid)} -> {trip}\n"
         return f"{final_str}"
     
     def present_queue_landings(self) -> str:
+        if len(self.queue_landings) == 0:
+            return "No planes waiting to land"
         final_str = ""
         for plane_jid in self.queue_landings:
             final_str += f"{cfg.get_jid_name(plane_jid)}\n"
