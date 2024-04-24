@@ -38,7 +38,7 @@ def gui(agents):
 
 
 def main():
-    AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
+    AIRPORT_PLANES = {"Lisboa": [3,5,4], "Porto": [3,5,3], "Faro": [3,5,2]} # {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
     AIRPORT_LOCATIONS = list(AIRPORT_PLANES.keys())
     INTERVAL = 10
     NUM_OF_FLIGHTS_PER_INTERVAL = 1
@@ -51,20 +51,20 @@ def main():
         airport.start().result()
         agents.append(airport)
 
-    # Control Towers
-    for location in AIRPORT_LOCATIONS:
-        ct = ControlTower(cfg.get_ct_jid(location), PASSWORD, location)
-        ct.start().result()
-        agents.append(ct)
-
-    # Hangars and Planes
+    # CTs, Hangars and Planes
     current_plane_id = 1
     for location in AIRPORT_LOCATIONS:
-        hangar = Hangar(cfg.get_hangar_jid(location), PASSWORD, location)
+        # Interpretação da configuração
+        num_planes, hangar_capacity, runways = AIRPORT_PLANES[location]
+        hangar_availability = hangar_capacity - num_planes
+        # Criação do agente CT
+        ct = ControlTower(cfg.get_ct_jid(location), PASSWORD, location, runways, hangar_availability)
+        ct.start().result()
+        agents.append(ct)
+        # Criação do agente Hangar
+        hangar = Hangar(cfg.get_hangar_jid(location), PASSWORD, location, hangar_capacity)
         hangar.start().result()
         agents.append(hangar)
-        num_planes, hangar_capacity = AIRPORT_PLANES[location]
-        hangar.set_capacity(hangar_capacity)
         for _ in range(num_planes):
             plane_name = cfg.get_plane_jid(current_plane_id)
             current_plane_id += 1

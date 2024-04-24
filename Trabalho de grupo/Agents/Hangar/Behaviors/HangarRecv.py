@@ -32,7 +32,7 @@ class RecvPlaneRequests(CyclicBehaviour):
             self.agent.add_plane(plane_jid)
 
 
-    async def get_plane(self):
+    async def get_plane(self): #! Isto talvez fosse melhor se um periodic behaviour
         INTERVAL = 5
         plane = self.agent.pop_plane()
         while plane is None:

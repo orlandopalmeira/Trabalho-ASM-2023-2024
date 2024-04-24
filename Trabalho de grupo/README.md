@@ -10,7 +10,7 @@
 - Receber confirmação de descolagem do **avião** (performative: *confirm*, body: *"plane_jid"*)
 
 - Receber pedidos de aterragem dos **aviões** perto do aeroporto destino (performative: *request*, body: *"plane_jid"*)
-- Receber confirmação de aterragem do **avião** (performative: *inform*, body: *"plane_jid"*)
+- Receber confirmação de fim de aterragem do **avião** (performative: *inform*, body: *"plane_jid"*)
 
 ## Hangar
 
@@ -27,7 +27,7 @@
 
 ## Central
 
-- (WIP) Pedidos de gestão de stock do hangar para balancear hangares WIP (performative: *???*, body: *???*)
+- (TODO) Pedidos de gestão de stock do hangar para balancear hangares (performative: *???*, body: *???*)
 
 # Use cases
 ## 1. Realizar um flight (DESCOLAGEM)

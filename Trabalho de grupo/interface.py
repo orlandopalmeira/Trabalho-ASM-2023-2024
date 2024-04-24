@@ -140,7 +140,6 @@ class GUI():
         self.update_loop()
 
     def update_loop(self):
-        #TODO
         # for i, a in enumerate(self.airports):
         #     a.update_display(self.agent_labels[i])
 

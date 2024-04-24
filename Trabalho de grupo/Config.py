@@ -23,35 +23,35 @@ class Config:
     
     @staticmethod
     def get_central_jid():
-        """Retorna o jid da central"""
+        """Retorna o jid da central."""
         return Config.central_jid
     
     @staticmethod
     def get_airport_jid(location):
-        """Dado uma localização, retorna o jid do aeroporto dessa localização"""
+        """Dado uma localização, retorna o jid do aeroporto dessa localização."""
         location = location.lower()
         return f"airport_{location}@{Config.DOMAIN}"
     
     @staticmethod
     def get_hangar_jid(location):
-        """Dado uma localização, retorna o jid do hangar dessa localização"""
+        """Dado uma localização, retorna o jid do hangar dessa localização."""
         location = location.lower()
         return f"hangar_{location}@{Config.DOMAIN}"
     
     @staticmethod
     def get_ct_jid(location):
-        """Dado uma localização, retorna o jid da control tower dessa localização"""
+        """Dado uma localização, retorna o jid da control tower dessa localização."""
         location = location.lower()
         return f"ct_{location}@{Config.DOMAIN}"
     
     @staticmethod
     def get_plane_jid(id):
-        """Dado um id, retorna o jid do avião"""
+        """Dado um id, retorna o jid do avião."""
         return f"plane_{id}@{Config.DOMAIN}"
     
     @staticmethod
     def identify(jid):
-        """Dado um jid, identifica o tipo de agente que ele é"""
+        """Dado um jid, identifica o tipo de agente que ele é."""
         str_jid = str(jid)
         if str_jid.startswith("airport"):
             return "airport"

@@ -16,9 +16,11 @@ class DispatchPlanes(OneShotBehaviour):
             #* Se não houver maneira de aterrar, não faz sentido continuar, retornando e esperando por uma nova chamada do behaviour
             if not reserved:
                 return
-            plane_req = self.agent.pop_from_takeoff_queue() 
-            if plane_req is None: # Não há aviões para descolar
-                self.agent.release_runway() # Liberta a runway para o avião que era suposto descolar, mas já foi despachado
+            self.agent.increase_hangar_availability() # O avião que vai descolar vai libertar um lugar no hangar
+            plane_req = self.agent.pop_from_takeoff_queue()
+            if plane_req is None: #* Entre o momento de verificar se a fila estava vazia e o pop, a fila pode ter sido despachada
+                self.agent.decrease_hangar_availability() # Fazer rollback da adição do hangar_availability
+                self.agent.release_runway() # Rollback da reserva da runway
                 break
             plane_jid, trip = plane_req
             #* Enviar mensagem de descolagem ao avião
@@ -31,9 +33,11 @@ class DispatchPlanes(OneShotBehaviour):
             reserved = self.agent.reserve_runway()
             if not reserved:
                 return
+            self.agent.decrease_hangar_availability() # O avião que vai aterrar vai ocupar um lugar no hangar
             plane_jid = self.agent.pop_from_landing_queue()
-            if plane_jid is None: # Não há aviões para aterrar
+            if plane_jid is None: #* Entre o momento de verificar se a fila estava vazia e o pop, a fila pode ter sido despachada
                 self.agent.release_runway() # Liberta a runway para o avião que era suposto aterrar, mas já foi despachado
+                self.agent.increase_hangar_availability() # Fazer rollback da diminuição do hangar_availability
                 break
             #* Enviar mensagem de confirmação de aterragem ao avião
             msg = Message(to=plane_jid, metadata={"performative": "confirm"}, body=jsonpickle.encode(None))
