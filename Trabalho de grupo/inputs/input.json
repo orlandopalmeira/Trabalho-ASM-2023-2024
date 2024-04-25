@@ -1,8 +1,8 @@
 // {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
 {
     "airports": {
-        "Lisboa": [3, 5, 4],
-        "Porto": [3, 5, 3],
+        "Lisboa": [2, 5, 4],
+        "Porto": [4, 5, 3],
         "Faro": [3, 5, 2]
     },
     "flights": {
@@ -15,13 +15,13 @@
             },
             {
                 "origin": "Porto",
-                "destination": "Faro",
+                "destination": "Lisboa",
                 "reps": 1
             },
             {
                 "origin": "Faro",
                 "destination": "Lisboa",
-                "reps": 1
+                "reps": 2
             }
         ],
         "repeat": false
