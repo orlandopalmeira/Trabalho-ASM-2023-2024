@@ -14,6 +14,7 @@ class GenerateFlightsBehav(PeriodicBehaviour):
                 idx = self.agent.flight_plan_index
                 if not self.agent.repeat_flight_plan and idx >= len(self.agent.flight_plan):
                     self.kill()
+                    print_warning("CENTRAL: Flight plan finished. No more flights to generate.")
                     return
                 origin, dest = self.agent.flight_plan[idx]
                 trip = Trip(origin, dest)

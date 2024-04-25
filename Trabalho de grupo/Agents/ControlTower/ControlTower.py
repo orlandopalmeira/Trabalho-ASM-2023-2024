@@ -159,7 +159,7 @@ class ControlTower(Agent):
         return f"{str(self.hangar_availability)}"
     
     def present_queue_takeoffs(self) -> str:
-        if len(self.queue_landings) == 0:
+        if len(self.queue_takeoffs) == 0:
             return "No planes waiting to take off"
         final_str = ""
         for plane_jid, trip in self.queue_takeoffs:
