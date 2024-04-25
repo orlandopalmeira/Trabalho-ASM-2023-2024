@@ -84,20 +84,25 @@ class GUI():
         self.airports = []
         self.airport_labels = []
 
-        self.controltowers = []
-        self.ct_labels = []
-        self.ct_frame = ScrollableFrame(self.root, width=280, height=800, relief=tk.RAISED, borderwidth=2)
-        self.ct_frame.grid(column=0, row=0, padx=5, pady=5)
+        col_pointer = 0
 
         self.hangars = []
         self.hangar_labels = []
         self.hangar_frame = ScrollableFrame(self.root, width=170, height=800, relief=tk.RAISED, borderwidth=2)
-        self.hangar_frame.grid(column=1, row=0, padx=5, pady=5)
+        self.hangar_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
+
+        self.controltowers = []
+        self.ct_labels = []
+        self.ct_frame = ScrollableFrame(self.root, width=260, height=800, relief=tk.RAISED, borderwidth=2)
+        self.ct_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
 
         self.planes = []
         self.plane_labels = []
         self.plane_frame = ScrollableFrame(self.root, width=200, height=800, relief=tk.RAISED, borderwidth=2)
-        self.plane_frame.grid(column=2, row=0, padx=5, pady=5)
+        self.plane_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
 
         self.root.title("Agentes")
         self.root.geometry("1000x1000")
@@ -117,19 +122,17 @@ class GUI():
 
         #* Creating displays for all the agents
         #TODO - terminar de implementar os métodos create_display e update_display nos restantes agentes
-        # Airports
         # for a in self.airports:
         #     labels = a.create_display(self.root)
         #     self.agent_labels.append(labels)
 
-        # ControlTowers
-        for ct in self.controltowers:
-            labels = ct.create_display(self.ct_frame)
-            self.ct_labels.append(labels)
-
         for h in self.hangars:
             labels = h.create_display(self.hangar_frame)
             self.hangar_labels.append(labels)
+
+        for ct in self.controltowers:
+            labels = ct.create_display(self.ct_frame)
+            self.ct_labels.append(labels)
 
         for p in self.planes:
             labels = p.create_display(self.plane_frame)
@@ -143,11 +146,11 @@ class GUI():
         # for i, a in enumerate(self.airports):
         #     a.update_display(self.agent_labels[i])
 
-        for i, ct in enumerate(self.controltowers):
-            ct.update_display(self.ct_labels[i])
-
         for i, h in enumerate(self.hangars):
             h.update_display(self.hangar_labels[i])
+
+        for i, ct in enumerate(self.controltowers):
+            ct.update_display(self.ct_labels[i])
         
         for i, p in enumerate(self.planes):
             p.update_display(self.plane_labels[i])

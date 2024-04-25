@@ -54,3 +54,26 @@ class Central(Agent):
 
     def remove_from_crowded_hangars(self, hangar):
         self.crowded_hangars.remove(hangar)
+
+
+    #> GUI
+
+    def present_historic(self) -> str:
+        final_str = ""
+        for trip in self.historic:
+            final_str += f"- {trip}\n"
+        return final_str
+    
+    def present_scarse_hangars(self) -> str:
+        final_str = ""
+        for hangar in self.scarse_hangars:
+            final_str += f"- {hangar}\n"
+        return final_str
+    
+    def present_crowded_hangars(self) -> str:
+        final_str = ""
+        for hangar in self.crowded_hangars:
+            final_str += f"- {hangar}\n"
+        return final_str
+
+    
