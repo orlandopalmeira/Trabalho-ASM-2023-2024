@@ -16,16 +16,33 @@ API_KEY=os.getenv("API_KEY")
 class Meteo(Agent):
     
     def __init__(self, jid, password, cities, timestamp = None): # Timestamp indica periodo de tempo que quer simular
+        """Se não for especificada nenhuma timestamp, então o tempo é o atual de cada cidade."""
         super().__init__(jid, password)
-        self.cities = cities
+        # self.cities = cities
+        self.cities = {city: None for city in cities}
         self.timestamp = timestamp
+        self.period = 60 # 1 minuto
+        self.count = 169
+        self.cur_count = 0
+
+        if self.is_past_weather_config():
+            for city in self.cities:
+                self.cities[city] = get_weathers(city, timestamp, self.count)
 
     def print(self, msg):
-        print(f"{self.name}: {msg}")
+        print_info(f"\n{self.name}: {msg}\n")
 
     async def setup(self):
         print(f'{self.name} starting...')
-        self.add_behaviour(SendMeteo())
+        self.add_behaviour(SendMeteo(self.period))
+
+    def get_current_weather(self, city):
+        return get_current_weather(city)
+    
+    def is_past_weather_config(self):
+        return self.timestamp is None
+
+    
 
 #* Obtem info das APIs
 def get_coordinates(city_name):
@@ -56,8 +73,9 @@ def get_weathers_aux(city_name, start_time, end_or_count = 169):
     # print(full_url)
     response = requests.get(full_url)
     data = response.json()
-    if data["cod"] in ["404", "400", "401", "429", "500", "503", "504"]:
-        print(f"ERROR {data['cod']}: Asking for weather in {city_name} at {full_url}")
+    if data["cod"] != "200":
+        print_warning(f"ERROR {data['cod']}: Asking for weather in {city_name} at {full_url}")
+        return None
     weathers = data["list"]
     return weathers
 
@@ -79,42 +97,45 @@ def get_weathers(city_name, start_time, count): # 8760 hours num ano
     return full_array
 
 
+def get_current_weather(city_name):
+    full_url = f"http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric"
+    # print(full_url)
+    response = requests.get(full_url)
+    data = response.json()
+    if str(data["cod"]) != "200":
+        print_warning(f"ERROR {data['cod']}: Asking for current weather in {city_name} at {full_url}")
+        return None
+    
+    main_weather = data["weather"][0]["main"]
+    return main_weather
+
+
+
 #* Interpreta info das APIs
-def weathers_to_bool(weathers):
-    """Transforms the weather data to a boolean value. If True it means that the weather is good. Else should be bad."""
-    res = []
-    for weather_instance in weathers:
-        veredict = True
-        weathers_list = weather_instance["weather"]
-        for w in weathers_list:
-            actual_weather = w["main"]
-            if is_bad_weather_ow(actual_weather):
-                veredict = False
-                print(weathers_list)
-                break
-        res.append(veredict)
-    return res
+def weather_to_bool(weather_instance):
+    """Transforms the weather value to a boolean value. If True it means that the weather is good. Else should be bad."""
+    veredict = True
+    weathers_list = weather_instance["weather"]
+    for w in weathers_list:
+        actual_weather = w["main"]
+        if is_bad_weather_ow(actual_weather):
+            veredict = False
+            print(weathers_list)
+            break
+    return veredict
 
-def weathers_to_weathers(weathers):
-    res = []
-    for weather_instance in weathers:
-        weathers_list = weather_instance["weather"]
-        final_weather = weathers_list[0]["main"]
-        for w in weathers_list:
-            weather_i = w["main"]
-            if is_bad_weather_ow(weather_i):
-                final_weather = weather_i
-                break
-        res.append(final_weather)
-    return res
+def weatherinfo_to_weather(weather_instance):
+    weathers_list = weather_instance["weather"]
+    final_weather = weathers_list[0]["main"]
+    for w in weathers_list:
+        weather_i = w["main"]
+        if is_bad_weather_ow(weather_i):
+            final_weather = weather_i
+            break
+    return final_weather
 
-#* Conversores de data
-def date_to_ts(d):
-    return int(datetime.strptime(d, "%Y-%m-%d %H:%M:%S").timestamp())
-
-def ts_to_date(ts):
-    return datetime.fromtimestamp(ts)
-
+def weather_datetime(weather_instance):
+    return ts_to_date(weather_instance["dt"])
 
 #* Weather qualifiers
 def is_bad_weather_ow(weather):
@@ -125,6 +146,13 @@ def is_very_bad_weather_ow(weather):
     very_bad_conditions = ["Thunderstorm", "Snow", "Squall", "Tornado", "Smoke"]
     return weather in very_bad_conditions
 
+
+#* Conversores de data
+def date_to_ts(d):
+    return int(datetime.strptime(d, "%Y-%m-%d %H:%M:%S").timestamp())
+
+def ts_to_date(ts):
+    return datetime.fromtimestamp(ts)
 
 #* Print functions
 def print_very_bad_weathers(weathers):
@@ -142,10 +170,11 @@ def print_very_bad_weathers(weathers):
 
 
 if __name__ == "__main__":
-    cities = ["braga", "porto", "lisboa", "faro"]
-    meteo = Meteo("meteo@localhost", "1234", cities)
-    for city in meteo.cities:
-        print(f"City: {city}")
-        print(f"Weather: {meteo.get_weather(city)}")
-        print()
-    # print(meteo.get_weather("braga"))
+    city_name = "Porto"
+    start_time = "2024-01-01 12:00:00"
+    end_time = "2024-03-03 12:00:00"
+
+    weather = get_current_weather(city_name)
+
+    print(weather)
+

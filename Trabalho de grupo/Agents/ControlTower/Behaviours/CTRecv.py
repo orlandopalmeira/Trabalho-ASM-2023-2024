@@ -42,6 +42,11 @@ class RecvRequests(CyclicBehaviour):
             print(f"{self.agent.name}: Plane landed {cfg.get_jid_name(msg.sender)}")
             self.agent.release_runway()
 
+        elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "meteo":
+            weather = jsonpickle.decode(msg.body)
+            self.agent.set_weather(weather)
+            print(f"{self.agent.name}: Received weather update from {cfg.get_jid_name(msg.sender)}")
+
         else:
             print_warning(f"{self.agent.name}: WARNING - Received unknown message from {cfg.get_jid_name(msg.sender)}")
 

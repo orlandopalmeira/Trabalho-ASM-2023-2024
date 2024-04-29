@@ -10,11 +10,8 @@ from Classes.Trip import Trip
 from Config import Config as cfg
 
 class ControlTower(Agent):
-    # SUNNY = 0
-    # RAINY = 1
-    # STORMY = 2
 
-    def __init__(self, jid, password, location, runways, hangar_availability):
+    def __init__(self, jid, password, location, runways, hangar_availability: int):
         super().__init__(jid, password)
         self.location = location # Localização (cidade) do aeroporto onde a torre está
         self.runways_capacity = runways # Pistas de descolagem/aterragem
@@ -22,17 +19,29 @@ class ControlTower(Agent):
         self.queue_takeoffs = []
         self.queue_landings = []
 
-        self.hangar_availability = hangar_availability #! WIP
+        self.hangar_availability = hangar_availability 
         
-        # self.weather = ControlTower.SUNNY # TODO
+        #! WIP
+        self.weather = ControlTower.SUNNY 
 
     async def setup(self) -> None:
         print(f'{self.name} starting...')
         self.add_behaviour(RecvRequests())
 
-    # def set_weather(self, weather): # TODO
-    #     #! Chamar self.add_behaviour(DispatchPlanes()) quando virar bom tempo
-    #     self.weather = weather
+    def set_weather(self, weather): #! WIP
+        was_bad_weather = self.is_bad_weather(self.weather)
+        self.weather = weather
+        if was_bad_weather and not self.is_bad_weather(weather):
+            self.add_behaviour(DispatchPlanes()) 
+
+    def switch_weather(self): #! WIP
+        """For the button that switches weather manually"""
+        GOOD = "Clear"
+        BAD = "Thunderstorm"
+        if self.is_bad_weather(self.weather):
+            self.set_weather(GOOD)
+        else:
+            self.set_weather(BAD)
 
     # def get_weather(self): # TODO
     #     return self.weather
@@ -49,7 +58,7 @@ class ControlTower(Agent):
 
     def reserve_runway_for_landing(self):
         """Reserve a runway for a plane to take off. Returns False if no hangars or runways are available, and if meteo conditions are bad."""
-        if self.runways_available > 0 and self.hangar_availability > 0: #! e mais (trazer info de meteorologia)
+        if self.runways_available > 0 and self.hangar_availability > 0 and not self.is_bad_weather(self.weather): #! e mais (trazer info de meteorologia)
             self.runways_available -= 1
             return True
         else:
@@ -57,7 +66,7 @@ class ControlTower(Agent):
         
     def reserve_runway_for_takeoff(self):
         """Reserve a runway for a plane to take off. Returns False if no hangars or runways are available, and if meteo conditions are bad."""
-        if self.runways_available > 0: #! e mais (trazer info de meteorologia)
+        if self.runways_available > 0 and not self.is_bad_weather(self.weather): #! e mais (trazer info de meteorologia)
             self.runways_available -= 1
             return True
         else:
@@ -101,6 +110,11 @@ class ControlTower(Agent):
 
     def decrease_hangar_availability(self):
         self.hangar_availability -= 1
+
+    #* Weather qualifiers
+    def is_bad_weather(weather):
+        bad_conditions = ["Thunderstorm", "Snow", "Fog", "Haze", "Mist", "Smoke", "Dust", "Ash", "Squall", "Tornado"]
+        return weather in bad_conditions
 
 
     #> GUI methods
@@ -159,6 +173,11 @@ class ControlTower(Agent):
         labels_obj.queue_landings_label.config(text=self.present_queue_landings())
 
     # Tem o texto que é para ser apresentado de forma modular
+    def present_weather(self) -> str:
+        if self.is_bad_weather(self.weather):
+            return f"{self.weather} (bad)"
+        return f"{self.weather}"
+
     def present_runways(self) -> str:
         return f"{str(self.runways_available)}/{str(self.runways_capacity)}"
     

@@ -50,18 +50,25 @@ class Config:
         return f"plane_{id}@{Config.DOMAIN}"
     
     @staticmethod
+    def get_meteo_jid(self):
+        return f"meteo@{Config.DOMAIN}"
+    
+    @staticmethod
     def identify(jid):
         """Dado um jid, identifica o tipo de agente que ele é."""
         str_jid = str(jid)
         if str_jid.startswith("airport"):
             return "airport"
-        if str_jid.startswith("hangar"):
+        elif str_jid.startswith("hangar"):
             return "hangar"
-        if str_jid.startswith("plane"):
+        elif str_jid.startswith("plane"):
             return "plane"
-        if str_jid.startswith("ct"):
+        elif str_jid.startswith("ct"):
             return "ct"
-        if str_jid.startswith("central"):
+        elif str_jid.startswith("central"):
             return "central"
+        elif str_jid.startswith("meteo"):
+            return "meteo"
+        
         return "unknown"
 
