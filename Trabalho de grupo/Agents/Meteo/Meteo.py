@@ -1,16 +1,19 @@
 from random import random
 from spade.agent import Agent
 
-from Agents.Hangar.Behaviors.HangarRecv import RecvPlaneRequests
+from Agents.Meteo.Behaviors.SendMeteo import SendMeteo
 
 from Config import Config as cfg
 from Utils.Prints import *
 
-import requests
+import requests, os
+
 
 
 class Meteo(Agent):
-    API_KEY = "c5edae66c459cb80a6c09d9aacea3e2c"
+    # API_KEY = "c5edae66c459cb80a6c09d9aacea3e2c" # OpenWeatherMap API key - base
+    API_KEY=os.getenv("API_KEY")
+
     
     def __init__(self, jid, password, cities, timestamp = None): # Timestamp indica periodo de tempo que quer simular
         super().__init__(jid, password)
@@ -22,7 +25,7 @@ class Meteo(Agent):
 
     async def setup(self):
         print(f'{self.name} starting...')
-        # self.add_behaviour(RecvPlaneRequests())
+        self.add_behaviour(SendMeteo())
 
     def get_coordinates(self, city_name):
         api_key = self.API_KEY
@@ -39,8 +42,10 @@ class Meteo(Agent):
         return lat, lon
 
     def get_weather(self, city_name, start = "2024-03-06", end = "2024-03-08"):
+        """Open-meteo API."""
+        api_key = self.API_KEY
         lat, lon = self.get_coordinates(city_name)
-        # url_example = "https://api.open-meteo.com/v1/forecast?latitude=41.5503&longitude=-8.42&hourly=weather_code&start_date=2024-03-06&end_date=2024-03-08"
+        # url_example = f"https://history.openweathermap.org/data/3.0/history/timemachine?lat=51.51&lon=-0.13&dt=606348800&appid={api_key}"
         full_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&hourly=weather_code&start_date={start}&end_date={end}"
         response = requests.get(full_url)
         data = response.json()
@@ -49,6 +54,22 @@ class Meteo(Agent):
             return None
         weather = data["hourly"]["weather_code"]
         return weather
+    
+    def get_weather_ow(self, city_name, datetime = None):
+        """OpenWeatherMap API."""
+        api_key = self.API_KEY
+        base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        graus = "&units=metric"
+        full_url = base_url + "appid=" + api_key + "&q=" + city_name + graus
+        response = requests.get(full_url)
+        data = response.json()
+        if data["cod"] == "404":
+            print_error(f"ERROR 404: Asking for weather in {city_name} at {full_url}")
+            return None
+        weather = data["weather"][0]
+        tempo = weather["main"]
+
+        return tempo
     
     def get_current_weather(self, city_name):
         api_key = self.API_KEY
@@ -65,8 +86,8 @@ class Meteo(Agent):
         return tempo
     
     
-    def is_bad_weather_current(weather):
-        """For OpenWeatherMap API. Returns True if the weather is bad for plane takeoffs, False otherwise."""
+    def is_bad_weather_ow(weather):
+        """For OpenWeatherMap API."""
         bad_conditions = ["Thunderstorm", "Snow", "Fog", "Haze", "Mist", "Smoke", "Dust", "Ash", "Squall", "Tornado"]
 
         return weather in bad_conditions
