@@ -2,6 +2,9 @@ from spade.agent import Agent
 from random import random
 from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
 
+import tkinter as tk
+from tkinter import ttk
+
 class Central(Agent):
 
     def __init__(self, jid, password, airport_locations, num_of_flights_per_interval, interval, flights = None):
@@ -10,7 +13,7 @@ class Central(Agent):
         self.airport_locations = airport_locations
         self.num_of_flights_per_interval = num_of_flights_per_interval
         self.interval = interval
-        self.historic_max_size = 10
+        self.historic_max_size = 3
         self.repeat_flight_plan = True if flights["repeat"] == True else False # Para o caso de ser None, ir a False
 
         # Auxs
@@ -57,11 +60,49 @@ class Central(Agent):
 
 
     #> GUI
+    def create_display(self, element):
+        main_frame = tk.Frame(element.scrollable_frame, highlightbackground="black", highlightthickness=2)
+        main_frame.pack(padx=5, pady=5)
+
+        label = tk.Label(main_frame, text=f"Central", font='Arial 12 bold', fg="black")
+        label.pack(padx=5, pady=5)
+
+        frame = tk.Frame(main_frame)
+        frame.pack(padx=10, pady=10)
+
+        row = 0
+        tk.Label(frame, text="Historic: ", font='Arial 10 bold').grid(column=0, row=row)
+        historic = self.present_historic()
+        historic_label = tk.Label(frame, text=historic)
+        historic_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
+
+        tk.Label(frame, text="Scarse Hangars: ", font='Arial 10 bold').grid(column=0, row=row)
+        scarse_hangars = self.present_scarse_hangars()
+        scarse_hangars_label = tk.Label(frame, text=scarse_hangars)
+        scarse_hangars_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
+        
+        tk.Label(frame, text="Crowded Hangars: ", font='Arial 10 bold').grid(column=0, row=row)
+        crowded_hangars = self.present_crowded_hangars()
+        crowded_hangars_label = tk.Label(frame, text=crowded_hangars)
+        crowded_hangars_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
+
+        return self.CLabels(historic_label, scarse_hangars_label, crowded_hangars_label)
+    
+
+    # Abstract method implementation
+    def update_display(self, labels_obj):
+        labels_obj.historic_label.config(text=self.present_historic())
+        labels_obj.scarse_hangars_label.config(text=self.present_scarse_hangars())
+        labels_obj.crowded_hangars_label.config(text=self.present_crowded_hangars())
+
 
     def present_historic(self) -> str:
         final_str = ""
-        for trip in self.historic:
-            final_str += f"- {trip}\n"
+        for historic in self.historic:
+            final_str += f"- {historic}\n"
         return final_str
     
     def present_scarse_hangars(self) -> str:
@@ -76,4 +117,10 @@ class Central(Agent):
             final_str += f"- {hangar}\n"
         return final_str
 
+
+    class CLabels():
+        def __init__(self, historic_label, scarse_hangars_label, crowded_hangars_label):
+            self.historic_label = historic_label
+            self.scarse_hangars_label = scarse_hangars_label
+            self.crowded_hangars_label = crowded_hangars_label
     
