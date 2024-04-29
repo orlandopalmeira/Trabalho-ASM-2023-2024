@@ -79,8 +79,6 @@ class GUI():
 
         self.agents = agents
 
-        self.central = None
-
         self.airports = []
         self.airport_labels = []
 

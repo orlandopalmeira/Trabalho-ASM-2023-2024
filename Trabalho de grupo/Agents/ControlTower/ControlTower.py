@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter import ttk
+
 from spade.agent import Agent
 
 from Agents.ControlTower.Behaviours.CTRecv import RecvRequests
@@ -139,6 +141,11 @@ class ControlTower(Agent):
         queue_landings_label.grid(column=0, row=row+1, padx=5, pady=5)
         row+=2
 
+        # TODO
+        self.button = ttk.Button(frame, text="Change Weather", command=lambda: self.button_click(self.location))
+        self.button.grid(column=0, row=row, padx=5, pady=5)
+        row+=1
+
         return self.CTLabels(runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label)
     
     # Abstract method implementation
@@ -174,6 +181,11 @@ class ControlTower(Agent):
             final_str += f"{cfg.get_jid_name(plane_jid)}\n"
         return f"{final_str}"
     
+    # TODO
+    def button_click(self, location):
+
+        print(f"Location: {location}")
+
     class CTLabels():
         def __init__(self, runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label):
             self.runways_label = runways_label
