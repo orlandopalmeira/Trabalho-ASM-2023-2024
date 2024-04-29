@@ -86,6 +86,12 @@ class GUI():
 
         col_pointer = 0
 
+        self.central = []
+        self.central_labels = []
+        self.central_frame = ScrollableFrame(self.root, width=200, height=800, relief=tk.RAISED, borderwidth=2)
+        self.central_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
+
         self.hangars = []
         self.hangar_labels = []
         self.hangar_frame = ScrollableFrame(self.root, width=170, height=800, relief=tk.RAISED, borderwidth=2)
@@ -110,7 +116,7 @@ class GUI():
 
         for agent in agents:
             if agent.__class__.__name__ == "Central":
-                self.central = agent
+                self.central.append(agent)
             elif agent.__class__.__name__ == "Airport":
                 self.airports.append(agent)
             elif agent.__class__.__name__ == "ControlTower":
@@ -125,6 +131,10 @@ class GUI():
         # for a in self.airports:
         #     labels = a.create_display(self.root)
         #     self.agent_labels.append(labels)
+
+        for c in self.central:
+            labels = c.create_display(self.central_frame)
+            self.central_labels.append(labels)
 
         for h in self.hangars:
             labels = h.create_display(self.hangar_frame)
@@ -145,6 +155,9 @@ class GUI():
     def update_loop(self):
         # for i, a in enumerate(self.airports):
         #     a.update_display(self.agent_labels[i])
+
+        for i, c in enumerate(self.central):
+            c.update_display(self.central_labels[i])
 
         for i, h in enumerate(self.hangars):
             h.update_display(self.hangar_labels[i])
