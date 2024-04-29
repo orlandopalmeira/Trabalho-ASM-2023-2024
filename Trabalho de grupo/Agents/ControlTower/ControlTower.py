@@ -155,12 +155,17 @@ class ControlTower(Agent):
         queue_landings_label.grid(column=0, row=row+1, padx=5, pady=5)
         row+=2
 
-        # TODO
-        self.button = ttk.Button(frame, text="Change Weather", command=lambda: self.button_click(self.location))
-        self.button.grid(column=0, row=row, padx=5, pady=5)
+        tk.Label(frame, text="Weather: ", font='Arial 10 bold').grid(column=0, row=row)
+        weather = self.present_weather()
+        weather_label = tk.Label(frame, text=weather)
+        weather_label.grid(column=0, row=row+1, padx=5, pady=5)
+        row+=2
+
+        button = ttk.Button(frame, text="Change Weather", command=self.switch_weather)
+        button.grid(column=0, row=row, padx=5, pady=5)
         row+=1
 
-        return self.CTLabels(runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label)
+        return self.CTLabels(runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label, weather_label)
     
     # Abstract method implementation
     def update_display(self, labels_obj):
@@ -171,6 +176,7 @@ class ControlTower(Agent):
         labels_obj.hangar_availability_label.config(text=self.present_hangar_availability())
         labels_obj.queue_takeoffs_label.config(text=self.present_queue_takeoffs())
         labels_obj.queue_landings_label.config(text=self.present_queue_landings())
+        labels_obj.weather_label.config(text=self.present_weather())
 
     # Tem o texto que é para ser apresentado de forma modular
     def present_weather(self) -> str:
@@ -199,17 +205,13 @@ class ControlTower(Agent):
         for plane_jid in self.queue_landings:
             final_str += f"{cfg.get_jid_name(plane_jid)}\n"
         return f"{final_str}"
-    
-    # TODO
-    def button_click(self, location):
-
-        print(f"Location: {location}")
 
     class CTLabels():
-        def __init__(self, runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label):
+        def __init__(self, runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label, weather_label):
             self.runways_label = runways_label
             self.hangar_availability_label = hangar_availability_label
             self.queue_takeoffs_label = queue_takeoffs_label
             self.queue_landings_label = queue_landings_label
+            self.weather_label = weather_label
 
         
