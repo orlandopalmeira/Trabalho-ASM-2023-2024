@@ -10,6 +10,8 @@ from Classes.Trip import Trip
 from Config import Config as cfg
 
 class ControlTower(Agent):
+    GOOD = "Clear"
+    BAD = "Thunderstorm"
 
     def __init__(self, jid, password, location, runways, hangar_availability: int):
         super().__init__(jid, password)
@@ -22,7 +24,7 @@ class ControlTower(Agent):
         self.hangar_availability = hangar_availability 
         
         #! WIP
-        self.weather = ControlTower.SUNNY 
+        self.weather = self.GOOD
 
     async def setup(self) -> None:
         print(f'{self.name} starting...')
@@ -36,12 +38,12 @@ class ControlTower(Agent):
 
     def switch_weather(self): #! WIP
         """For the button that switches weather manually"""
-        GOOD = "Clear"
-        BAD = "Thunderstorm"
+        # GOOD = "Clear"
+        # BAD = "Thunderstorm"
         if self.is_bad_weather(self.weather):
-            self.set_weather(GOOD)
+            self.set_weather(self.GOOD)
         else:
-            self.set_weather(BAD)
+            self.set_weather(self.BAD)
 
     # def get_weather(self): # TODO
     #     return self.weather
@@ -112,7 +114,7 @@ class ControlTower(Agent):
         self.hangar_availability -= 1
 
     #* Weather qualifiers
-    def is_bad_weather(weather):
+    def is_bad_weather(self, weather):
         bad_conditions = ["Thunderstorm", "Snow", "Fog", "Haze", "Mist", "Smoke", "Dust", "Ash", "Squall", "Tornado"]
         return weather in bad_conditions
 
