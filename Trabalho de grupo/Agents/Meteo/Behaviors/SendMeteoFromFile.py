@@ -16,7 +16,7 @@ import json
 class SendMeteoFromFile(PeriodicBehaviour):
 
     async def run(self):
-        # self.agent.print("Sending meteo...")
+        self.agent.print("Sending meteo...")
         meteo_file_name = cfg.meteo_file_name()
         with open(meteo_file_name, 'r') as meteo_file:
             meteo_obj = json.load(meteo_file)

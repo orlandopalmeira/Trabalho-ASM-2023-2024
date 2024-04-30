@@ -5,6 +5,7 @@ from Agents.Meteo.Behaviors.SendMeteoFromFile import SendMeteoFromFile
 
 from Config import Config as cfg
 from Utils.Prints import *
+from interface import *
 
 from random import random
 import requests, os
@@ -39,7 +40,8 @@ class Meteo(Agent):
                 self.cities[city] = get_weathers(city, timestamp, self.count)
 
     def print(self, msg):
-        print_info(f"\n{self.name}: {msg}\n")
+        # print_info(f"\n{self.name}: {msg}\n")
+        logs_blue_text(f"\n{self.name}: {msg}\n")
 
     async def setup(self):
         print(f'{self.name} starting...')

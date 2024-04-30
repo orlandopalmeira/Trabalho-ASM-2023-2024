@@ -18,7 +18,7 @@ class Plane(Agent):
     
     async def setup(self) -> None:
         self.trip = None
-        self.percentage_complete = 0 # Percentagem da viagem que já foi completada
+        # self.percentage_complete = 0 # Percentagem da viagem que já foi completada
         self.status = Plane.LANDED
         # self.tempo = 0 # Talvez para indicar quanto tempo a viagem demorará, mas talvez apenas seja utilizado num behaviour
         # self.carga = 0 # Talvez carga possa ser um atributo extra interessante para haver decisoes de prioridade
@@ -75,11 +75,11 @@ class Plane(Agent):
         trip_label.grid(column=0, row=row+1, padx=5, pady=5)
         row+=2
 
-        tk.Label(frame, text="Percentage complete: ", font='Arial 10 bold').grid(column=0, row=row)
-        percentage_complete = self.present_percentage_complete()
-        percentage_complete_label = tk.Label(frame, text=percentage_complete)
-        percentage_complete_label.grid(column=0, row=row+1, padx=5, pady=5)
-        row+=2
+        # tk.Label(frame, text="Percentage complete: ", font='Arial 10 bold').grid(column=0, row=row)
+        # percentage_complete = self.present_percentage_complete()
+        # percentage_complete_label = tk.Label(frame, text=percentage_complete)
+        # percentage_complete_label.grid(column=0, row=row+1, padx=5, pady=5)
+        # row+=2
         
         tk.Label(frame, text="Status: ", font='Arial 10 bold').grid(column=0, row=row)
         status = self.present_status()
@@ -87,20 +87,20 @@ class Plane(Agent):
         status_label.grid(column=0, row=row+1, padx=5, pady=5)
         row+=2
 
-        return self.PLabels(trip_label, percentage_complete_label, status_label)
+        return self.PLabels(trip_label, status_label)
     
     # Abstract method implementation
     def update_display(self, labels_obj):
         labels_obj.trip_label.config(text=self.present_trip())
-        labels_obj.percentage_complete_label.config(text=self.present_percentage_complete())
+        # labels_obj.percentage_complete_label.config(text=self.present_percentage_complete())
         labels_obj.status_label.config(text=self.present_status())
 
     # Tem o texto que é para ser apresentado de forma modular
     def present_trip(self) -> str:
         return f"{str(self.trip)}"
     
-    def present_percentage_complete(self) -> str:
-        return f"{str(self.percentage_complete)}"
+    # def present_percentage_complete(self) -> str:
+    #     return f"{str(self.percentage_complete)}"
     
     def present_status(self) -> str:
         if self.status == 0:
@@ -112,7 +112,7 @@ class Plane(Agent):
         return f"{str}"
     
     class PLabels():
-        def __init__(self, trip_label, percentage_complete_label, status_label):
+        def __init__(self, trip_label, status_label):
             self.trip_label = trip_label
-            self.percentage_complete_label = percentage_complete_label
+            # self.percentage_complete_label = percentage_complete_label
             self.status_label = status_label

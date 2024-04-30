@@ -13,7 +13,7 @@ import requests
 class SendMeteo(PeriodicBehaviour):
 
     async def run(self):
-        # self.agent.print("Sending meteo...")
+        self.agent.print("Sending meteo...")
         for city in self.agent.cities:
             weather = None
             if self.is_past_weather_config():

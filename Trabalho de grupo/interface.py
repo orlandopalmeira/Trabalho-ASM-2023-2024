@@ -6,70 +6,92 @@ import sys
 from tkinter import ttk
 
 UPDATE_TIMER = 1
+LOGS = []
 
 
-AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
-AIRPORT_LOCATIONS = list(AIRPORT_PLANES.keys())
-INTERVAL = 5
-NUM_OF_FLIGHTS_PER_INTERVAL = 2
+def logs_red_text(text):
+        LOGS.append((text, 'red'))
 
-class Central():
-    def __init__(self, airport_locations, num_of_flights_per_interval, interval):
-        self.name = "Central"
-        self.airport_locations = airport_locations
-        self.num_of_flights_per_interval = num_of_flights_per_interval
-        self.interval = interval
+def logs_green_text(text):
+    LOGS.append((text, 'green'))
 
-    def change_random(self):
-        self.num_of_flights_per_interval = random.randint(1,10)
-        self.interval = random.randint(1,10)
+def logs_yellow_text(text):
+    LOGS.append((text, 'yellow'))
+
+def logs_blue_text(text):
+    LOGS.append((text, 'blue'))
+
+def logs_magenta_text(text):
+    LOGS.append((text, 'magenta'))
+
+def logs_cyan_text(text):
+    LOGS.append((text, 'cyan'))
+
+def logs_black_text(text):
+    LOGS.append((text, 'black'))
+
+# AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
+# AIRPORT_LOCATIONS = list(AIRPORT_PLANES.keys())
+# INTERVAL = 5
+# NUM_OF_FLIGHTS_PER_INTERVAL = 2
+
+# class Central():
+#     def __init__(self, airport_locations, num_of_flights_per_interval, interval):
+#         self.name = "Central"
+#         self.airport_locations = airport_locations
+#         self.num_of_flights_per_interval = num_of_flights_per_interval
+#         self.interval = interval
+
+#     def change_random(self):
+#         self.num_of_flights_per_interval = random.randint(1,10)
+#         self.interval = random.randint(1,10)
 
 
-    def create_display(self, root):
-        label = tk.Label(root, text="Central")
-        label.pack(padx=5, pady=5)
+#     def create_display(self, root):
+#         label = tk.Label(root, text="Central")
+#         label.pack(padx=5, pady=5)
 
-        frame = tk.Frame(root)
-        frame.pack(padx=10, pady=10)
+#         frame = tk.Frame(root)
+#         frame.pack(padx=10, pady=10)
 
-        airport_locations = f"Airport Locations: {str(self.airport_locations)}"
-        airport_label = tk.Label(frame, text=airport_locations)
-        airport_label.grid(column=0, row=0, padx=5, pady=5)
+#         airport_locations = f"Airport Locations: {str(self.airport_locations)}"
+#         airport_label = tk.Label(frame, text=airport_locations)
+#         airport_label.grid(column=0, row=0, padx=5, pady=5)
 
-        num_of_flights_per_interval = f"Number of flights per interval: {str(self.num_of_flights_per_interval)}"
-        flights_label = tk.Label(frame, text=num_of_flights_per_interval)
-        flights_label.grid(column=0, row=1, padx=5, pady=5)
+#         num_of_flights_per_interval = f"Number of flights per interval: {str(self.num_of_flights_per_interval)}"
+#         flights_label = tk.Label(frame, text=num_of_flights_per_interval)
+#         flights_label.grid(column=0, row=1, padx=5, pady=5)
 
-        interval_value = f"Interval: {str(self.interval)}"
-        interval_label = tk.Label(frame, text=interval_value)
-        interval_label.grid(column=0, row=2, padx=5, pady=5)
+#         interval_value = f"Interval: {str(self.interval)}"
+#         interval_label = tk.Label(frame, text=interval_value)
+#         interval_label.grid(column=0, row=2, padx=5, pady=5)
 
-        return self.CentralLabels(airport_label, flights_label, interval_label)
+#         return self.CentralLabels(airport_label, flights_label, interval_label)
 
-    def update_display(self, labels_obj):
-        labels_obj.airport_label.config(text=f"Airport Locations: {str(self.airport_locations)}")
-        labels_obj.flights_label.config(text=f"Number of flights per interval: {str(self.num_of_flights_per_interval)}")
-        labels_obj.interval_label.config(text=f"Inverval: {str(self.interval)}")
+#     def update_display(self, labels_obj):
+#         labels_obj.airport_label.config(text=f"Airport Locations: {str(self.airport_locations)}")
+#         labels_obj.flights_label.config(text=f"Number of flights per interval: {str(self.num_of_flights_per_interval)}")
+#         labels_obj.interval_label.config(text=f"Inverval: {str(self.interval)}")
 
-    class CentralLabels():
-        def __init__(self, airport_label, flights_label, interval_label):
-            self.airport_label = airport_label
-            self.flights_label = flights_label
-            self.interval_label = interval_label
+#     class CentralLabels():
+#         def __init__(self, airport_label, flights_label, interval_label):
+#             self.airport_label = airport_label
+#             self.flights_label = flights_label
+#             self.interval_label = interval_label
 
         
 
     
-class Airport():
-    def __init__(self, location, runways=1):
-        self.name = "Airport0"
-        self.location = location
-        self.runways = runways
-        self.flights_queue = []
+# class Airport():
+#     def __init__(self, location, runways=1):
+#         self.name = "Airport0"
+#         self.location = location
+#         self.runways = runways
+#         self.flights_queue = []
 
-    def change_random(self):
-        self.runways = random.randint(1, 10)
-        self.location = random.choice(["Lisboa", "Porto", "Faro"])
+#     def change_random(self):
+#         self.runways = random.randint(1, 10)
+#         self.location = random.choice(["Lisboa", "Porto", "Faro"])
 
 
 
@@ -92,7 +114,7 @@ class GUI():
 
         self.hangars = []
         self.hangar_labels = []
-        self.hangar_frame = ScrollableFrame(self.root, width=170, height=800, relief=tk.RAISED, borderwidth=2)
+        self.hangar_frame = ScrollableFrame(self.root, width=180, height=800, relief=tk.RAISED, borderwidth=2)
         self.hangar_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
         col_pointer += 1
 
@@ -108,8 +130,14 @@ class GUI():
         self.plane_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
         col_pointer += 1
 
+        self.logs_frame = ScrollableFrame(self.root, width=400, height=800, relief=tk.RAISED, borderwidth=2)
+        self.logs_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        self.logs_main_frame = tk.Frame(self.logs_frame.scrollable_frame)
+        self.logs_main_frame.pack(padx=5, pady=5)
+        col_pointer += 1
+
         self.root.title("Agentes")
-        self.root.geometry("1000x850")
+        self.root.geometry("1600x850")
 
 
         for agent in agents:
@@ -166,11 +194,15 @@ class GUI():
         for i, p in enumerate(self.planes):
             p.update_display(self.plane_labels[i])
 
+        for log in LOGS:
+            label = tk.Label(self.logs_main_frame, text=log[0], font='Arial 8', fg=log[1])
+            label.pack()
+
         #TODO - resto dos agentes
         
         self.root.after(1000, self.update_loop)
         
-list_agents = []    
+list_agents = []
 
 def changes():
     global list_agents
@@ -199,11 +231,11 @@ class ScrollableFrame(ttk.Frame):
 
 
 if __name__ == "__main__":
-    c  = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
-    c2 = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
-    c3 = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    # c  = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    # c2 = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
+    # c3 = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)
     # a = Airport("Lisboa")
-    list_agents = [c, c2, c3]
+    # list_agents = [c, c2, c3]
 
     stop = False
     t = threading.Thread(target=changes)
