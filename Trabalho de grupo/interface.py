@@ -203,6 +203,8 @@ class GUI():
             label = tk.Label(self.logs_main_frame, text=log[0], font='Arial 8', fg=log[1])
             label.pack()
 
+        LOGS.clear()
+
         #TODO - resto dos agentes
         
         self.root.after(1000, self.update_loop)
