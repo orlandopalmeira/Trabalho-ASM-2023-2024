@@ -1,6 +1,9 @@
+
+
 def color_text(text, color_code, bold=False) -> str:
     bold_code = "1;" if bold else ""
     return f"\033[{bold_code}{color_code}m{text}\033[0m"
+
 
 def red_text(text, bold=False) -> str:
     return color_text(text, "91", bold)

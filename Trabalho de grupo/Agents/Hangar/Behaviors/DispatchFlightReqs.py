@@ -13,15 +13,15 @@ class DispatchFlightReqs(OneShotBehaviour):
         try:
             while True:
                 if self.agent.waiting_requests_is_empty():
-                    # print_warning(f"{self.agent.name}: currently has no waiting requests.")
+                    # self.agent.print(f"currently has no waiting requests.", "red")
                     return
                 plane_jid = self.agent.pop_plane()
                 if plane_jid is None:
-                    print_warning(f"{self.agent.name}: currently has no planes available.")
+                    self.agent.print(f"currently has no planes available.", "red")
                     return
                 trip = self.agent.pop_waiting_requests()
                 
-                # print_info(f"{self.agent.name}: Dispatching {cfg.get_jid_name(plane_jid)} to {trip}")
+                # self.agent.print(f"{self.agent.name}: Dispatching {cfg.get_jid_name(plane_jid)} to {trip}", "blue")
 
                 ct_jid = cfg.get_ct_jid(self.agent.location)
                 plane_and_trip = {

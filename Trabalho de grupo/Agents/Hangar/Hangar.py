@@ -6,6 +6,7 @@ from Agents.Hangar.Behaviors.DispatchFlightReqs import DispatchFlightReqs
 
 from Config import Config as cfg
 from Utils.Prints import *
+from interface import logs_color
 
 import tkinter as tk
 
@@ -18,11 +19,12 @@ class Hangar(Agent):
         self.planes = [] if planes is None else planes # Lista de strings que serão os jids dos avioes
         self.waiting_requests = [] # Lista de trips
 
-    def print(self, msg):
+    def print(self, msg, color = "black"):
         print(f"{self.name}: {msg}")
+        logs_color(f"{self.name}: {msg}", color)
 
     async def setup(self):
-        print(f'{self.name} starting...')
+        self.print(f'{self.name} starting...')
         self.add_behaviour(RecvPlaneRequests())
     
 

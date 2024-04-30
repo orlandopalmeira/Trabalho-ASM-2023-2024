@@ -3,6 +3,7 @@ from spade.agent import Agent
 import asyncio
 from Config import Config as cfg
 from Classes.Trip import Trip
+from interface import logs_color
 
 import tkinter as tk
 from tkinter import ttk
@@ -22,13 +23,14 @@ class Plane(Agent):
         self.status = Plane.LANDED
         # self.tempo = 0 # Talvez para indicar quanto tempo a viagem demorará, mas talvez apenas seja utilizado num behaviour
         # self.carga = 0 # Talvez carga possa ser um atributo extra interessante para haver decisoes de prioridade
-        print(f'{self.name} starting...')
+        self.print(f'starting...')
         
         b = RecvRequests()
         self.add_behaviour(b)
 
-    def print(self, msg):
-        print(f"{self.agent.name}: {msg}")
+    def print(self, msg, color = "black"):
+        print(f"{self.name}: {msg}")
+        logs_color(f"{self.name}: {msg}", color)
 
     def set_trip(self, trip):
         self.trip = trip

@@ -15,7 +15,7 @@ class RecvRequests(CyclicBehaviour):
     async def run(self):
         msg = await self.receive(timeout=20)
         if not msg:
-            # print(f"{self.agent.name}: No message received")
+            # self.agent.print(f"No message received", "yellow")
             return
         msg_body = jsonpickle.decode(msg.body)
         
@@ -30,7 +30,7 @@ class RecvRequests(CyclicBehaviour):
             LANDING_TIME = self.agent.LANDING_TIME
             await asyncio.sleep(LANDING_TIME)
             destination = self.agent.trip.get_destination()
-            print(f"{self.agent.name}: Finished landing at {destination}")
+            self.agent.print(f"Finished landing at {destination}")
             self.agent.set_landed()
             self.agent.set_trip(None)
 

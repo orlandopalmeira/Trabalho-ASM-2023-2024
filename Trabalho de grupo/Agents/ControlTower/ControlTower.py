@@ -8,6 +8,7 @@ from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 
 from Classes.Trip import Trip
 from Config import Config as cfg
+from interface import logs_color
 
 import json
 
@@ -28,11 +29,12 @@ class ControlTower(Agent):
         
         self.weather = GOOD
 
-    def print(self, msg):
-        print(f"{self.agent.name}: {msg}")
+    def print(self, msg, color = "black"):
+        print(f"{self.name}: {msg}")
+        logs_color(f"{self.name}: {msg}", color)
 
     async def setup(self) -> None:
-        print(f'{self.name} starting...')
+        self.print(f'{self.name} starting...')
         self.add_behaviour(RecvRequests())
 
     def set_weather(self, weather):

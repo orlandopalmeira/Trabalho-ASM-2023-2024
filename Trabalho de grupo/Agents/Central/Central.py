@@ -2,6 +2,8 @@ from spade.agent import Agent
 from random import random
 from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
 
+from interface import logs_color
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -28,12 +30,13 @@ class Central(Agent):
 
     
     async def setup(self) -> None:
-        print(f'\nCentral agent starting...')
+        self.print(f'\nCentral agent starting...')
         a = GenerateFlightsBehav(period=self.interval)
         self.add_behaviour(a)
 
-    def print(self, msg):
-        print(f"{self.agent.name}: {msg}")
+    def print(self, msg, color = "black"):
+        print(f"\n{self.name}: {msg}\n")
+        logs_color(f"\n{self.name}: {msg}\n", color)
     
     def add_to_historic(self, trip):
         if len(self.historic) == self.historic_max_size:

@@ -18,13 +18,13 @@ class RecvPlaneRequests(CyclicBehaviour):
         # 1.2. O **aeroporto** envia um pedido de avião ao **hangar**. (performative: *request*, body: *Trip*)
         if msg.metadata["performative"] == "request" and cfg.identify(msg.sender) == "airport":
             trip = jsonpickle.decode(msg.body)
-            print(f"{self.agent.name}: Received plane request from {cfg.get_jid_name(msg.sender)} for {trip}")
+            self.agent.print(f"Received plane request from {cfg.get_jid_name(msg.sender)} for {trip}")
             self.agent.add_waiting_request(trip)
             
         # 3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)
         elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "plane":
             plane_jid = jsonpickle.decode(msg.body)
-            print(f"{self.agent.name}: {cfg.get_jid_name(plane_jid)} estationated.")
+            self.agent.print(f"{cfg.get_jid_name(plane_jid)} estationated.")
             self.agent.add_plane(plane_jid)
 
 

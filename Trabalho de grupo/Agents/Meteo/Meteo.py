@@ -5,7 +5,7 @@ from Agents.Meteo.Behaviors.SendMeteoFromFile import SendMeteoFromFile
 
 from Config import Config as cfg
 from Utils.Prints import *
-from interface import *
+from interface import logs_color
 
 from random import random
 import requests, os
@@ -39,12 +39,12 @@ class Meteo(Agent):
             for city in self.cities:
                 self.cities[city] = get_weathers(city, timestamp, self.count)
 
-    def print(self, msg):
-        # print_info(f"\n{self.name}: {msg}\n")
-        logs_blue_text(f"\n{self.name}: {msg}\n")
+    def print(self, msg, color = "black"):
+        print(f"{self.name}: {msg}")
+        logs_color(f"{self.name}: {msg}", color)
 
     async def setup(self):
-        print(f'{self.name} starting...')
+        self.print(f'starting...')
         if self.get_mode() == Meteo.MODE_MANUAL:
             # Escrever ficheiro
             meteo_file_name = cfg.meteo_file_name()

@@ -18,14 +18,14 @@ class RecvRequests(CyclicBehaviour):
         # Recebeu um pedido de flight da central #> (Use case 1: passo 1)
         if msg.metadata["performative"] == "request": 
             trip = msg_body
-            print(f"{self.agent.name}: Received flight {trip}")
+            self.agent.print(f"Received flight {trip}")
             #! Não usei o behav PlaneRequest porque não lhe podemos dar argumentos, temos de ver melhor como fazer isto
             hangar_name = cfg.get_hangar_jid(self.agent.location)
             msg = Message(to=hangar_name, body=jsonpickle.encode(trip), metadata={"performative": "request"})
             await self.send(msg) #> Use case 1: passo 2
 
         else:
-            print_error(f"{self.agent.name}: WARNING received unknown message from {msg.sender}!")
+            self.agent.print(f"WARNING received unknown message from {msg.sender}!", "red")
         
 
 

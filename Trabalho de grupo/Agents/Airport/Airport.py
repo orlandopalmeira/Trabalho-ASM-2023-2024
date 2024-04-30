@@ -2,6 +2,7 @@ from random import random
 from spade.agent import Agent
 
 from Utils.Prints import *
+from interface import logs_color
 
 from Agents.Airport.Behaviors.AirportRecv import RecvRequests
 
@@ -12,11 +13,12 @@ class Airport(Agent):
         super().__init__(jid, password)
         self.location = location # Localização (cidade) do aeroporto
 
-    def print(self, msg):
-        print(f"{self.agent.name}: {msg}")
+    def print(self, msg, color = "black"):
+        print_info(f"{self.name}: {msg}")
+        logs_color(f"{self.name}: {msg}", color)
     
     async def setup(self) -> None:
-        print_info(f'Airport agent {self.location} starting...')
+        self.print(f'Airport agent {self.location} starting...', "blue")
 
         # b = ReceiveFlightsBehav()
         b = RecvRequests()

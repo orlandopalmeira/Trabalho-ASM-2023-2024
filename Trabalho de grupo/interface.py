@@ -5,12 +5,17 @@ import random
 import sys
 from tkinter import ttk
 
-UPDATE_TIMER = 1
+# UPDATE_TIMER = 1
 LOGS = []
+
+# Função geral
+def logs_color(text, color):
+    LOGS.insert(0, (text, color))
+    # LOGS.append((text, color))
 
 
 def logs_red_text(text):
-        LOGS.append((text, 'red'))
+    LOGS.append((text, 'red'))
 
 def logs_green_text(text):
     LOGS.append((text, 'green'))
@@ -137,7 +142,7 @@ class GUI():
         col_pointer += 1
 
         self.root.title("Agentes")
-        self.root.geometry("1600x850")
+        self.root.geometry("1500x850")
 
 
         for agent in agents:

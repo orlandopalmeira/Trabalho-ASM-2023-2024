@@ -7,7 +7,7 @@ from Utils.Prints import *
 
 class GenerateFlightsBehav(PeriodicBehaviour):
     async def run(self):
-        print()
+        # self.agent.print("")
         for _ in range(self.agent.num_of_flights_per_interval):
             trip = None
             if self.agent.flight_plan is not None:
@@ -25,12 +25,12 @@ class GenerateFlightsBehav(PeriodicBehaviour):
             else:
                 trip = Trip.generate_random_trip(self.agent.airport_locations)
 
-            print_info(f"CENTRAL: Flight generated {trip}")
+            self.agent.print(f"CENTRAL: Flight generated {trip}", "blue")
             airport_name = cfg.get_airport_jid(trip.get_origin())
             msg = Message(to=airport_name, metadata={'performative':'request'}, body=jsonpickle.encode(trip))
             await self.send(msg) #> Use case 1: passo 1
             self.agent.add_to_historic(trip)
-        print()
+        # self.agent.print("")
 
         # # Pretty Printing das viagens geradas
         # print()
