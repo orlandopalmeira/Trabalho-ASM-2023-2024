@@ -9,6 +9,7 @@ load_dotenv()
 
 # Agents
 from Agents.Central.Central import Central
+from Agents.Meteo.Meteo import Meteo
 from Agents.Airport.Airport import Airport
 from Agents.Hangar.Hangar import Hangar
 from Agents.Plane.Plane import Plane
@@ -56,9 +57,9 @@ def main():
     NUM_OF_FLIGHTS_PER_INTERVAL = 1
 
     # WEB interface
-    HOSTNAME = "127.0.0.1"
-    CT_PORT = 1000
-    H_PORT = 2000
+    # HOSTNAME = "127.0.0.1"
+    # CT_PORT = 1000
+    # H_PORT = 2000
 
     agents = []
 
@@ -109,6 +110,11 @@ def main():
     central.start().result()
     agents.append(central)
 
+    meteo_jid = cfg.get_meteo_jid()
+    meteo_mode = Meteo.MODE_MANUAL
+    meteo = Meteo(meteo_jid, PASSWORD, AIRPORT_LOCATIONS, meteo_mode)
+    meteo.start().result()
+    agents.append(meteo)
     
 
     #* Lancamento da interface

@@ -50,7 +50,7 @@ class Config:
         return f"plane_{id}@{Config.DOMAIN}"
     
     @staticmethod
-    def get_meteo_jid(self):
+    def get_meteo_jid():
         return f"meteo@{Config.DOMAIN}"
     
     @staticmethod
@@ -71,4 +71,15 @@ class Config:
             return "meteo"
         
         return "unknown"
+    
+    def get_good_weather():
+        return "Clear"
+    
+    def get_bad_weather():
+        return "Thunderstorm"   
+    
+    @staticmethod
+    def meteo_file_name():
+        """Retorna a string da diretoria do ficheiro de meteorologia para alteração manual."""
+        return "resources/meteo.json"
 

@@ -9,9 +9,12 @@ from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 from Classes.Trip import Trip
 from Config import Config as cfg
 
-class ControlTower(Agent):
-    GOOD = "Clear"
-    BAD = "Thunderstorm"
+import json
+
+GOOD = cfg.get_good_weather() # "Clear"
+BAD = cfg.get_bad_weather() # "Thunderstorm"
+
+class ControlTower(Agent):   
 
     def __init__(self, jid, password, location, runways, hangar_availability: int):
         super().__init__(jid, password)
@@ -23,30 +26,49 @@ class ControlTower(Agent):
 
         self.hangar_availability = hangar_availability 
         
-        #! WIP
-        self.weather = self.GOOD
+        self.weather = GOOD
 
     async def setup(self) -> None:
         print(f'{self.name} starting...')
         self.add_behaviour(RecvRequests())
 
-    def set_weather(self, weather): #! WIP
+    def set_weather(self, weather):
         was_bad_weather = self.is_bad_weather(self.weather)
         self.weather = weather
         if was_bad_weather and not self.is_bad_weather(weather):
             self.add_behaviour(DispatchPlanes()) 
 
-    def switch_weather(self): #! WIP
+    def switch_weather_old(self): #! WIP old
         """For the button that switches weather manually"""
         # GOOD = "Clear"
         # BAD = "Thunderstorm"
         if self.is_bad_weather(self.weather):
-            self.set_weather(self.GOOD)
+            self.set_weather(GOOD)
         else:
-            self.set_weather(self.BAD)
+            self.set_weather(BAD)
 
-    # def get_weather(self): # TODO
-    #     return self.weather
+    def switch_weather(self, city): #! WIP
+        """For the button that switches weather manually, but with file logic"""
+        meteo = cfg.meteo_file_name()
+        with open(meteo, 'r') as meteo_file:
+            meteo_obj = json.load(meteo_file)
+
+        if self.is_bad_weather(meteo_obj[city]):
+            # self.set_weather(GOOD)
+            meteo_obj[city] = GOOD
+        else:
+            # self.set_weather(BAD)
+            meteo_obj[city] = BAD
+        
+        with open(meteo, 'w') as meteo_file:
+            json.dump(meteo_obj, meteo_file)
+        
+
+
+        
+
+
+
     
     def get_location(self):
         return self.location

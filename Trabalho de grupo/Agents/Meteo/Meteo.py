@@ -1,6 +1,7 @@
 from spade.agent import Agent
 
 from Agents.Meteo.Behaviors.SendMeteo import SendMeteo
+from Agents.Meteo.Behaviors.SendMeteoFromFile import SendMeteoFromFile
 
 from Config import Config as cfg
 from Utils.Prints import *
@@ -8,18 +9,26 @@ from Utils.Prints import *
 from random import random
 import requests, os
 from datetime import datetime
+import json
 
 # API_KEY = "c5edae66c459cb80a6c09d9aacea3e2c" # OpenWeatherMap API key - base
 API_KEY=os.getenv("API_KEY")
 
+GOOD = cfg.get_good_weather() # "Clear"
+BAD = cfg.get_bad_weather() # "Thunderstorm"
 
 class Meteo(Agent):
+    MODE_PAST = 1
+    MODE_CURRENT = 2
+    MODE_FILE = 3
     
-    def __init__(self, jid, password, cities, timestamp = None): # Timestamp indica periodo de tempo que quer simular
+    def __init__(self, jid, password, cities, mode, timestamp = None): # Timestamp indica periodo de tempo que quer simular
         """Se não for especificada nenhuma timestamp, então o tempo é o atual de cada cidade."""
         super().__init__(jid, password)
         # self.cities = cities
-        self.cities = {city: None for city in cities}
+        self.cities = {city: GOOD for city in cities}
+        self.mode = mode
+
         self.timestamp = timestamp
         self.period = 60 # 1 minuto
         self.count = 169
@@ -34,13 +43,26 @@ class Meteo(Agent):
 
     async def setup(self):
         print(f'{self.name} starting...')
-        self.add_behaviour(SendMeteo(self.period))
+        if self.get_mode() == Meteo.MODE_MANUAL:
+            # Escrever ficheiro
+            meteo_file_name = cfg.meteo_file_name()
+            with open(meteo_file_name, 'w') as meteo_file:
+                json.dump(self.cities, meteo_file)
+            # Ler ficheiro
+            self.add_behaviour(SendMeteoFromFile(1))
+        else:
+            self.add_behaviour(SendMeteo(self.period))
 
+    def is_past_weather_config(self):
+        # return self.timestamp is None
+        return self.mode == Meteo.MODE_PAST
+    
+    def get_mode(self):
+        return self.mode
+    
     def get_current_weather(self, city):
         return get_current_weather(city)
     
-    def is_past_weather_config(self):
-        return self.timestamp is None
 
     
 
