@@ -27,6 +27,9 @@ class Plane(Agent):
         b = RecvRequests()
         self.add_behaviour(b)
 
+    def print(self, msg):
+        print(f"{self.agent.name}: {msg}")
+
     def set_trip(self, trip):
         self.trip = trip
 

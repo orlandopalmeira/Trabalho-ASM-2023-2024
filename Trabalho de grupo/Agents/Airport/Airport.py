@@ -11,6 +11,9 @@ class Airport(Agent):
     def __init__(self, jid, password, location):
         super().__init__(jid, password)
         self.location = location # Localização (cidade) do aeroporto
+
+    def print(self, msg):
+        print(f"{self.agent.name}: {msg}")
     
     async def setup(self) -> None:
         print_info(f'Airport agent {self.location} starting...')

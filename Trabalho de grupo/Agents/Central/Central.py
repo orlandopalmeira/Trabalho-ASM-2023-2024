@@ -31,6 +31,9 @@ class Central(Agent):
         print(f'\nCentral agent starting...')
         a = GenerateFlightsBehav(period=self.interval)
         self.add_behaviour(a)
+
+    def print(self, msg):
+        print(f"{self.agent.name}: {msg}")
     
     def add_to_historic(self, trip):
         if len(self.historic) == self.historic_max_size:

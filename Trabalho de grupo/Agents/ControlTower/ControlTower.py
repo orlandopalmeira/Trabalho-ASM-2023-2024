@@ -28,6 +28,9 @@ class ControlTower(Agent):
         
         self.weather = GOOD
 
+    def print(self, msg):
+        print(f"{self.agent.name}: {msg}")
+
     async def setup(self) -> None:
         print(f'{self.name} starting...')
         self.add_behaviour(RecvRequests())
