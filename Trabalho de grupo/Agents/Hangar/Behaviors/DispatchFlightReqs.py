@@ -1,7 +1,6 @@
 from spade.behaviour import OneShotBehaviour, PeriodicBehaviour
 from spade.message import Message
 from Config import Config as cfg
-from Utils.Prints import *
 import asyncio
 import jsonpickle
 

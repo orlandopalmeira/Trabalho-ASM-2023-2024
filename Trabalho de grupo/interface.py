@@ -10,32 +10,154 @@ LOGS = []
 
 # Função geral
 def logs_color(text, color):
-    LOGS.insert(0, (text, color))
-    # LOGS.append((text, color))
+    LOGS.insert(0, (text, color)) #! Não se pode fazer isto pq ao meter na dashboard, o novo conteudo é metido em baixo e assim ficariam secções no sentido baixo->cima, mas 
+    # LOGS.append((text, color)) 
 
 
-def logs_red_text(text):
-    LOGS.append((text, 'red'))
+class GUI():
+    def __init__(self, agents):
+        self.root = tk.Tk()
 
-def logs_green_text(text):
-    LOGS.append((text, 'green'))
+        self.agents = agents
 
-def logs_yellow_text(text):
-    LOGS.append((text, 'yellow'))
+        self.airports = []
+        self.airport_labels = []
 
-def logs_blue_text(text):
-    LOGS.append((text, 'blue'))
+        col_pointer = 0
 
-def logs_magenta_text(text):
-    LOGS.append((text, 'magenta'))
+        self.central = []
+        self.central_labels = []
+        self.central_frame = ScrollableFrame(self.root, width=200, height=800, relief=tk.RAISED, borderwidth=2)
+        self.central_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
 
-def logs_cyan_text(text):
-    LOGS.append((text, 'cyan'))
+        self.hangars = []
+        self.hangar_labels = []
+        self.hangar_frame = ScrollableFrame(self.root, width=180, height=800, relief=tk.RAISED, borderwidth=2)
+        self.hangar_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
 
-def logs_black_text(text):
-    LOGS.append((text, 'black'))
+        self.controltowers = []
+        self.ct_labels = []
+        self.ct_frame = ScrollableFrame(self.root, width=260, height=800, relief=tk.RAISED, borderwidth=2)
+        self.ct_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
 
-# AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]} #! Tem de se meter aqui a runway_capacity
+        self.planes = []
+        self.plane_labels = []
+        self.plane_frame = ScrollableFrame(self.root, width=200, height=800, relief=tk.RAISED, borderwidth=2)
+        self.plane_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        col_pointer += 1
+
+        self.logs_frame = ScrollableFrame(self.root, width=500, height=800, relief=tk.RAISED, borderwidth=2)
+        self.logs_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
+        self.logs_main_frame = tk.Frame(self.logs_frame.scrollable_frame)
+        self.logs_main_frame.pack(padx=5, pady=5)
+        col_pointer += 1
+
+        self.root.title("Agentes")
+        self.root.geometry("1500x850")
+
+
+        for agent in agents:
+            if agent.__class__.__name__ == "Central":
+                self.central.append(agent)
+            elif agent.__class__.__name__ == "Airport":
+                self.airports.append(agent)
+            elif agent.__class__.__name__ == "ControlTower":
+                self.controltowers.append(agent)
+            elif agent.__class__.__name__ == "Hangar":
+                self.hangars.append(agent)
+            elif agent.__class__.__name__ == "Plane":
+                self.planes.append(agent)
+
+        #* Creating displays for all the agents
+        # for a in self.airports:
+        #     labels = a.create_display(self.root)
+        #     self.agent_labels.append(labels)
+
+        for c in self.central:
+            labels = c.create_display(self.central_frame)
+            self.central_labels.append(labels)
+
+        for h in self.hangars:
+            labels = h.create_display(self.hangar_frame)
+            self.hangar_labels.append(labels)
+
+        for ct in self.controltowers:
+            labels = ct.create_display(self.ct_frame)
+            self.ct_labels.append(labels)
+
+        for p in self.planes:
+            labels = p.create_display(self.plane_frame)
+            self.plane_labels.append(labels)
+
+        self.update_loop()
+
+
+    def update_loop(self):
+        # for i, a in enumerate(self.airports):
+        #     a.update_display(self.agent_labels[i])
+
+        for i, c in enumerate(self.central):
+            c.update_display(self.central_labels[i])
+
+        for i, h in enumerate(self.hangars):
+            h.update_display(self.hangar_labels[i])
+
+        for i, ct in enumerate(self.controltowers):
+            ct.update_display(self.ct_labels[i])
+        
+        for i, p in enumerate(self.planes):
+            p.update_display(self.plane_labels[i])
+
+        for i, log in enumerate(LOGS): #* com ifs, so para ver as divisões entre cada batch de logs
+            if i == 0:
+                t = f"--\n{log[0]}" 
+            elif i == len(LOGS)-1:
+                t = f"{log[0]}\n--"
+            else:
+                t = f"{log[0]}"
+            label = tk.Label(self.logs_main_frame, text=t, font='Arial 8', fg=log[1])
+            label.pack()
+        LOGS.clear()
+
+
+        self.root.after(1000, self.update_loop)
+        
+list_agents = []
+
+def changes():
+    global list_agents
+    while not stop:
+        time.sleep(1)
+        for a in list_agents:
+            a.change_random()
+
+
+class ScrollableFrame(ttk.Frame):
+    def __init__(self, container, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+        canvas = tk.Canvas(self, **kwargs)
+        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
+        self.scrollable_frame = ttk.Frame(canvas)
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.pack(side="left", fill=tk.BOTH, expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+
+
+
+
+
+# AIRPORT_PLANES = {"Lisboa": [3,5], "Porto": [3,5], "Faro": [3,5]} # {localizacao: [num_planes, hangar_capacity]}
 # AIRPORT_LOCATIONS = list(AIRPORT_PLANES.keys())
 # INTERVAL = 5
 # NUM_OF_FLIGHTS_PER_INTERVAL = 2
@@ -97,145 +219,6 @@ def logs_black_text(text):
 #     def change_random(self):
 #         self.runways = random.randint(1, 10)
 #         self.location = random.choice(["Lisboa", "Porto", "Faro"])
-
-
-
-class GUI():
-    def __init__(self, agents):
-        self.root = tk.Tk()
-
-        self.agents = agents
-
-        self.airports = []
-        self.airport_labels = []
-
-        col_pointer = 0
-
-        self.central = []
-        self.central_labels = []
-        self.central_frame = ScrollableFrame(self.root, width=200, height=800, relief=tk.RAISED, borderwidth=2)
-        self.central_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
-        col_pointer += 1
-
-        self.hangars = []
-        self.hangar_labels = []
-        self.hangar_frame = ScrollableFrame(self.root, width=180, height=800, relief=tk.RAISED, borderwidth=2)
-        self.hangar_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
-        col_pointer += 1
-
-        self.controltowers = []
-        self.ct_labels = []
-        self.ct_frame = ScrollableFrame(self.root, width=260, height=800, relief=tk.RAISED, borderwidth=2)
-        self.ct_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
-        col_pointer += 1
-
-        self.planes = []
-        self.plane_labels = []
-        self.plane_frame = ScrollableFrame(self.root, width=200, height=800, relief=tk.RAISED, borderwidth=2)
-        self.plane_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
-        col_pointer += 1
-
-        self.logs_frame = ScrollableFrame(self.root, width=400, height=800, relief=tk.RAISED, borderwidth=2)
-        self.logs_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
-        self.logs_main_frame = tk.Frame(self.logs_frame.scrollable_frame)
-        self.logs_main_frame.pack(padx=5, pady=5)
-        col_pointer += 1
-
-        self.root.title("Agentes")
-        self.root.geometry("1500x850")
-
-
-        for agent in agents:
-            if agent.__class__.__name__ == "Central":
-                self.central.append(agent)
-            elif agent.__class__.__name__ == "Airport":
-                self.airports.append(agent)
-            elif agent.__class__.__name__ == "ControlTower":
-                self.controltowers.append(agent)
-            elif agent.__class__.__name__ == "Hangar":
-                self.hangars.append(agent)
-            elif agent.__class__.__name__ == "Plane":
-                self.planes.append(agent)
-
-        #* Creating displays for all the agents
-        #TODO - terminar de implementar os métodos create_display e update_display nos restantes agentes
-        # for a in self.airports:
-        #     labels = a.create_display(self.root)
-        #     self.agent_labels.append(labels)
-
-        for c in self.central:
-            labels = c.create_display(self.central_frame)
-            self.central_labels.append(labels)
-
-        for h in self.hangars:
-            labels = h.create_display(self.hangar_frame)
-            self.hangar_labels.append(labels)
-
-        for ct in self.controltowers:
-            labels = ct.create_display(self.ct_frame)
-            self.ct_labels.append(labels)
-
-        for p in self.planes:
-            labels = p.create_display(self.plane_frame)
-            self.plane_labels.append(labels)
-
-        #TODO - resto dos agentes
-
-        self.update_loop()
-
-    def update_loop(self):
-        # for i, a in enumerate(self.airports):
-        #     a.update_display(self.agent_labels[i])
-
-        for i, c in enumerate(self.central):
-            c.update_display(self.central_labels[i])
-
-        for i, h in enumerate(self.hangars):
-            h.update_display(self.hangar_labels[i])
-
-        for i, ct in enumerate(self.controltowers):
-            ct.update_display(self.ct_labels[i])
-        
-        for i, p in enumerate(self.planes):
-            p.update_display(self.plane_labels[i])
-
-        for log in LOGS:
-            label = tk.Label(self.logs_main_frame, text=log[0], font='Arial 8', fg=log[1])
-            label.pack()
-
-        LOGS.clear()
-
-        #TODO - resto dos agentes
-        
-        self.root.after(1000, self.update_loop)
-        
-list_agents = []
-
-def changes():
-    global list_agents
-    while not stop:
-        time.sleep(1)
-        for a in list_agents:
-            a.change_random()
-
-
-class ScrollableFrame(ttk.Frame):
-    def __init__(self, container, *args, **kwargs):
-        super().__init__(container, *args, **kwargs)
-        canvas = tk.Canvas(self, **kwargs)
-        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
-        self.scrollable_frame = ttk.Frame(canvas)
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(
-                scrollregion=canvas.bbox("all")
-            )
-        )
-        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.pack(side="left", fill=tk.BOTH, expand=True)
-        scrollbar.pack(side="right", fill="y")
-
 
 if __name__ == "__main__":
     # c  = Central(AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL)

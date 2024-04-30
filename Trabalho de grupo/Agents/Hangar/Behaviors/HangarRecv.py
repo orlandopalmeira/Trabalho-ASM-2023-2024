@@ -3,7 +3,6 @@ from spade.message import Message
 import jsonpickle
 from Classes.Trip import Trip
 from Config import Config as cfg
-from Utils.Prints import *
 import asyncio
 
 from Agents.Hangar.Behaviors.DispatchFlightReqs import DispatchFlightReqs

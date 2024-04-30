@@ -4,7 +4,7 @@ import jsonpickle
 
 from Classes.Trip import Trip
 from Config import Config as cfg
-from Utils.Prints import *
+from Utils.Prints import print_c
 
 class RecvRequests(CyclicBehaviour):
 

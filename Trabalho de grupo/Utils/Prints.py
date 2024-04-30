@@ -1,6 +1,25 @@
 
+color_to_code = {
+    "black": "",
+    "red": "91",
+    "green": "92",
+    "yellow": "93",
+    "blue": "94",
+    "magenta": "95",
+    "cyan": "96",
+    "white": "97",
+}
 
-def color_text(text, color_code, bold=False) -> str:
+
+def print_c(text, color="black", bold=False) -> str:
+    color_code = color_to_code[color] if color else ""
+    bold_code = "1;" if bold else ""
+    string = f"\033[{bold_code}{color_code}m{text}\033[0m"
+    print(string)
+
+
+
+def color_text(text, color_code="black", bold=False) -> str:
     bold_code = "1;" if bold else ""
     return f"\033[{bold_code}{color_code}m{text}\033[0m"
 
@@ -67,10 +86,6 @@ def print_progress_bar(iteration, total, prefix = '', suffix = '', decimals = 1,
     
 
 if __name__ == "__main__":
-    print_error("Error message")
-    print_warning("Warning message")
-    print_info("Info message")
-    print_success("Success message")
-    print_title("Title message")
-    print_debug("Debug message")
-    print_progress_bar(10, 100)
+    print_c("Hello World", "black")
+    print_c("Hello World")
+    print("Hello World")

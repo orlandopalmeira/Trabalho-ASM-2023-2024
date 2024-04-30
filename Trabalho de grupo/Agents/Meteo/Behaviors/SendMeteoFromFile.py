@@ -2,7 +2,6 @@ from spade.behaviour import PeriodicBehaviour
 from spade.message import Message
 
 from Config import Config as cfg
-from Utils.Prints import *
 from Agents.Meteo.Meteo import *
 from Classes.Weather import Weather
 

@@ -4,7 +4,7 @@ from Agents.Meteo.Behaviors.SendMeteo import SendMeteo
 from Agents.Meteo.Behaviors.SendMeteoFromFile import SendMeteoFromFile
 
 from Config import Config as cfg
-from Utils.Prints import *
+from Utils.Prints import print_c, print_warning
 from interface import logs_color
 
 from random import random
@@ -40,7 +40,7 @@ class Meteo(Agent):
                 self.cities[city] = get_weathers(city, timestamp, self.count)
 
     def print(self, msg, color = "black"):
-        print(f"{self.name}: {msg}")
+        print_c(f"{self.name}: {msg}", color)
         logs_color(f"{self.name}: {msg}", color)
 
     async def setup(self):
@@ -98,7 +98,7 @@ def get_weathers_aux(city_name, start_time, end_or_count = 169):
     response = requests.get(full_url)
     data = response.json()
     if data["cod"] != "200":
-        print_warning(f"ERROR {data['cod']}: Asking for weather in {city_name} at {full_url}")
+        print_warning(f"ERROR {data['cod']} - Asking for weather in {city_name} at {full_url}")
         return None
     weathers = data["list"]
     return weathers

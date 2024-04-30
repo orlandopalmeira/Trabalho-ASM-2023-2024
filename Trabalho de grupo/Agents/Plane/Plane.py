@@ -1,9 +1,10 @@
 from random import random
 from spade.agent import Agent
-import asyncio
+
 from Config import Config as cfg
 from Classes.Trip import Trip
 from interface import logs_color
+from Utils.Prints import print_c
 
 import tkinter as tk
 from tkinter import ttk
@@ -29,7 +30,7 @@ class Plane(Agent):
         self.add_behaviour(b)
 
     def print(self, msg, color = "black"):
-        print(f"{self.name}: {msg}")
+        print_c(f"{self.name}: {msg}", color)
         logs_color(f"{self.name}: {msg}", color)
 
     def set_trip(self, trip):

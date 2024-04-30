@@ -3,6 +3,7 @@ from random import random
 from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
 
 from interface import logs_color
+from Utils.Prints import print_c
 
 import tkinter as tk
 from tkinter import ttk
@@ -30,12 +31,12 @@ class Central(Agent):
 
     
     async def setup(self) -> None:
-        self.print(f'\nCentral agent starting...')
+        self.print(f'starting...')
         a = GenerateFlightsBehav(period=self.interval)
         self.add_behaviour(a)
 
     def print(self, msg, color = "black"):
-        print(f"\n{self.name}: {msg}\n")
+        print_c(f"\n{self.name}: {msg}\n", color)
         logs_color(f"\n{self.name}: {msg}\n", color)
     
     def add_to_historic(self, trip):

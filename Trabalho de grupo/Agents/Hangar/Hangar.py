@@ -5,7 +5,7 @@ from Agents.Hangar.Behaviors.HangarRecv import RecvPlaneRequests
 from Agents.Hangar.Behaviors.DispatchFlightReqs import DispatchFlightReqs
 
 from Config import Config as cfg
-from Utils.Prints import *
+from Utils.Prints import print_c
 from interface import logs_color
 
 import tkinter as tk
@@ -20,7 +20,7 @@ class Hangar(Agent):
         self.waiting_requests = [] # Lista de trips
 
     def print(self, msg, color = "black"):
-        print(f"{self.name}: {msg}")
+        print_c(f"{self.name}: {msg}", color)
         logs_color(f"{self.name}: {msg}", color)
 
     async def setup(self):
@@ -32,9 +32,9 @@ class Hangar(Agent):
         plane_jid_str = str(plane_jid)
         # Error detection
         if plane_jid_str in self.planes:
-            self.print(red_text(f"Plane {plane_jid_str} already in hangar {self.location}"))
+            self.print(f"Plane {plane_jid_str} already in hangar {self.location}", "red")
         if len(self.planes) == self.capacity:
-            self.print(red_text(f"Plane {plane_jid_str} could not be added to hangar {self.location} due to lack of space"))
+            self.print(f"Plane {plane_jid_str} could not be added to hangar {self.location} due to lack of space", "red")
             # return
         # Functionality
         self.planes.append(plane_jid_str)

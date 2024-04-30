@@ -9,6 +9,7 @@ from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 from Classes.Trip import Trip
 from Config import Config as cfg
 from interface import logs_color
+from Utils.Prints import print_c
 
 import json
 
@@ -30,7 +31,7 @@ class ControlTower(Agent):
         self.weather = GOOD
 
     def print(self, msg, color = "black"):
-        print(f"{self.name}: {msg}")
+        print_c(f"{self.name}: {msg}", color)
         logs_color(f"{self.name}: {msg}", color)
 
     async def setup(self) -> None:
@@ -68,11 +69,6 @@ class ControlTower(Agent):
         
         with open(meteo, 'w') as meteo_file:
             json.dump(meteo_obj, meteo_file, indent=4)
-        
-
-
-        
-
 
 
     
@@ -161,7 +157,7 @@ class ControlTower(Agent):
 
         #> Nota: As rows vão em numeros impares 
         row = 0
-        tk.Label(frame, text="Runways: ", font='Arial 10 bold').grid(column=0, row=row)
+        tk.Label(frame, text="Runways available: ", font='Arial 10 bold').grid(column=0, row=row)
         runways = self.present_runways()
         runways_label = tk.Label(frame, text=runways)
         runways_label.grid(column=0, row=row+1, padx=5, pady=5)
