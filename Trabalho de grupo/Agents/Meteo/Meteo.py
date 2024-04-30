@@ -20,7 +20,7 @@ BAD = cfg.get_bad_weather() # "Thunderstorm"
 class Meteo(Agent):
     MODE_PAST = 1
     MODE_CURRENT = 2
-    MODE_FILE = 3
+    MODE_MANUAL = 3
     
     def __init__(self, jid, password, cities, mode, timestamp = None): # Timestamp indica periodo de tempo que quer simular
         """Se não for especificada nenhuma timestamp, então o tempo é o atual de cada cidade."""
@@ -47,7 +47,7 @@ class Meteo(Agent):
             # Escrever ficheiro
             meteo_file_name = cfg.meteo_file_name()
             with open(meteo_file_name, 'w') as meteo_file:
-                json.dump(self.cities, meteo_file)
+                json.dump(self.cities, meteo_file, indent=4)
             # Ler ficheiro
             self.add_behaviour(SendMeteoFromFile(1))
         else:

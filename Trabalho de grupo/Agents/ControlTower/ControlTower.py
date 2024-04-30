@@ -47,9 +47,10 @@ class ControlTower(Agent):
         else:
             self.set_weather(BAD)
 
-    def switch_weather(self, city): #! WIP
+    def switch_weather(self): #! WIP
         """For the button that switches weather manually, but with file logic"""
         meteo = cfg.meteo_file_name()
+        city = self.location
         with open(meteo, 'r') as meteo_file:
             meteo_obj = json.load(meteo_file)
 
@@ -61,7 +62,7 @@ class ControlTower(Agent):
             meteo_obj[city] = BAD
         
         with open(meteo, 'w') as meteo_file:
-            json.dump(meteo_obj, meteo_file)
+            json.dump(meteo_obj, meteo_file, indent=4)
         
 
 
