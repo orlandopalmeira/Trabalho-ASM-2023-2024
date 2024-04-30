@@ -109,7 +109,7 @@ class GUI():
         col_pointer += 1
 
         self.root.title("Agentes")
-        self.root.geometry("1000x1000")
+        self.root.geometry("1000x850")
 
 
         for agent in agents:
