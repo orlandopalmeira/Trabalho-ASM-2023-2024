@@ -15,7 +15,7 @@ def logs_color(text, color):
 
 
 class GUI():
-    def __init__(self, agents):
+    def __init__(self, agents, meteo_mode):
         self.root = tk.Tk()
 
         self.agents = agents
@@ -87,7 +87,7 @@ class GUI():
             self.hangar_labels.append(labels)
 
         for ct in self.controltowers:
-            labels = ct.create_display(self.ct_frame)
+            labels = ct.create_display(self.ct_frame, meteo_mode)
             self.ct_labels.append(labels)
 
         for p in self.planes:

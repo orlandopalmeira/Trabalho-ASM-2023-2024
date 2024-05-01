@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from Agents.Meteo.Meteo import Meteo
 
 from spade.agent import Agent
 
@@ -136,7 +137,7 @@ class ControlTower(Agent):
 
     #> GUI methods
     # Abstract method implementation
-    def create_display(self, element):
+    def create_display(self, element, meteo_mode):
         main_frame = tk.Frame(element.scrollable_frame, highlightbackground="black", highlightthickness=2)
         main_frame.pack(padx=5, pady=5)
 
@@ -178,9 +179,10 @@ class ControlTower(Agent):
         weather_label.grid(column=0, row=row+1, padx=5, pady=5)
         row+=2
 
-        button = ttk.Button(frame, text="Change Weather", command=self.switch_weather)
-        button.grid(column=0, row=row, padx=5, pady=5)
-        row+=1
+        if meteo_mode == Meteo.MODE_MANUAL:
+            button = ttk.Button(frame, text="Change Weather", command=self.switch_weather)
+            button.grid(column=0, row=row, padx=5, pady=5)
+            row+=1
 
         return self.CTLabels(runways_label, hangar_availability_label, queue_takeoffs_label, queue_landings_label, weather_label)
     

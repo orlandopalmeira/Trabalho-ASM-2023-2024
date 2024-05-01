@@ -34,9 +34,9 @@ PASSWORD = cfg.PASSWORD
 
 #* Função que lança a interface numa nova thread
 stop_thread = False
-def gui(agents):
+def gui(agents, meteo_mode):
     global stop_thread
-    gui = GUI(agents)
+    gui = GUI(agents, meteo_mode)
     gui.root.mainloop()
     stop_thread = True
 
@@ -142,7 +142,7 @@ def main():
     #* Lancamento da interface
     INTERFACE = True
     if INTERFACE == True:
-        t = threading.Thread(target=gui, args=(agents,))
+        t = threading.Thread(target=gui, args=(agents, meteo_mode))
         t.start()
 
     # while True:
