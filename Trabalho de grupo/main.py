@@ -40,13 +40,18 @@ def gui(agents):
     stop_thread = True
 
 def remove_comments(json_str):
-    lines = json_str.split("\n")
-    lines = [line for line in lines if not line.strip().startswith("//")]
-    return "\n".join(lines)
+    lines = json_str.split('\n')
+    cleaned_lines = []
+    for line in lines:
+        if '//' in line:
+            line = line[:line.index('//')]
+        cleaned_lines.append(line)
+    return '\n'.join(cleaned_lines)
 
 def main():
     #* Configuração
-    with open("inputs/input.json", "r") as json_file:
+    input_file = "inputs/w_past.json"
+    with open(input_file, "r") as json_file:
         json_cont = json_file.read()
         json_cont = remove_comments(json_cont)
         config = json.loads(json_cont)
@@ -56,6 +61,10 @@ def main():
     INTERVAL = 10
     NUM_OF_FLIGHTS_PER_INTERVAL = 1
 
+    FLIGHT_CONFIG = config["flights"]
+
+    WEATHER_CONFIG = config["weather"]
+
     # WEB interface
     # HOSTNAME = "127.0.0.1"
     # CT_PORT = 1000
@@ -63,19 +72,19 @@ def main():
 
     agents = []
 
-    # Airports
+    #* Airports
     for location in AIRPORT_LOCATIONS:
         airport = Airport(cfg.get_airport_jid(location), PASSWORD, location)
         airport.start().result()
         agents.append(airport)
 
-    # CTs, Hangars and Planes
+    #* CTs, Hangars and Planes
     current_plane_id = 1
     for location in AIRPORT_LOCATIONS:
-        # Interpretação da configuração
+        #* Interpretação da configuração
         num_planes, hangar_capacity, runways = AIRPORTS_CONFIG[location]
         hangar_availability = hangar_capacity - num_planes
-        # Criação do agente CT
+        #* Criação do agente CT
         ct = ControlTower(cfg.get_ct_jid(location), PASSWORD, location, runways, hangar_availability)
         ct.start().result()
         agents.append(ct)
@@ -98,23 +107,29 @@ def main():
             plane.start().result()
             agents.append(plane)
             hangar.add_plane(plane_name)
-        
+
+
+    #* Meteo
+    meteo_jid = cfg.get_meteo_jid()
+    meteo_mode = WEATHER_CONFIG["mode"]
+    dt = None
+    if meteo_mode == Meteo.MODE_PAST:
+        dt = WEATHER_CONFIG["from"]
+    meteo = Meteo(meteo_jid, PASSWORD, AIRPORT_LOCATIONS, meteo_mode, datetime=dt)
+    meteo.start().result()
+    agents.append(meteo) 
     
-    # Central - Só a inicializo aqui para dar tempo aos outros agentes de se inicializarem
+    #* Central - Só a inicializo aqui para dar tempo aos outros agentes de se inicializarem
     central_jid = cfg.get_central_jid()
     # Flight generation config
     # NUM_OF_FLIGHTS_PER_INTERVAL = flight_config["num_of_flights_per_interval"]
     # INTERVAL = flight_config["interval"]
-    flight_config = config["flights"]
-    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL, flight_config)
+    
+    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL, FLIGHT_CONFIG)
     central.start().result()
     agents.append(central)
 
-    meteo_jid = cfg.get_meteo_jid()
-    meteo_mode = Meteo.MODE_MANUAL
-    meteo = Meteo(meteo_jid, PASSWORD, AIRPORT_LOCATIONS, meteo_mode)
-    meteo.start().result()
-    agents.append(meteo)
+    
     
 
     #* Lancamento da interface

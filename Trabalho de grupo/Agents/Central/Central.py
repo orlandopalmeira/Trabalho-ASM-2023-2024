@@ -12,20 +12,23 @@ class Central(Agent):
 
     def __init__(self, jid, password, airport_locations, num_of_flights_per_interval, interval, flights = None):
         super().__init__(jid, password)
-        # Constant variables
         self.airport_locations = airport_locations
         self.num_of_flights_per_interval = num_of_flights_per_interval
         self.interval = interval
-        self.historic_max_size = 3
-        self.repeat_flight_plan = True if flights["repeat"] == True else False # Para o caso de ser None, ir a False
+        if flights.get("repeat") == None:
+            flights["repeat"] = False
+        self.repeat_flight_plan = flights["repeat"] # Para o caso de ser None, ir a False
 
         # Auxs
-        plan = flights["plan"]
-        self.flight_plan = [(p["origin"], p["destination"]) for p in plan for _ in range(p["reps"])] # [(origin, destination), ...]
-        self.flight_plan_index = 0
+        if flights.get("plan") == None:
+            self.flight_plan = None
+        else:
+            plan = flights["plan"]
+            self.flight_plan = [(p["origin"], p["destination"]) for p in plan for _ in range(p["reps"])] # [(origin, destination), ...]
+            self.flight_plan_index = 0
 
-        # Variables
-        self.historic = [] # Com um histórico de 10 viagens
+        self.historic_max_size = 5
+        self.historic = []
         self.scarse_hangars = []
         self.crowded_hangars = [] 
 

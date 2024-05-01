@@ -1,0 +1,15 @@
+// {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
+{
+    "airports": {
+        "Lisboa": [2, 5, 4],
+        "Porto": [4, 5, 3],
+        "Faro": [3, 5, 2]
+    },
+    "flights": {
+        "random": true
+    },
+    "weather": {
+        "mode": "past", // "manual" ou "current" ou "past"
+        "from": "2024-01-04 20:00:00" // a data só pode ir no máximo até um ano atrás
+    }
+}
