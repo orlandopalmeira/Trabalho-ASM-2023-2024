@@ -111,7 +111,7 @@ class Central(Agent):
     def present_historic(self) -> str:
         final_str = f"(Last {self.historic_max_size} flights)\n"
         for historic in self.historic:
-            final_str += f"- {historic}\n"
+            final_str += f"\n- {historic}"
         return final_str
     
     def present_scarse_hangars(self) -> str:

@@ -1,0 +1,1 @@
+# Diretoria para ficheiros auxiliares à execução do programa

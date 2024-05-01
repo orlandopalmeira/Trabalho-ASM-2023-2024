@@ -3,14 +3,18 @@ import sys
 import Utils.GeoDistance as geo
 
 class Trip:
+    cur_id = 1
     def __init__(self, origin, destination):
-        self.c_id = random.randint(0, 10000)
+        # self.c_id = random.randint(0, 10000)
+        self.c_id = Trip.cur_id
+        Trip.cur_id += 1
         self.origin = origin # String
         self.destination = destination # String
         try:
             self.distance = geo.calculate_distance(origin, destination)
         except:
-            self.distance = 500 #! TEST 
+            print(f"!!!Error calculating distance between {origin} and {destination}. USING STANDARD!!1")
+            self.distance = 500
     
     def get_origin(self) -> str:
         return self.origin
@@ -39,7 +43,8 @@ class Trip:
 
     def __str__(self):
         # return f"({self.c_id}) {self.origin} -> {self.destination}"
-        return f"({self.origin} -> {self.destination})"
+        # return f"({self.origin} -> {self.destination})"
+        return f"{self.c_id}: ({self.origin} -> {self.destination})"
     
     def __repr__(self) -> str:
         return f"({self.origin} -> {self.destination})"

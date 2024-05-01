@@ -94,17 +94,6 @@ def get_exact_past_weather(city_name: str, datetime_str: str):
 
 
 #> Interpreta info das APIs
-def weather_to_bool(weather_instance):
-    """Transforms the weather value to a boolean value. If True it means that the weather is good. Else should be bad."""
-    veredict = True
-    weathers_list = weather_instance["weather"]
-    for w in weathers_list:
-        actual_weather = w["main"]
-        if is_bad_weather_ow(actual_weather):
-            veredict = False
-            # print(weathers_list)
-            break
-    return veredict
 
 def weatherinfo_to_weather(weather_instance):
     weathers_list = weather_instance["weather"]

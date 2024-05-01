@@ -44,16 +44,7 @@ class ControlTower(Agent):
         if was_bad_weather and not self.is_bad_weather(weather):
             self.add_behaviour(DispatchPlanes()) 
 
-    def switch_weather_old(self): #! WIP old
-        """For the button that switches weather manually"""
-        # GOOD = "Clear"
-        # BAD = "Thunderstorm"
-        if self.is_bad_weather(self.weather):
-            self.set_weather(GOOD)
-        else:
-            self.set_weather(BAD)
-
-    def switch_weather(self): #! WIP
+    def switch_weather(self):
         """For the button that switches weather manually, but with file logic"""
         meteo = cfg.meteo_file_name()
         city = self.location
@@ -61,7 +52,7 @@ class ControlTower(Agent):
             meteo_obj = json.load(meteo_file)
 
         if self.is_bad_weather(meteo_obj[city]):
-            # self.set_weather(GOOD)
+            # self.set_weather(GOOD) #! não é preciso o set_weather, pq isto vai mudar um ficheiro que o agente METEO está a ler e vai informar sempre a CT desse valor. E ao receber esse valor do METEO, é que se vai executar o set_weather
             meteo_obj[city] = GOOD
         else:
             # self.set_weather(BAD)
@@ -84,7 +75,7 @@ class ControlTower(Agent):
 
     def reserve_runway_for_landing(self):
         """Reserve a runway for a plane to take off. Returns False if no hangars or runways are available, and if meteo conditions are bad."""
-        if self.runways_available > 0 and self.hangar_availability > 0 and not self.is_bad_weather(self.weather): #! e mais (trazer info de meteorologia)
+        if self.runways_available > 0 and self.hangar_availability > 0 and not self.is_bad_weather(self.weather): #! Condições de movimentação de aviões
             self.runways_available -= 1
             return True
         else:
@@ -92,13 +83,13 @@ class ControlTower(Agent):
         
     def reserve_runway_for_takeoff(self):
         """Reserve a runway for a plane to take off. Returns False if no hangars or runways are available, and if meteo conditions are bad."""
-        if self.runways_available > 0 and not self.is_bad_weather(self.weather): #! e mais (trazer info de meteorologia)
+        if self.runways_available > 0 and not self.is_bad_weather(self.weather): #! Condições de movimentação de aviões
             self.runways_available -= 1
             return True
         else:
             return False
 
-    def add_to_takeoff_queue(self, plane_jid: str, trip: Trip): #! Ver melhor se não seria melhor apenas armazenar o plane_jid e fazer com que o hangar já envie ao avião a sua trip a realizar.
+    def add_to_takeoff_queue(self, plane_jid: str, trip: Trip):
         self.queue_takeoffs.append((plane_jid, trip))
         self.add_behaviour(DispatchPlanes())
 
@@ -195,9 +186,6 @@ class ControlTower(Agent):
     
     # Abstract method implementation
     def update_display(self, labels_obj):
-        # labels_obj.runways_label.config(text=f"Runways: {str(self.runways_available)}/{str(self.runways_capacity)}")
-        # labels_obj.queue_takeoffs_label.config(text=f"Queue take-offs: {str(self.queue_takeoffs)}")
-        # labels_obj.queue_landings_label.config(text=f"Queue landings: {str(self.queue_landings)}")
         labels_obj.runways_label.config(text=self.present_runways())
         labels_obj.hangar_availability_label.config(text=self.present_hangar_availability())
         labels_obj.queue_takeoffs_label.config(text=self.present_queue_takeoffs())

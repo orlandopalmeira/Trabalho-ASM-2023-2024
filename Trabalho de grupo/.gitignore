@@ -1,2 +1,3 @@
 .env
 errors.txt
+resources/meteo.json
