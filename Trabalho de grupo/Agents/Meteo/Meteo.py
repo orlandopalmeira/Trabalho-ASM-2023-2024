@@ -18,17 +18,10 @@ class Meteo(Agent):
     def __init__(self, jid, password, cities, mode, datetime = None): # Timestamp indica a partir de que altura se quer a meteorologia, se corrido em "past" mode
         super().__init__(jid, password)
         self.cities = cities
-        # self.cities = {city: None for city in cities}
         self.mode = mode
 
         self.cur_datetime = datetime
         self.period = 30 # Frequência de envio de informação em segundos
-        # self.count = 169
-        # self.cur_count = 0
-
-        # if self.get_mode() == Meteo.MODE_PAST:
-        #     for city in self.cities:
-        #         self.cities[city] = get_weathers(city, timestamp, self.count)
 
     def print(self, msg, color = "black"):
         print_c(f"{self.name}: {msg}", color)
@@ -51,7 +44,8 @@ class Meteo(Agent):
     
     def next_datetime(self, hours = 1):
         """Avança 1 hora na datetime corrente"""
-        ts = date_to_ts(self.cur_datetime) + 3600
+        seconds = hours * 3600
+        ts = date_to_ts(self.cur_datetime) + seconds
         self.cur_datetime = ts_to_date(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     

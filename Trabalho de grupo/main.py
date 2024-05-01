@@ -2,6 +2,7 @@ import time
 import tkinter as tk
 import threading
 import json
+import sys
 
 from spade.agent import Agent
 from dotenv import load_dotenv
@@ -50,7 +51,11 @@ def remove_comments(json_str):
 
 def main():
     #* Configuração
-    input_file = "inputs/w_past.json"
+    # input_file = "inputs/w_past.json"
+    input_file = "inputs/w_current.json"
+    if len(sys.argv) > 1:
+        input_file = sys.argv[1]
+    
     with open(input_file, "r") as json_file:
         json_cont = json_file.read()
         json_cont = remove_comments(json_cont)

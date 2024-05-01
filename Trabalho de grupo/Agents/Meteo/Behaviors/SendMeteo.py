@@ -28,5 +28,7 @@ class SendMeteo(PeriodicBehaviour):
 
             msg = Message(to=cfg.get_ct_jid(city), body=jsonpickle.encode(weather), metadata={"performative": "inform"})
             await self.send(msg)
-        # self.agent.cur_timestamp += 3600
-        self.agent.next_datetime() # Avança 1 hora
+
+        if self.agent.get_mode() == self.agent.MODE_PAST: # To advance to next time, for next weather in PAST MODE
+            # self.agent.cur_timestamp += 3600
+            self.agent.next_datetime() # Avança 1 hora
