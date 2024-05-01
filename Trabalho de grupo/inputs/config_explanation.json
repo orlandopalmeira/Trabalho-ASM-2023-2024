@@ -1,0 +1,35 @@
+// {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
+{
+    "airports": {
+        "Lisboa": [2, 5, 4],
+        "Porto": [4, 5, 3],
+        "Faro": [3, 5, 2]
+    },
+    "flights": {
+        "random": false,
+        "interval": 10, // intervalo de tempo entre voos gerados (opcional. default: 10)
+        "num_of_flights_per_interval": 1, // número de voos gerados por intervalo (opcional. default: 1)
+        "plan": [
+            {
+                "origin": "Lisboa",
+                "destination": "Porto",
+                "reps": 4
+            },
+            {
+                "origin": "Porto",
+                "destination": "Lisboa",
+                "reps": 1
+            },
+            {
+                "origin": "Faro",
+                "destination": "Lisboa",
+                "reps": 2
+            }
+        ],
+        "repeat": false // se true, repete o plano de voos infinitamente (opcional. default: false)
+    },
+    "weather": {
+        "mode": "past", // "manual" ou "current" ou "past"
+        "from": "2024-01-04 20:00:00" // a data só pode ir no máximo até um ano atrás
+    }
+}

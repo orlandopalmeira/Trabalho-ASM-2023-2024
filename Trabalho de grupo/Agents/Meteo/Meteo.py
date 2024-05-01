@@ -31,10 +31,14 @@ class Meteo(Agent):
         self.print(f'starting...')
         if self.get_mode() == Meteo.MODE_MANUAL:
             # Escrever ficheiro
+            cities_weather = {}
+            for city in self.cities:
+                weather = "Clear"
+                cities_weather[city] = weather
             meteo_file_name = cfg.meteo_file_name()
             with open(meteo_file_name, 'w') as meteo_file:
-                json.dump(self.cities, meteo_file, indent=4)
-            # Ler ficheiro
+                json.dump(cities_weather, meteo_file, indent=4)
+            # Começar behaviour de leitura de ficheiro para obtenção de weathers
             self.add_behaviour(SendMeteoFromFile(1))
         else:
             self.add_behaviour(SendMeteo(self.period))

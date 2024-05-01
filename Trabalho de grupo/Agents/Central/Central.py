@@ -10,22 +10,21 @@ from tkinter import ttk
 
 class Central(Agent):
 
-    def __init__(self, jid, password, airport_locations, num_of_flights_per_interval, interval, flights = None):
+    # def __init__(self, jid, password, airport_locations, num_of_flights_per_interval, interval, flights = None):
+    def __init__(self, jid, password, airport_locations, flights_cfg):
         super().__init__(jid, password)
         self.airport_locations = airport_locations
-        self.num_of_flights_per_interval = num_of_flights_per_interval
-        self.interval = interval
-        if flights.get("repeat") == None:
-            flights["repeat"] = False
-        self.repeat_flight_plan = flights["repeat"] # Para o caso de ser None, ir a False
+        self.num_of_flights_per_interval = flights_cfg.get("num_of_flights_per_interval", 1)
+        self.interval = flights_cfg.get("interval", 10)
 
         # Auxs
-        if flights.get("plan") == None:
+        if flights_cfg.get("plan") == None:
             self.flight_plan = None
         else:
-            plan = flights["plan"]
+            plan = flights_cfg["plan"]
             self.flight_plan = [(p["origin"], p["destination"]) for p in plan for _ in range(p["reps"])] # [(origin, destination), ...]
             self.flight_plan_index = 0
+            self.repeat_flight_plan = flights_cfg.get("repeat", False)
 
         self.historic_max_size = 5
         self.historic = []
@@ -110,19 +109,23 @@ class Central(Agent):
 
 
     def present_historic(self) -> str:
-        final_str = ""
+        final_str = f"(Last {self.historic_max_size} flights)\n"
         for historic in self.historic:
             final_str += f"- {historic}\n"
         return final_str
     
     def present_scarse_hangars(self) -> str:
         final_str = ""
+        if len(self.scarse_hangars) == 0:
+            final_str = "No scarse hangars."
         for hangar in self.scarse_hangars:
             final_str += f"- {hangar}\n"
         return final_str
     
     def present_crowded_hangars(self) -> str:
         final_str = ""
+        if len(self.crowded_hangars) == 0:
+            final_str = "No crowded hangars."
         for hangar in self.crowded_hangars:
             final_str += f"- {hangar}\n"
         return final_str

@@ -27,12 +27,3 @@ class RecvPlaneRequests(CyclicBehaviour):
             self.agent.add_plane(plane_jid)
 
 
-    # async def get_plane(self):
-    #     INTERVAL = 5
-    #     plane = self.agent.pop_plane()
-    #     while plane is None:
-    #         print_warning(f"{self.agent.name} has no planes available. Retrying in {INTERVAL} seconds...")
-    #         await asyncio.sleep(INTERVAL)
-    #         plane = self.agent.pop_plane()
-    #     return plane
-

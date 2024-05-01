@@ -51,8 +51,7 @@ def remove_comments(json_str):
 
 def main():
     #* Configuração
-    # input_file = "inputs/w_past.json"
-    input_file = "inputs/w_current.json"
+    input_file = "inputs/std.json"
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
     
@@ -61,10 +60,17 @@ def main():
         json_cont = remove_comments(json_cont)
         config = json.loads(json_cont)
     # AIRPORT_PLANES = {"Lisboa": [3,5,4], "Porto": [3,5,3], "Faro": [3,5,2]} # {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
+    if config.get("airports") == None:
+        print_error("No airports configuration found in configuration file.")
+        return
+    elif config.get("flights") == None:
+        print_error("No flights configuration found in configuration file.")
+        return
+    elif config.get("weather") == None:
+        print_error("No weather configuration found in configuration file.")
+        return
     AIRPORTS_CONFIG = config["airports"]
     AIRPORT_LOCATIONS = list(AIRPORTS_CONFIG.keys())
-    INTERVAL = 10
-    NUM_OF_FLIGHTS_PER_INTERVAL = 1
 
     FLIGHT_CONFIG = config["flights"]
 
@@ -126,11 +132,7 @@ def main():
     
     #* Central - Só a inicializo aqui para dar tempo aos outros agentes de se inicializarem
     central_jid = cfg.get_central_jid()
-    # Flight generation config
-    # NUM_OF_FLIGHTS_PER_INTERVAL = flight_config["num_of_flights_per_interval"]
-    # INTERVAL = flight_config["interval"]
-    
-    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, NUM_OF_FLIGHTS_PER_INTERVAL, INTERVAL, FLIGHT_CONFIG)
+    central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, FLIGHT_CONFIG)
     central.start().result()
     agents.append(central)
 

@@ -23,7 +23,9 @@
                 "destination": "Lisboa",
                 "reps": 2
             }
-        ],
-        "repeat": false
+        ]
+    },
+    "weather": {
+        "mode": "manual" // "manual" ou "current" ou "past"
     }
 }
