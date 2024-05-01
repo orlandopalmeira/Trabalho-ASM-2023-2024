@@ -1,12 +1,20 @@
 from spade.agent import Agent
-from random import random
-from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
+from spade.message import Message
 
+from Agents.Central.Behaviors.GenerateFlightsBehav import GenerateFlightsBehav
+from Agents.Central.Behaviors.CentralRecv import RecvRequests
+from Agents.Central.Behaviors.ResolveHangars import ResolveHangars
+
+from Classes.HangarReport import HangarReport
+
+from Config import Config as cfg
 from interface import logs_color
 from Utils.Prints import print_c
 
+import jsonpickle
+
 import tkinter as tk
-from tkinter import ttk
+# from tkinter import ttk
 
 class Central(Agent):
 
@@ -35,7 +43,19 @@ class Central(Agent):
     async def setup(self) -> None:
         self.print(f'starting...')
         a = GenerateFlightsBehav(period=self.interval)
+        b = RecvRequests()
+        c = ResolveHangars(period=10)
         self.add_behaviour(a)
+        self.add_behaviour(b)
+        self.add_behaviour(c)
+
+    def create_trip_msg(self, trip) -> Message:
+        self.print(f"Flight generated {trip}", "blue")
+        airport_name = cfg.get_airport_jid(trip.get_origin())
+        msg = Message(to=airport_name, metadata={'performative':'request'}, body=jsonpickle.encode(trip))
+        self.add_to_historic(trip)
+        return msg
+        
 
     def print(self, msg, color = "black"):
         print_c(f"\n{self.name}: {msg}\n", color)
@@ -47,25 +67,62 @@ class Central(Agent):
         self.historic.append(trip)
 
     def get_historic(self):
-        return self.historic
+        return self.historic.copy()
     
-    def add_to_scarse_hangars(self, hangar):
-        self.scarse_hangars.append(hangar)
-
     def get_scarse_hangars(self):
-        return self.scarse_hangars
+        return self.scarse_hangars.copy()
     
-    def add_to_crowded_hangars(self, hangar):
-        self.crowded_hangars.append(hangar)
-
     def get_crowded_hangars(self):
-        return self.crowded_hangars
+        return self.crowded_hangars.copy()
     
-    def remove_from_scarse_hangars(self, hangar):
-        self.scarse_hangars.remove(hangar)
+    def add_to_scarse_hangars(self, hangar_rep: HangarReport):
+        # Remover um pedido se já existir #! talvez fazer mensagens de remover de scrarse/crowded hangar e fazer com que esta remoção de baixo, o seu timestamp fique no novo pedido
+        for hr in self.scarse_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                self.scarse_hangars.remove(hr)
+                break
+        # Insert ordenado consoante o __lt__ definido na classe HangarReport e em que os primeiros têm prioridade
+        for i, hr in enumerate(self.scarse_hangars):
+            if hr < hangar_rep:
+                self.scarse_hangars.insert(i, hangar_rep)
+                return
+        self.scarse_hangars.append(hangar_rep)
+    
+    def add_to_crowded_hangars(self, hangar_rep: HangarReport):
+        # Remover um pedido se já existir #! talvez fazer mensagens de remover de scrarse/crowded hangar e fazer com que esta remoção de baixo, o seu timestamp fique no novo pedido
+        for hr in self.crowded_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                self.crowded_hangars.remove(hr)
+                break
+        # Insert ordenado consoante o __lt__ definido na classe HangarReport e em que os primeiros têm prioridade
+        for i, hr in enumerate(self.crowded_hangars):
+            if hr < hangar_rep:
+                self.crowded_hangars.insert(i, hangar_rep)
+                return
+        self.crowded_hangars.append(hangar_rep)
+    
+    def remove_from_scarse_hangars(self, hangar_rep: HangarReport):
+        for hr in self.scarse_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                self.scarse_hangars.remove(hr)
+                return
 
-    def remove_from_crowded_hangars(self, hangar):
-        self.crowded_hangars.remove(hangar)
+    def remove_from_crowded_hangars(self, hangar_rep: HangarReport):
+        for hr in self.crowded_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                self.crowded_hangars.remove(hr)
+                return
+            
+    #! Nao tenho a certeza da utilidade desta função, talvez apenas se remova quando ele for tratado
+    def decrease_priority(self, hangar_rep: HangarReport):
+        for hr in self.scarse_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                hr.decrease_priority()
+                return
+        for hr in self.crowded_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                hr.decrease_priority()
+                return
 
 
     #> GUI

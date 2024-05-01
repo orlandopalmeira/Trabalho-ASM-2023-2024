@@ -43,6 +43,20 @@ def calculate_distance(city1, city2):
         distance = None
     return distance
 
+def get_nearest_city(city_name, cities_arg):
+    cities = cities_arg.copy()
+    if city_name in cities:
+        cities.remove(city_name)
+    nearest = cities[0]
+    min_distance = calculate_distance(city_name, nearest)
+
+    for city in cities[1:]:
+        distance = calculate_distance(city_name, city)
+        if distance < min_distance:
+            min_distance = distance
+            nearest = city
+    return nearest
+
 def ponto_progresso_caminho(cidade_A, cidade_B, progresso: float):
     # Obter as coordenadas geográficas das cidades A e B
     coordenadas_A = geocode_city(cidade_A)

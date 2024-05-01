@@ -15,7 +15,7 @@ class RecvRequests(CyclicBehaviour):
     async def run(self):
         msg = await self.receive(timeout=20)
         if not msg:
-            # self.agent.print(f"No message received", "yellow")
+            # self.agent.print(f"No message received", "red")
             return
         msg_body = jsonpickle.decode(msg.body)
         

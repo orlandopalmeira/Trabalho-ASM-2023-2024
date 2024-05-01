@@ -4,7 +4,7 @@ import Utils.GeoDistance as geo
 
 class Trip:
     cur_id = 1
-    def __init__(self, origin, destination):
+    def __init__(self, origin, destination, type_flight = "normal"):
         # self.c_id = random.randint(0, 10000)
         self.c_id = Trip.cur_id
         Trip.cur_id += 1
@@ -15,6 +15,7 @@ class Trip:
         except:
             print(f"!!!Error calculating distance between {origin} and {destination}. USING STANDARD!!1")
             self.distance = 500
+        self.type_flight = type_flight
     
     def get_origin(self) -> str:
         return self.origin
@@ -30,6 +31,9 @@ class Trip:
     
     def get_distance(self) -> float:
         return self.distance
+    
+    def get_type_flight(self) -> str:
+        return self.type_flight
 
     @staticmethod    
     def generate_random_trip(locations):
@@ -37,17 +41,20 @@ class Trip:
         destination = random.choice(locations)
         while destination == origin:
             destination = random.choice(locations)
-        # return (origin, destination)
         return Trip(origin, destination)
 
 
     def __str__(self):
-        # return f"({self.c_id}) {self.origin} -> {self.destination}"
-        # return f"({self.origin} -> {self.destination})"
-        return f"{self.c_id}: ({self.origin} -> {self.destination})"
+        string = f"{self.c_id}: ({self.origin} -> {self.destination})"
+        if self.type_flight != "normal":
+            string += "*" # Asterisco indica que a viagem é de balanceamento de carga dos hangares
+        return string
     
     def __repr__(self) -> str:
-        return f"({self.origin} -> {self.destination})"
+        string = f"{self.c_id}: ({self.origin} -> {self.destination})"
+        if self.type_flight != "normal":
+            string += "*" # Asterisco indica que a viagem é de balanceamento de carga dos hangares
+        return string
 
 if __name__ == "__main__":
     trip = Trip("Lisboa", "Porto")

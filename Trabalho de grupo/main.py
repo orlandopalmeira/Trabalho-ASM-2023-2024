@@ -23,7 +23,6 @@ from Classes.Trip import Trip
 
 # Utils
 from Config import Config as cfg
-import Utils.GeoDistance as geo
 from Utils.Prints import *
 from interface import GUI
 

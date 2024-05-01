@@ -10,7 +10,7 @@ LOGS = []
 
 # Função geral
 def logs_color(text, color):
-    LOGS.insert(0, (text, color)) #! Não se pode fazer isto pq ao meter na dashboard, o novo conteudo é metido em baixo e assim ficariam secções no sentido baixo->cima, mas 
+    LOGS.insert(0, (text, color))
     # LOGS.append((text, color)) 
 
 

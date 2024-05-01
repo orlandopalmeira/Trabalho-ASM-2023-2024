@@ -1,4 +1,3 @@
-from random import random
 from spade.agent import Agent
 
 from Agents.Hangar.Behaviors.HangarRecv import RecvPlaneRequests
@@ -7,6 +6,8 @@ from Agents.Hangar.Behaviors.DispatchFlightReqs import DispatchFlightReqs
 from Config import Config as cfg
 from Utils.Prints import print_c
 from interface import logs_color
+
+from Classes.HangarReport import HangarReport
 
 import tkinter as tk
 
@@ -26,6 +27,10 @@ class Hangar(Agent):
     async def setup(self):
         self.print(f'{self.name} starting...')
         self.add_behaviour(RecvPlaneRequests())
+
+    def get_percent_full(self) -> float:
+        """Retorna entre 0 e 1 a percentagem de ocupação do hangar."""
+        return len(self.planes) / self.capacity
     
 
     def add_plane(self, plane_jid):
@@ -38,18 +43,21 @@ class Hangar(Agent):
             # return
         # Functionality
         self.planes.append(plane_jid_str)
-        # TODO Meter aqui lógica de envio de mensagem à central caso o número de aviões seja alto
         if len(self.planes) == 1: # Despachar Flights, a partir de agora pq antes não havia aviões. E agora é possível despachar algum.
             self.add_behaviour(DispatchFlightReqs())
+        # TODO Meter aqui lógica de envio de mensagem à central caso o número de aviões seja alto
+        elif len(self.planes) == self.capacity: #! Talvez faça um if relativo a percentagens com a get_percent_full
+            self.print(f"I'm now full", "red")
         
     
     def pop_plane(self):
         """Caso não haja aviões disponíveis, retorna None. Caso contrário, retorna o jid do avião."""
         try:
-            return self.planes.pop(0)
-            # TODO Meter aqui lógica de envio de mensagem à central caso o número de aviões seja baixo
+            plane = self.planes.pop(0)
         except IndexError:
             return None
+        # TODO Meter aqui lógica de envio de mensagem à central caso o número de aviões seja baixo
+        return plane
 
     def add_waiting_request(self, trip):
         self.waiting_requests.append(trip)

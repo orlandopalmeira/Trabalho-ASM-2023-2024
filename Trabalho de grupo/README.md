@@ -6,11 +6,16 @@
 
 ## Torre de Controlo (CT)
 
+(descolagem)
 - Receber avião vindo do **hangar** e começar a viagem (performative: *inform*, body: *{plane_jid: String, trip: Trip}*)
 - Receber confirmação de descolagem do **avião** (performative: *confirm*, body: *"plane_jid"*)
 
+(aterragem)
 - Receber pedidos de aterragem dos **aviões** perto do aeroporto destino (performative: *request*, body: *"plane_jid"*)
 - Receber confirmação de fim de aterragem do **avião** (performative: *inform*, body: *"plane_jid"*)
+
+(outros)
+- Receber informação de condições meteorológicas do **aeroporto** (performative: *inform*, body: *"weather"*)
 
 ## Hangar
 
@@ -27,7 +32,7 @@
 
 ## Central
 
-- (TODO) Pedidos de gestão de stock do hangar para balancear hangares (performative: *???*, body: *???*)
+- Recebe pedidos de gestão de stock do hangar para balancear hangares (performative: *inform*, body: *HangarReport*)
 
 # Use cases
 ## 1. Realizar um flight (DESCOLAGEM)
