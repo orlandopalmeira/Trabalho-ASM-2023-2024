@@ -55,6 +55,8 @@ class GUI():
         self.logs_main_frame.pack(padx=5, pady=5)
         col_pointer += 1
 
+        self.logs_labels = []
+
         self.root.title("Agentes")
         self.root.geometry("1500x850")
 
@@ -111,17 +113,34 @@ class GUI():
         for i, p in enumerate(self.planes):
             p.update_display(self.plane_labels[i])
 
-        for i, log in enumerate(LOGS): #* com ifs, so para ver as divisões entre cada batch de logs
-            if i == 0:
-                t = f"--\n{log[0]}" 
-            elif i == len(LOGS)-1:
-                t = f"{log[0]}\n--"
-            else:
-                t = f"{log[0]}"
-            label = tk.Label(self.logs_main_frame, text=t, font='Arial 8', fg=log[1])
-            label.pack()
-        LOGS.clear()
+        # for i, log in enumerate(LOGS): #* com ifs, so para ver as divisões entre cada batch de logs
+        #     if i == 0:
+        #         t = f"--\n{log[0]}" 
+        #     elif i == len(LOGS)-1:
+        #         t = f"{log[0]}\n--"
+        #     else:
+        #         t = f"{log[0]}"
+        #     label = tk.Label(self.logs_main_frame, text=t, font='Arial 8', fg=log[1])
+        #     label.pack()
+        # LOGS.clear()
 
+        i = 0
+        logs = LOGS[:]
+        for i, log_label in enumerate(self.logs_labels):
+            # print(f"Config: {i}")
+            log_label.config(text=logs[i][0], fg=logs[i][1])
+
+        i+=1
+        while i < len(logs):
+            # print(f"Create: {i}")
+            label = tk.Label(self.logs_main_frame, text=logs[i][0], font='Arial 8', fg=logs[i][1])
+            self.logs_labels.append(label)
+            label.pack()
+            i+=1
+        i = 0
+
+        # print(f"Len logs: {len(logs)}")
+        # print(f"Len LOGS: {len(LOGS)}")
 
         self.root.after(1000, self.update_loop)
         
