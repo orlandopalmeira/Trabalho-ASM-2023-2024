@@ -106,7 +106,7 @@ def main():
         hangar = Hangar(cfg.get_hangar_jid(location), PASSWORD, location, hangar_capacity)
         hangar.start().result()
         agents.append(hangar)
-        # WEB interface CT
+        # WEB interface hangar
         # hangar.web.start(hostname=HOSTNAME, port=H_PORT)
         # H_PORT += 1
 

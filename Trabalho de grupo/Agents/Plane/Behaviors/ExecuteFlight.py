@@ -13,7 +13,7 @@ class ExecuteFlight(OneShotBehaviour):
         await asyncio.sleep(TEMPO_DE_DESCOLAGEM)
         # Mensagem de confirmação de descolagem
         destin = cfg.get_ct_jid(self.agent.get_location())
-        msg = Message(to=destin, body=jsonpickle.encode("avião"), metadata={"performative": "confirm"})
+        msg = Message(to=destin, body=jsonpickle.encode(str(self.agent.name)), metadata={"performative": "confirm"})
         await self.send(msg)
         self.agent.set_flying()
 

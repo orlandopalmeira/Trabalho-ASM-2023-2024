@@ -42,9 +42,10 @@ class Central(Agent):
 
     
     async def setup(self) -> None:
+        RESOLVE_HANGARS_PERIOD = 3
         self.print(f'starting...')
         recv = RecvRequests()
-        resolve = ResolveHangars(period=6)
+        resolve = ResolveHangars(period=RESOLVE_HANGARS_PERIOD) # Este behavior é periódico para casos em que um hangar fique mt tempo sem solução, ser potencialmente resolvido
         gf = GenerateFlightsBehav(period=self.interval)
         self.add_behaviour(recv)
         self.add_behaviour(resolve)

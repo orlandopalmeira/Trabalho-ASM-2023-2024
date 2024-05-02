@@ -15,7 +15,7 @@
 - Receber confirmação de fim de aterragem do **avião** (performative: *inform*, body: *"plane_jid"*)
 
 (outros)
-- Receber informação de condições meteorológicas do **aeroporto** (performative: *inform*, body: *"weather"*)
+- Receber informação de condições meteorológicas do agente **Meteo** (performative: *inform*, body: *"weather"*)
 
 ## Hangar
 

@@ -23,7 +23,6 @@ class Plane(Agent):
         # self.percentage_complete = 0 # Percentagem da viagem que já foi completada
         self.status = Plane.LANDED
         # self.tempo = 0 # Talvez para indicar quanto tempo a viagem demorará, mas talvez apenas seja utilizado num behaviour
-        # self.carga = 0 # Talvez carga possa ser um atributo extra interessante para haver decisoes de prioridade
         self.print(f'starting...')
         
         b = RecvRequests()

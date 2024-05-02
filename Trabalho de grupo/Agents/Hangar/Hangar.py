@@ -7,7 +7,7 @@ from Config import Config as cfg
 from Utils.Prints import print_c
 from interface import logs_color
 
-from Agents.Hangar.Behaviors.SendHangarRep import SendHangarRep
+from Agents.Hangar.Behaviors.CheckHangarState import CheckHangarState
 
 import tkinter as tk
 
@@ -59,9 +59,7 @@ class Hangar(Agent):
         elif len(self.planes) == self.capacity:
             self.print(f"I'm now full", "red")
         #* lógica de envio de mensagem à central caso o número de aviões seja alto
-        if self.is_too_full():
-            self.print(f"Sending crowded report to central", "dark goldenrod")
-            self.add_behaviour(SendHangarRep())
+        self.add_behaviour(CheckHangarState())
         
         
     
@@ -71,10 +69,10 @@ class Hangar(Agent):
             plane = self.planes.pop(0)
         except IndexError:
             return None
+        if len(self.planes) == 0:
+            self.print(f"I'm now empty", "red")
         #* lógica de envio de mensagem à central caso o número de aviões seja baixo
-        if self.is_too_empty():
-            self.print(f"Sending scarse report to central", "dark goldenrod")
-            self.add_behaviour(SendHangarRep())
+        self.add_behaviour(CheckHangarState())
         return plane
 
     def add_waiting_request(self, trip):
