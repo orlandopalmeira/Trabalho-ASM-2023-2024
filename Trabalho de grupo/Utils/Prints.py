@@ -4,6 +4,7 @@ color_to_code = {
     "red": "91",
     "green": "92",
     "yellow": "93",
+    "dark goldenrod": "33",
     "blue": "94",
     "magenta": "95",
     "cyan": "96",

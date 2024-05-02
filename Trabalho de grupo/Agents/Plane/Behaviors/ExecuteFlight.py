@@ -5,8 +5,6 @@ from Classes.Trip import Trip
 from Config import Config as cfg
 import asyncio
 
-# from Agents.Plane.Behaviors.PlaneRequest import PlaneRequest
-
 class ExecuteFlight(OneShotBehaviour):
 
     async def run(self):
@@ -24,7 +22,7 @@ class ExecuteFlight(OneShotBehaviour):
         distance = self.agent.get_trip().get_distance()
         tempo = self.agent.CONVERSION_KM_TO_SECS * distance
         tempo = round(tempo, 2)
-        self.agent.print(f"Starting flight to {self.agent.trip.get_destination()} ({distance} km) (time: {tempo}s)")
+        self.agent.print(f"Starting flight '{self.agent.get_trip().get_id()}' to {self.agent.get_trip().get_destination()} ({distance} km) (time: {tempo}s)", "green")
         await asyncio.sleep(tempo)
 
 

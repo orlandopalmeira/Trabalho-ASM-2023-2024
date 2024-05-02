@@ -117,7 +117,7 @@ def main():
             plane.start().result()
             agents.append(plane)
             # hangar.add_plane(plane_name)
-            hangar.initial_add_plane(plane_name) # TODO VERIFICAR MELHOR NECESSIDADE DISTO
+            hangar.initial_add_plane(plane_name) # Para que não começe a mandar hangar reports à central, sem ela estar sequer criada
 
 
     #* Meteo

@@ -60,7 +60,7 @@ class Hangar(Agent):
             self.print(f"I'm now full", "red")
         #* lógica de envio de mensagem à central caso o número de aviões seja alto
         if self.is_too_full():
-            self.print(f"Sending crowded report to central", "red")
+            self.print(f"Sending crowded report to central", "dark goldenrod")
             self.add_behaviour(SendHangarRep())
         
         
@@ -73,7 +73,7 @@ class Hangar(Agent):
             return None
         #* lógica de envio de mensagem à central caso o número de aviões seja baixo
         if self.is_too_empty():
-            self.print(f"Sending scarse report to central", "red")
+            self.print(f"Sending scarse report to central", "dark goldenrod")
             self.add_behaviour(SendHangarRep())
         return plane
 

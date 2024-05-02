@@ -18,7 +18,7 @@ class RecvRequests(CyclicBehaviour):
             msg_body = jsonpickle.decode(msg.body)
             plane_jid = msg_body['plane_jid']
             trip = msg_body['trip']
-            self.agent.print(f"Received takeoff request from {cfg.get_jid_name(msg.sender)} for {cfg.get_jid_name(plane_jid)} {trip}")
+            self.agent.print(f"Received takeoff request for {cfg.get_jid_name(plane_jid)} {trip}")
 
             # await self.order_plane_to_takeoff_old(plane_jid, trip)
             self.agent.add_to_takeoff_queue(plane_jid, trip) # Adicionar à fila de descolagens (este método irá dar trigger ao behavior DispatchPlanes)
