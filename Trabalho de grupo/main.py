@@ -58,7 +58,7 @@ def main():
         json_cont = json_file.read()
         json_cont = remove_comments(json_cont)
         config = json.loads(json_cont)
-    # AIRPORT_PLANES = {"Lisboa": [3,5,4], "Porto": [3,5,3], "Faro": [3,5,2]} # {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
+    # AIRPORT_PLANES = {"Lisboa": [3,5,4], "Porto": [3,5,3], "Faro": [3,5,2]} # {localizacao: [num_planes, hangar_capacity, runway_capacity]}
     if config.get("airports") == None:
         print_error("No airports configuration found in configuration file.")
         return
@@ -116,7 +116,8 @@ def main():
             plane = Plane(plane_name, PASSWORD)
             plane.start().result()
             agents.append(plane)
-            hangar.add_plane(plane_name)
+            # hangar.add_plane(plane_name)
+            hangar.initial_add_plane(plane_name) # TODO VERIFICAR MELHOR NECESSIDADE DISTO
 
 
     #* Meteo
@@ -134,7 +135,6 @@ def main():
     central = Central(central_jid, PASSWORD, AIRPORT_LOCATIONS, FLIGHT_CONFIG)
     central.start().result()
     agents.append(central)
-
     
     
 

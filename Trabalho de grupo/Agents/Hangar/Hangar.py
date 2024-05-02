@@ -7,7 +7,7 @@ from Config import Config as cfg
 from Utils.Prints import print_c
 from interface import logs_color
 
-from Classes.HangarReport import HangarReport
+from Agents.Hangar.Behaviors.SendHangarRep import SendHangarRep
 
 import tkinter as tk
 
@@ -32,7 +32,18 @@ class Hangar(Agent):
         """Retorna entre 0 e 1 a percentagem de ocupação do hangar."""
         return len(self.planes) / self.capacity
     
-
+    def is_too_full(self) -> bool:
+        return self.get_percent_full() >= 0.8
+    
+    def is_too_empty(self) -> bool:
+        return self.get_percent_full() <= 0.2
+    
+    def get_priority(self) -> int:
+        if self.is_too_full():
+            return self.capacity - len(self.planes)
+        elif self.is_too_empty():
+            return len(self.planes)
+    
     def add_plane(self, plane_jid):
         plane_jid_str = str(plane_jid)
         # Error detection
@@ -45,9 +56,13 @@ class Hangar(Agent):
         self.planes.append(plane_jid_str)
         if len(self.planes) == 1: # Despachar Flights, a partir de agora pq antes não havia aviões. E agora é possível despachar algum.
             self.add_behaviour(DispatchFlightReqs())
-        # TODO Meter aqui lógica de envio de mensagem à central caso o número de aviões seja alto
         elif len(self.planes) == self.capacity: #! Talvez faça um if relativo a percentagens com a get_percent_full
             self.print(f"I'm now full", "red")
+        #* lógica de envio de mensagem à central caso o número de aviões seja alto
+        if self.is_too_full():
+            self.print(f"Sending crowded report to central", "red")
+            self.add_behaviour(SendHangarRep())
+        
         
     
     def pop_plane(self):
@@ -56,7 +71,10 @@ class Hangar(Agent):
             plane = self.planes.pop(0)
         except IndexError:
             return None
-        # TODO Meter aqui lógica de envio de mensagem à central caso o número de aviões seja baixo
+        #* lógica de envio de mensagem à central caso o número de aviões seja baixo
+        if self.is_too_empty():
+            self.print(f"Sending scarse report to central", "red")
+            self.add_behaviour(SendHangarRep())
         return plane
 
     def add_waiting_request(self, trip):
@@ -73,6 +91,17 @@ class Hangar(Agent):
     def waiting_requests_is_empty(self):
         return len(self.waiting_requests) == 0
 
+    def initial_add_plane(self, plane_jid): #! WIP
+        """For initialization purposes only. So the other functionalities dont unexpectedly trigger."""
+        plane_jid_str = str(plane_jid)
+        # Error detection
+        if plane_jid_str in self.planes:
+            self.print(f"Plane {plane_jid_str} already in hangar {self.location}", "red")
+        if len(self.planes) == self.capacity:
+            self.print(f"Plane {plane_jid_str} could not be added to hangar {self.location} due to lack of space", "red")
+            # return
+        # Functionality
+        self.planes.append(plane_jid_str)
 
 
     #> GUI methods

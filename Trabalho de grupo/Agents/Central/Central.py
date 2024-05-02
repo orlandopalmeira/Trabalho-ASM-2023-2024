@@ -12,6 +12,7 @@ from interface import logs_color
 from Utils.Prints import print_c
 
 import jsonpickle
+import asyncio
 
 import tkinter as tk
 # from tkinter import ttk
@@ -42,12 +43,13 @@ class Central(Agent):
     
     async def setup(self) -> None:
         self.print(f'starting...')
-        a = GenerateFlightsBehav(period=self.interval)
-        b = RecvRequests()
-        c = ResolveHangars(period=10)
-        self.add_behaviour(a)
-        self.add_behaviour(b)
-        self.add_behaviour(c)
+        recv = RecvRequests()
+        resolve = ResolveHangars(period=6)
+        gf = GenerateFlightsBehav(period=self.interval)
+        self.add_behaviour(recv)
+        self.add_behaviour(resolve)
+        # await asyncio.sleep(4) #! PARA DAR TEMPO DOS OUTROS AGENTES COMEÇAREM
+        self.add_behaviour(gf)
 
     def create_trip_msg(self, trip) -> Message:
         self.print(f"Flight generated {trip}", "blue")
@@ -89,11 +91,16 @@ class Central(Agent):
         self.scarse_hangars.append(hangar_rep)
     
     def add_to_crowded_hangars(self, hangar_rep: HangarReport):
-        # Remover um pedido se já existir #! talvez fazer mensagens de remover de scrarse/crowded hangar e fazer com que esta remoção de baixo, o seu timestamp fique no novo pedido
+        # Remover um pedido se já existir #! talvez fazer mensagens de remover de scrarse/crowded hangar
+        last_ts = None
         for hr in self.crowded_hangars:
             if hr.get_location() == hangar_rep.get_location():
                 self.crowded_hangars.remove(hr)
+                last_ts = hr.get_timestamp()
                 break
+        # Um pedido ainda esteja na central, o seu timestamp antigo fique no novo pedido
+        if last_ts != None:
+            hangar_rep.set_timestamp(last_ts)
         # Insert ordenado consoante o __lt__ definido na classe HangarReport e em que os primeiros têm prioridade
         for i, hr in enumerate(self.crowded_hangars):
             if hr < hangar_rep:
@@ -113,18 +120,6 @@ class Central(Agent):
                 self.crowded_hangars.remove(hr)
                 return
             
-    #! Nao tenho a certeza da utilidade desta função, talvez apenas se remova quando ele for tratado
-    def decrease_priority(self, hangar_rep: HangarReport):
-        for hr in self.scarse_hangars:
-            if hr.get_location() == hangar_rep.get_location():
-                hr.decrease_priority()
-                return
-        for hr in self.crowded_hangars:
-            if hr.get_location() == hangar_rep.get_location():
-                hr.decrease_priority()
-                return
-
-
     #> GUI
     def create_display(self, element):
         main_frame = tk.Frame(element.scrollable_frame, highlightbackground="black", highlightthickness=2)

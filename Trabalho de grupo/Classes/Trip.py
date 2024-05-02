@@ -45,13 +45,13 @@ class Trip:
 
 
     def __str__(self):
-        string = f"{self.c_id}: ({self.origin} -> {self.destination})"
+        string = f"'{self.c_id}'-({self.origin} -> {self.destination})"
         if self.type_flight != "normal":
             string += "*" # Asterisco indica que a viagem é de balanceamento de carga dos hangares
         return string
     
     def __repr__(self) -> str:
-        string = f"{self.c_id}: ({self.origin} -> {self.destination})"
+        string = f"'{self.c_id}'-({self.origin} -> {self.destination})"
         if self.type_flight != "normal":
             string += "*" # Asterisco indica que a viagem é de balanceamento de carga dos hangares
         return string
