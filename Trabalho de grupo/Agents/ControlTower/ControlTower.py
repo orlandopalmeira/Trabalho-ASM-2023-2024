@@ -24,8 +24,8 @@ class ControlTower(Agent):
         self.location = location # Localização (cidade) do aeroporto onde a torre está
         self.runways_capacity = runways # Pistas de descolagem/aterragem
         self.runways_available = runways # Pistas disponíveis
-        self.queue_takeoffs = []
-        self.queue_landings = []
+        self.queue_takeoffs = [] # lista de tuplos (plane_jid, trip)
+        self.queue_landings = [] # lista de plane_jids
 
         self.hangar_availability = hangar_availability 
         
