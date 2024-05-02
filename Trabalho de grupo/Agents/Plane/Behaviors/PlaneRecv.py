@@ -30,7 +30,7 @@ class RecvRequests(CyclicBehaviour):
             LANDING_TIME = self.agent.LANDING_TIME
             await asyncio.sleep(LANDING_TIME)
             destination = self.agent.trip.get_destination()
-            self.agent.print(f"Finished landing at {destination}")
+            self.agent.print(f"Finished landing at {destination}", "green")
             self.agent.set_landed()
             self.agent.set_trip(None)
 

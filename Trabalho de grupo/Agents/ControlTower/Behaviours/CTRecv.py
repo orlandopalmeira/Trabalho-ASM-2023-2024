@@ -18,7 +18,7 @@ class RecvRequests(CyclicBehaviour):
             msg_body = jsonpickle.decode(msg.body)
             plane_jid = msg_body['plane_jid']
             trip = msg_body['trip']
-            self.agent.print(f"Received takeoff request for {cfg.get_jid_name(plane_jid)} {trip}")
+            self.agent.print(f"Received takeoff request for {cfg.get_jid_name(plane_jid)} and flight {trip}")
 
             # await self.order_plane_to_takeoff_old(plane_jid, trip)
             self.agent.add_to_takeoff_queue(plane_jid, trip) # Adicionar à fila de descolagens (este método irá dar trigger ao behavior DispatchPlanes)
@@ -27,7 +27,7 @@ class RecvRequests(CyclicBehaviour):
         elif msg.metadata["performative"] == "confirm" and cfg.identify(msg.sender) == "plane":
             plane_jid = jsonpickle.decode(msg.body)
             self.agent.release_runway()
-            self.agent.print(f"Plane took-off {cfg.get_jid_name(msg.sender)}")
+            self.agent.print(f"{cfg.get_jid_name(msg.sender)} took-off")
         
         # 2.1. O **Plane** envia mensagem de pedido de aterragem à **CT**. (performative: *request*, body: *"plane_jid"*)
         elif msg.metadata["performative"] == "request" and cfg.identify(msg.sender) == "plane":
@@ -38,7 +38,7 @@ class RecvRequests(CyclicBehaviour):
         # 2.3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)
         elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "plane":
             plane_jid = jsonpickle.decode(msg.body)
-            self.agent.print(f"Plane landed {cfg.get_jid_name(msg.sender)}")
+            self.agent.print(f"{cfg.get_jid_name(msg.sender)} landed.")
             self.agent.release_runway()
 
         elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "meteo":
