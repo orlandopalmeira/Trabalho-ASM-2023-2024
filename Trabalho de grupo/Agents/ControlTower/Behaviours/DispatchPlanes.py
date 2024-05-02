@@ -16,7 +16,7 @@ class DispatchPlanes(OneShotBehaviour):
             while True:
                 if self.agent.takeoff_queue_empty():
                     break
-                reserved = self.agent.reserve_runway_for_takeoff() #! TEM DE SER UM RESERVERUNWAY DIFERENTE
+                reserved = self.agent.reserve_runway_for_takeoff() # Tem de haver tipos de reserva de runways diferentes para aterragem e descolagem, porque as condições de reserva são diferentes.
                 #* Se não houver maneira de aterrar, não faz sentido continuar, retornando e esperando por uma nova chamada do behaviour
                 if not reserved:
                     return

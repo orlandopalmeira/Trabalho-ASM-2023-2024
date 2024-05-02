@@ -51,7 +51,7 @@ class GUI():
 
         self.logs_frame = ScrollableFrame(self.root, width=500, height=800, relief=tk.RAISED, borderwidth=2)
         self.logs_frame.grid(column=col_pointer, row=0, padx=5, pady=5)
-        self.logs_main_frame = tk.Frame(self.logs_frame.scrollable_frame, bg="light grey")
+        self.logs_main_frame = tk.Frame(self.logs_frame.scrollable_frame, bg="gainsboro")
         self.logs_main_frame.pack(padx=5, pady=5)
         col_pointer += 1
 
@@ -133,7 +133,7 @@ class GUI():
         i+=1
         while i < len(logs):
             # print(f"Create: {i}")
-            label = tk.Label(self.logs_main_frame, text=logs[i][0], font='Arial 8', fg=logs[i][1], bg = "light grey")
+            label = tk.Label(self.logs_main_frame, text=logs[i][0], font='Arial 8', fg=logs[i][1], bg = "gainsboro")
             self.logs_labels.append(label)
             label.pack()
             i+=1

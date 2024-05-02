@@ -56,7 +56,7 @@ class Hangar(Agent):
         self.planes.append(plane_jid_str)
         if len(self.planes) == 1: # Despachar Flights, a partir de agora pq antes não havia aviões. E agora é possível despachar algum.
             self.add_behaviour(DispatchFlightReqs())
-        elif len(self.planes) == self.capacity: #! Talvez faça um if relativo a percentagens com a get_percent_full
+        elif len(self.planes) == self.capacity:
             self.print(f"I'm now full", "red")
         #* lógica de envio de mensagem à central caso o número de aviões seja alto
         if self.is_too_full():
@@ -91,8 +91,8 @@ class Hangar(Agent):
     def waiting_requests_is_empty(self):
         return len(self.waiting_requests) == 0
 
-    def initial_add_plane(self, plane_jid): #! WIP
-        """For initialization purposes only. So the other functionalities dont unexpectedly trigger."""
+    def initial_add_plane(self, plane_jid):
+        """For initialization purposes only. So the main 'add_plane()' functionalities dont trigger."""
         plane_jid_str = str(plane_jid)
         # Error detection
         if plane_jid_str in self.planes:

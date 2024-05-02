@@ -48,7 +48,6 @@ class Central(Agent):
         gf = GenerateFlightsBehav(period=self.interval)
         self.add_behaviour(recv)
         self.add_behaviour(resolve)
-        # await asyncio.sleep(4) #! PARA DAR TEMPO DOS OUTROS AGENTES COMEÇAREM
         self.add_behaviour(gf)
 
     def create_trip_msg(self, trip) -> Message:

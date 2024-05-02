@@ -1,4 +1,4 @@
-// {localizacao: [num_planes, hangar_capacity, runway_capacity]} #! Tem de se meter aqui a runway_capacity
+// {localizacao: [num_planes, hangar_capacity, runway_capacity]}
 {
     "airports": {
         "Lisboa": [2, 6, 3],
