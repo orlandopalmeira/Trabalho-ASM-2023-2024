@@ -16,8 +16,8 @@ class CheckHangarState(OneShotBehaviour):
             prio = self.agent.get_priority()
             hangar_rep = HangarReport(HangarReport.CROWDED, self.agent.location, prio)
             central_jid = cfg.get_central_jid()
-            self.agent.print(f"Sending crowded report to central", "dark goldenrod")
-            msg = Message(to=central_jid, 
+            self.agent.print(f"Sending crowded report with prio {prio} to central", "dark goldenrod")
+            msg = Message(to=central_jid,
                           body=jsonpickle.encode(hangar_rep), 
                           metadata={"performative": "inform"})
             await self.send(msg)
@@ -26,7 +26,7 @@ class CheckHangarState(OneShotBehaviour):
             prio = self.agent.get_priority()
             hangar_rep = HangarReport(HangarReport.SCARSE, self.agent.location, prio)
             central_jid = cfg.get_central_jid()
-            self.agent.print(f"Sending scarse report to central", "dark goldenrod")
+            self.agent.print(f"Sending scarse report with prio {prio} to central", "dark goldenrod")
             msg = Message(to=central_jid,
                           body=jsonpickle.encode(hangar_rep),
                           metadata={"performative": "inform"})

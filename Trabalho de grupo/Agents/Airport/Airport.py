@@ -1,5 +1,6 @@
 from random import random
 from spade.agent import Agent
+import time
 
 from Utils.Prints import print_c
 from interface import logs_color
@@ -14,8 +15,10 @@ class Airport(Agent):
         self.location = location # Localização (cidade) do aeroporto
 
     def print(self, msg, color = "black"):
-        print_c(f"{self.name}: {msg}", color)
-        logs_color(f"{self.name}: {msg}", color)
+        unix_ts = time.time()
+        ts = time.strftime('%H:%M:%S', time.localtime(unix_ts))
+        print_c(f"({ts}) {self.name}: {msg}", color)
+        logs_color(f"({ts}) {self.name}: {msg}", color)
     
     async def setup(self) -> None:
         self.print(f'Airport agent {self.location} starting...')

@@ -10,6 +10,7 @@ from interface import logs_color
 from Agents.Hangar.Behaviors.CheckHangarState import CheckHangarState
 
 import tkinter as tk
+import time
 
 class Hangar(Agent):
     
@@ -21,8 +22,10 @@ class Hangar(Agent):
         self.waiting_requests = [] # Lista de trips
 
     def print(self, msg, color = "black"):
-        print_c(f"{self.name}: {msg}", color)
-        logs_color(f"{self.name}: {msg}", color)
+        unix_ts = time.time()
+        ts = time.strftime('%H:%M:%S', time.localtime(unix_ts))
+        print_c(f"({ts}) {self.name}: {msg}", color)
+        logs_color(f"({ts}) {self.name}: {msg}", color)
 
     async def setup(self):
         self.print(f'{self.name} starting...')
@@ -61,7 +64,6 @@ class Hangar(Agent):
         #* lógica de envio de mensagem à central caso o número de aviões seja alto
         self.add_behaviour(CheckHangarState())
         
-        
     
     def pop_plane(self):
         """Caso não haja aviões disponíveis, retorna None. Caso contrário, retorna o jid do avião."""
@@ -69,8 +71,6 @@ class Hangar(Agent):
             plane = self.planes.pop(0)
         except IndexError:
             return None
-        if len(self.planes) == 0:
-            self.print(f"I'm now empty", "red")
         #* lógica de envio de mensagem à central caso o número de aviões seja baixo
         self.add_behaviour(CheckHangarState())
         return plane
@@ -78,6 +78,8 @@ class Hangar(Agent):
     def add_waiting_request(self, trip):
         self.waiting_requests.append(trip)
         self.add_behaviour(DispatchFlightReqs())
+        # if len(self.planes) == 0:
+        #     self.print(f"I'm now empty", "red")
 
     def pop_waiting_requests(self):
         """Caso não haja pedidos pendentes, retorna None. Caso contrário, retorna o trip."""

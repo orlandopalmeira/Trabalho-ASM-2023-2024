@@ -15,6 +15,7 @@ from Classes.Trip import Trip
 from Classes.Weather import Weather
 
 import json
+import time
 
 GOOD_WEATHER = cfg.get_good_weather() # "Clear"
 MID_WEATHER  = cfg.get_mid_weather() # "Rain"
@@ -38,8 +39,10 @@ class ControlTower(Agent):
         self.weather: str = GOOD_WEATHER
 
     def print(self, msg, color = "black"):
-        print_c(f"{self.name}: {msg}", color)
-        logs_color(f"{self.name}: {msg}", color)
+        unix_ts = time.time()
+        ts = time.strftime('%H:%M:%S', time.localtime(unix_ts))
+        print_c(f"({ts}) {self.name}: {msg}", color)
+        logs_color(f"({ts}) {self.name}: {msg}", color)
 
     async def setup(self) -> None:
         self.print(f'{self.name} starting...')

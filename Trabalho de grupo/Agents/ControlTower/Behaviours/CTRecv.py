@@ -38,7 +38,7 @@ class RecvRequests(CyclicBehaviour):
         # 2.3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)
         elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "plane":
             plane_jid = jsonpickle.decode(msg.body)
-            self.agent.print(f"{cfg.get_jid_name(msg.sender)} landed.")
+            # self.agent.print(f"{cfg.get_jid_name(msg.sender)} landed.")
             self.agent.release_runway()
 
         elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "meteo":

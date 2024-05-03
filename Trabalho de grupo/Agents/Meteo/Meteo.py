@@ -9,6 +9,7 @@ from Utils.Prints import print_c
 from interface import logs_color
 
 import json
+import time
 
 class Meteo(Agent):
     MODE_PAST = "past"
@@ -24,8 +25,10 @@ class Meteo(Agent):
         self.period = 30 # Frequência de envio de informação em segundos
 
     def print(self, msg, color = "black"):
-        print_c(f"{self.name}: {msg}", color)
-        logs_color(f"{self.name}: {msg}", color)
+        unix_ts = time.time()
+        ts = time.strftime('%H:%M:%S', time.localtime(unix_ts))
+        print_c(f"({ts}) {self.name}: {msg}", color)
+        logs_color(f"({ts}) {self.name}: {msg}", color)
 
     async def setup(self):
         self.print(f'starting...', "green")

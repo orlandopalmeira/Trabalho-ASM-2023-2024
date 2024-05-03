@@ -5,6 +5,7 @@ from Config import Config as cfg
 from Classes.Trip import Trip
 from interface import logs_color
 from Utils.Prints import print_c
+import time
 
 import tkinter as tk
 from tkinter import ttk
@@ -52,8 +53,10 @@ class Plane(Agent):
         self.add_behaviour(b)
 
     def print(self, msg, color = "black"):
-        print_c(f"{self.name}: {msg}", color)
-        logs_color(f"{self.name}: {msg}", color)
+        unix_ts = time.time()
+        ts = time.strftime('%H:%M:%S', time.localtime(unix_ts))
+        print_c(f"({ts}) {self.name}: {msg}", color)
+        logs_color(f"({ts}) {self.name}: {msg}", color)
 
     def set_weather_factor_in_landing(self, weather):
         factor = self.WEATHER_FACTOR.get(weather, "1.0")

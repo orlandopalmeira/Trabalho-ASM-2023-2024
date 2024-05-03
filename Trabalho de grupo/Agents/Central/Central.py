@@ -13,6 +13,7 @@ from Utils.Prints import print_c
 
 import jsonpickle
 import asyncio
+import time
 
 import tkinter as tk
 # from tkinter import ttk
@@ -60,8 +61,10 @@ class Central(Agent):
         
 
     def print(self, msg, color = "black"):
-        print_c(f"\n{self.name}: {msg}\n", color)
-        logs_color(f"\n{self.name}: {msg}\n", color)
+        unix_ts = time.time()
+        ts = time.strftime('%H:%M:%S', time.localtime(unix_ts))
+        print_c(f"({ts}) {self.name}: {msg}", color)
+        logs_color(f"\n({ts}) {self.name}: {msg}\n", color)
     
     def add_to_historic(self, trip):
         if len(self.historic) == self.historic_max_size:

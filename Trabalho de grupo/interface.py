@@ -133,9 +133,9 @@ class GUI():
         i+=1
         while i < len(logs):
             # print(f"Create: {i}")
-            label = tk.Label(self.logs_main_frame, text=logs[i][0], font='Arial 8', fg=logs[i][1], bg = "gainsboro")
+            label = tk.Label(self.logs_main_frame, text=logs[i][0], font='Arial 8', fg=logs[i][1], bg = "gainsboro", anchor="w")
             self.logs_labels.append(label)
-            label.pack()
+            label.pack(side="top", fill="x")
             i+=1
         i = 0
 
