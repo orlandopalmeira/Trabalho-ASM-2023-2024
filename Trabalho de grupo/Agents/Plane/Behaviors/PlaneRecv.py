@@ -36,11 +36,14 @@ class RecvRequests(CyclicBehaviour):
             # msg_body: Weather
             weather_str = msg_body.get_weather()
             self.agent.set_weather_factor_in_landing(weather_str)
+            self.agent.get_trip().ts_landing() # Trip Report
             self.agent.print(f"Landing will take {self.agent.takeoff_time}s, because {weather_str}.", "green")
             await asyncio.sleep(self.agent.landing_time)
             destination = self.agent.trip.get_destination()
             self.agent.print(f"Finished landing at {destination}", "green")
             self.agent.set_landed()
+            self.agent.get_trip().generate_report() # Trip Report
+
             self.agent.set_trip(None)
 
             # 3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)

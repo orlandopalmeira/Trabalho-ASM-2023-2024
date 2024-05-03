@@ -1,7 +1,9 @@
 import random
-import sys
+import sys, os
 import time
+import json
 import Utils.GeoDistance as geo
+from Config import Config as cfg
 
 class Trip:
     cur_id = 1
@@ -19,12 +21,12 @@ class Trip:
         self.type_flight = type_flight
 
         #* Objeto com timestamps relativas ao voo para posterior processamento
-        # self.flight_stats = {
-        #     "init": time.time(),
-        #     "takeoff": None,
-        #     "destination_arrival": None, # Tempo de chegada ao destino
-        #     "landing": None, 
-        # }
+        self.flight_stats = {
+            "init": time.time(),
+            "takeoff": None,
+            "destination_arrival": None,
+            "landed": None, 
+        }
     
     def get_origin(self) -> str:
         return self.origin
@@ -43,6 +45,50 @@ class Trip:
     
     def get_type_flight(self) -> str:
         return self.type_flight
+    
+    def get_flight_stats(self) -> dict:
+        return self.flight_stats
+    
+    def ts_takeoff(self):
+        self.flight_stats["takeoff"] = time.time()
+
+    def ts_destination_arrival(self):
+        self.flight_stats["destination_arrival"] = time.time()
+
+    def ts_landing(self):
+        self.flight_stats["landed"] = time.time()
+
+    def generate_report(self):
+        # file_name = f"resources/flights.json"
+        file_name = cfg.stats_file_name()
+
+        stats = dict()
+
+        # Calculate time spent waiting for takeoff, flying and landing
+        stats["id"] = self.c_id
+        stats["flight"] = f"{self.origin} -> {self.destination}"
+        stats["waiting_takeoff"] = round(self.flight_stats["takeoff"] - self.flight_stats["init"], 2)
+        # stats["flying"] = round(self.flight_stats["destination_arrival"] - self.flight_stats["takeoff"], 2)
+        stats["waiting_landing"] = round(self.flight_stats["landed"] - self.flight_stats["destination_arrival"], 2)
+
+        # Treat timestamps to dates
+        # for key in self.flight_stats:
+        #     if self.flight_stats[key] is not None:
+        #         self.flight_stats[key] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.flight_stats[key]))
+
+
+        # Check if file is empty
+        if not os.path.exists(file_name):
+            with open(file_name, 'w') as f:
+                json.dump([], f)
+
+        # Load file
+        with open(file_name, 'r') as f:
+            data = json.load(f)
+
+        with open(file_name, 'w') as f:
+            data.append(stats)
+            json.dump(data, f, indent=4)
 
     @staticmethod    
     def generate_random_trip(locations):

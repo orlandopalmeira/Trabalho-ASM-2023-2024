@@ -9,6 +9,7 @@ class ExecuteFlight(OneShotBehaviour):
 
     async def run(self):
         #> Descolagem do avião
+        self.agent.get_trip().ts_takeoff() # Trip Report
         await asyncio.sleep(self.agent.takeoff_time)
         # Mensagem de confirmação de descolagem
         destin = cfg.get_ct_jid(self.agent.get_location())
@@ -31,6 +32,7 @@ class ExecuteFlight(OneShotBehaviour):
         
         # Pedido de aterragem à CT destino
         self.agent.set_waiting_landing_perm()
+        self.agent.get_trip().ts_destination_arrival() # Trip Report
         msg = Message(to=ct_jid, 
                       metadata={"performative": "request"},
                       body=jsonpickle.encode(str(self.agent.jid)))

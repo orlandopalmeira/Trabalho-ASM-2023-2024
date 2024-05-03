@@ -86,3 +86,7 @@ class Config:
         """Retorna a string da diretoria do ficheiro de meteorologia para alteração manual."""
         return "resources/meteo.json"
 
+    @staticmethod
+    def stats_file_name():
+        """Retorna a string da diretoria do ficheiro de estatísticas."""
+        return "resources/flights.json"
