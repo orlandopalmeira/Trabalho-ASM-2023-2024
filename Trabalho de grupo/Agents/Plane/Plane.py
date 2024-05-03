@@ -17,6 +17,7 @@ class Plane(Agent):
     FLYING = 1
     WAITING_LANDING_PERM = 2
 
+    # Normally a plane does 1km in 4.5 seconds
     CONVERSION_KM_TO_SECS = 0.015 # 1 km = 0.015 sec
 
     LANDING_TIME = 2 # STANDARD landing time
