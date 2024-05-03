@@ -4,6 +4,8 @@ from spade.behaviour import CyclicBehaviour
 from spade.message import Message
 from Config import Config as cfg
 
+from Classes.Weather import Weather
+
 # from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 
 class RecvRequests(CyclicBehaviour):
@@ -42,7 +44,8 @@ class RecvRequests(CyclicBehaviour):
             self.agent.release_runway()
 
         elif msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "meteo":
-            weather = jsonpickle.decode(msg.body)
+            weather_obj = jsonpickle.decode(msg.body)
+            weather = weather_obj.get_weather()
             self.agent.set_weather(weather)
             # self.agent.print(f"Received weather update from {cfg.get_jid_name(msg.sender)}")
 

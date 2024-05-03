@@ -4,6 +4,7 @@ from spade.message import Message
 from Config import Config as cfg
 from Utils.Prints import *
 from Agents.Meteo.MeteoAPI import *
+from Classes.Weather import Weather
 
 import asyncio
 import jsonpickle
@@ -20,13 +21,14 @@ class SendMeteo(PeriodicBehaviour):
                 weather_info = get_exact_past_weather(city, self.agent.cur_datetime)
                 weather = weatherinfo_to_weather(weather_info)
                 dt = weather_datetime(weather_info)
-                self.agent.print(f"Sending '{weather}' weather to {city} from {dt}", "green")
+                self.agent.print(f"Sending '{weather}' weather to {city} from {dt}", "dark blue")
                 # idx = self.agent.cur_count % len(self.agent.cities[city])
             else:
                 weather = self.agent.get_current_weather(city)
-                self.agent.print(f"Sending '{weather}' weather to {city} from current weather", "green")
+                self.agent.print(f"Sending '{weather}' weather to {city} from current weather", "dark blue")
 
-            msg = Message(to=cfg.get_ct_jid(city), body=jsonpickle.encode(weather), metadata={"performative": "inform"})
+            weather_obj = Weather(weather)
+            msg = Message(to=cfg.get_ct_jid(city), body=jsonpickle.encode(weather_obj), metadata={"performative": "inform"})
             await self.send(msg)
 
         if self.agent.get_mode() == self.agent.MODE_PAST: # To advance to next time, for next weather in PAST MODE

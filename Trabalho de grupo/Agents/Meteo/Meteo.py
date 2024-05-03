@@ -31,7 +31,7 @@ class Meteo(Agent):
         logs_color(f"({ts}) {self.name}: {msg}", color)
 
     async def setup(self):
-        self.print(f'starting...', "green")
+        self.print(f'starting...', "dark blue")
         if self.get_mode() == Meteo.MODE_MANUAL:
             # Escrever ficheiro
             cities_weather = {}

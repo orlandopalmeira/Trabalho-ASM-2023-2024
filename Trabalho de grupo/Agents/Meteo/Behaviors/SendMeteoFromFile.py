@@ -23,6 +23,6 @@ class SendMeteoFromFile(PeriodicBehaviour):
         for city in meteo_obj:
             weather = meteo_obj[city]
             # self.agent.print(f"Sending '{weather}' weather to {city} from file")
-            # weather_obj = Weather(weather)
-            msg = Message(to=cfg.get_ct_jid(city), body=jsonpickle.encode(weather), metadata={"performative": "inform"})
+            weather_obj = Weather(weather)
+            msg = Message(to=cfg.get_ct_jid(city), body=jsonpickle.encode(weather_obj), metadata={"performative": "inform"})
             await self.send(msg)

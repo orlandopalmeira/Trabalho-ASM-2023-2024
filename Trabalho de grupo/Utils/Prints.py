@@ -6,6 +6,8 @@ color_to_code = {
     "yellow": "93",
     "dark goldenrod": "33",
     "blue": "94",
+    "azure": "94",
+    "dark blue": "34",
     "magenta": "95",
     "cyan": "96",
     "white": "97",
