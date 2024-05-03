@@ -1,10 +1,9 @@
 import time
-import tkinter as tk
 import threading
 import json
 import sys
 
-from spade.agent import Agent
+from spade import quit_spade
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -146,7 +145,8 @@ def main():
 
     # while True:
     # while stop_thread == False:
-    while any(agent.is_alive() for agent in agents):
+    # while any(agent.is_alive() for agent in agents):
+    while central.is_alive():
         try:
             time.sleep(3)
         except KeyboardInterrupt:
@@ -159,6 +159,9 @@ def main():
         t.join()
     
     print_warning(f"\nAgents terminated.\n")
+
+    # finish all the agents and behaviors running in your process
+    quit_spade()
 
 
 if __name__ == "__main__":
