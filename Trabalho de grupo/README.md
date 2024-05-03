@@ -25,9 +25,9 @@
 
 ## Plane
 
-- Recebe mensagem da **CT** origem para começar a viagem (performative: *inform*, body: *Trip*)
+- Recebe mensagem da **CT** origem para começar a viagem (performative: *inform*, body: *{trip: Trip, weather: Weather}*)
 
-- Recebe mensagem da **CT** destino para aterrar (performative: *confirm*, body: *None*)
+- Recebe mensagem da **CT** destino para aterrar (performative: *confirm*, body: *Weather*)
 
 
 ## Central
@@ -39,7 +39,7 @@
 1. A **central** envia um flight ao **aeroporto**. (performative: *request*, body: *Trip*)
 2. O **aeroporto** envia um pedido de avião ao **hangar**. (performative: *request*, body: *Trip*)
 3. O **hangar** envia o jid do avião selecionado à **CT**. (performative: *inform*, body: *{plane_jid: String, trip: Trip}*)
-4. A **CT** envia mensagem para descolar ao **Plane**. (performative: *inform*, body: *Trip*)
+4. A **CT** envia mensagem para descolar ao **Plane**. (performative: *inform*, body: *{trip: Trip, weather: Weather}*)
     - A CT reserva uma runway para a descolagem e fica à espera que o avião indique que a descolagem acabou.
 5. O **Plane** envia mensagem de confirmação de descolagem à **CT**. (performative: *confirm*, body: *"plane_jid"*)
 
@@ -50,7 +50,7 @@ Notas:
 
 # 2. Realizar um flight (ATERRAGEM)
 1. O **Plane** envia mensagem de pedido de aterragem à **CT**. (performative: *request*, body: *"plane_jid"*)
-2. A **CT** verifica se as condições permitem aterrar, e envia mensagem ao **Plane**. (performative: *confirm*, body: *None*)
+2. A **CT** verifica se as condições permitem aterrar, e envia mensagem ao **Plane**. (performative: *confirm*, body: *Weather*)
     - As condições são: runways disponíveis, hangares disponíveis, condições meteorológicas favoráveis.
 3. O **Plane** envia mensagem de aterragem à **CT** e ao **Hangar**. (performative: *inform*, body: *"plane_jid"*)
 

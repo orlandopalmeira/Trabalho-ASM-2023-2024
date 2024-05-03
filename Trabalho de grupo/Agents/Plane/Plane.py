@@ -14,15 +14,38 @@ from Agents.Plane.Behaviors.PlaneRecv import RecvRequests
 class Plane(Agent):
     LANDED = 0
     FLYING = 1
-    CONVERSION_KM_TO_SECS = 0.01 # 1 km = 0.01 sec
-    LANDING_TIME = 3 # Tempo de aterragem em secs
-    TAKEOFF_TIME = 3 # Tempo de descolagem em secs
+    WAITING_LANDING_PERM = 2
+
+    CONVERSION_KM_TO_SECS = 0.015 # 1 km = 0.015 sec
+
+    LANDING_TIME = 2 # STANDARD landing time
+    TAKEOFF_TIME = 2 # STANDARD takeoff time
+    WEATHER_FACTOR = {
+            "Clear": 1.0,
+            "Clouds": 1.3,
+            "Smoke": 1.3,
+            "Mist": 1.4,
+            "Haze": 1.4,
+            "Dust": 1.5,
+            "Drizzle": 1.6,
+            "Fog": 1.8,
+            "Sand": 1.8,
+            "Rain": 2.0,
+            "Ash": 2.2,
+            "Squalls": 2.3,
+            "Squall": 2.3,
+            "Snow": 2.5,
+            "Volcanic Ash": 3.0,
+            "Tornado": 3.0,
+            "Thunderstorm": 3.0
+        }
     
     async def setup(self) -> None:
         self.trip = None
-        # self.percentage_complete = 0 # Percentagem da viagem que já foi completada
         self.status = Plane.LANDED
-        # self.tempo = 0 # Talvez para indicar quanto tempo a viagem demorará, mas talvez apenas seja utilizado num behaviour
+        self.landing_time = Plane.LANDING_TIME
+        self.takeoff_time = Plane.TAKEOFF_TIME
+
         self.print(f'starting...')
         
         b = RecvRequests()
@@ -32,6 +55,14 @@ class Plane(Agent):
         print_c(f"{self.name}: {msg}", color)
         logs_color(f"{self.name}: {msg}", color)
 
+    def set_weather_factor_in_landing(self, weather):
+        factor = self.WEATHER_FACTOR.get(weather, "1.0")
+        self.landing_time = Plane.LANDING_TIME * factor
+
+    def set_weather_factor_in_takeoff(self, weather):
+        factor = self.WEATHER_FACTOR.get(weather, "1.0")
+        self.takeoff_time = Plane.TAKEOFF_TIME * factor
+
     def set_trip(self, trip):
         self.trip = trip
 
@@ -40,6 +71,9 @@ class Plane(Agent):
 
     def set_landed(self):
         self.status = Plane.LANDED
+
+    def set_waiting_landing_perm(self):
+        self.status = Plane.WAITING_LANDING_PERM
 
     def get_trip(self):
         return self.trip
@@ -105,12 +139,14 @@ class Plane(Agent):
     #     return f"{str(self.percentage_complete)}"
     
     def present_status(self) -> str:
-        if self.status == 0:
+        if self.status == self.LANDED:
             str = "Landed"
-        elif self.status == 1:
+        elif self.status == self.FLYING:
             str = "Flying"
+        elif self.status == self.WAITING_LANDING_PERM:
+            str = "Waiting for landing perm."
         else:
-            str = "Erro"
+            str = "!! Erro !!"
         return f"{str}"
     
     class PLabels():

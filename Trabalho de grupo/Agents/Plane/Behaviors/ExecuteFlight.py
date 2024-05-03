@@ -9,8 +9,7 @@ class ExecuteFlight(OneShotBehaviour):
 
     async def run(self):
         #> Descolagem do avião
-        TEMPO_DE_DESCOLAGEM = self.agent.TAKEOFF_TIME
-        await asyncio.sleep(TEMPO_DE_DESCOLAGEM)
+        await asyncio.sleep(self.agent.takeoff_time)
         # Mensagem de confirmação de descolagem
         destin = cfg.get_ct_jid(self.agent.get_location())
         msg = Message(to=destin, body=jsonpickle.encode(str(self.agent.name)), metadata={"performative": "confirm"})
@@ -31,6 +30,7 @@ class ExecuteFlight(OneShotBehaviour):
         ct_jid = cfg.get_ct_jid(destination)
         
         # Pedido de aterragem à CT destino
+        self.agent.set_waiting_landing_perm()
         msg = Message(to=ct_jid, 
                       metadata={"performative": "request"},
                       body=jsonpickle.encode(str(self.agent.jid)))

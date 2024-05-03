@@ -1,5 +1,6 @@
 import random
 import sys
+import time
 import Utils.GeoDistance as geo
 
 class Trip:
@@ -16,6 +17,14 @@ class Trip:
             print(f"!!!Error calculating distance between {origin} and {destination}. USING STANDARD!!1")
             self.distance = 500
         self.type_flight = type_flight
+
+        #* Objeto com timestamps relativas ao voo para posterior processamento
+        # self.flight_stats = {
+        #     "init": time.time(),
+        #     "takeoff": None,
+        #     "destination_arrival": None, # Tempo de chegada ao destino
+        #     "landing": None, 
+        # }
     
     def get_origin(self) -> str:
         return self.origin

@@ -7,17 +7,23 @@ from spade.agent import Agent
 from Agents.ControlTower.Behaviours.CTRecv import RecvRequests
 from Agents.ControlTower.Behaviours.DispatchPlanes import DispatchPlanes
 
-from Classes.Trip import Trip
 from Config import Config as cfg
 from interface import logs_color
 from Utils.Prints import print_c
 
+from Classes.Trip import Trip
+from Classes.Weather import Weather
+
 import json
 
-GOOD = cfg.get_good_weather() # "Clear"
-BAD = cfg.get_bad_weather() # "Thunderstorm"
+GOOD_WEATHER = cfg.get_good_weather() # "Clear"
+MID_WEATHER  = cfg.get_mid_weather() # "Rain"
+BAD_WEATHER  = cfg.get_bad_weather() # "Thunderstorm"
 
-class ControlTower(Agent):   
+
+class ControlTower(Agent):
+    MID_CONDITIONS = ["Clouds", "Smoke", "Mist", "Haze", "Dust", "Drizzle", "Fog", "Sand", "Rain", "Ash", "Squalls", "Squall", "Snow"] # Condições que atrasam descolagens e aterragens
+    BAD_CONDITIONS = ["Thunderstorm", "Tornado", "Volcanic Ash"] # Condições que impedem descolagens e aterragens
 
     def __init__(self, jid, password, location, runways, hangar_availability: int):
         super().__init__(jid, password)
@@ -29,7 +35,7 @@ class ControlTower(Agent):
 
         self.hangar_availability = hangar_availability 
         
-        self.weather = GOOD
+        self.weather: str = GOOD_WEATHER
 
     def print(self, msg, color = "black"):
         print_c(f"{self.name}: {msg}", color)
@@ -54,10 +60,14 @@ class ControlTower(Agent):
 
         if self.is_bad_weather(meteo_obj[city]):
             # self.set_weather(GOOD) #! não é preciso o set_weather, pq isto vai mudar um ficheiro que o agente METEO está a ler e vai informar sempre a CT desse valor. E ao receber esse valor do METEO, é que se vai executar o set_weather
-            meteo_obj[city] = GOOD
-        else:
+            meteo_obj[city] = GOOD_WEATHER
+        
+        elif self.is_mid_weather(meteo_obj[city]):
             # self.set_weather(BAD)
-            meteo_obj[city] = BAD
+            meteo_obj[city] = BAD_WEATHER
+        else:
+            # self.set_weather(MID)
+            meteo_obj[city] = MID_WEATHER
         
         with open(meteo, 'w') as meteo_file:
             json.dump(meteo_obj, meteo_file, indent=4)
@@ -66,6 +76,10 @@ class ControlTower(Agent):
     
     def get_location(self):
         return self.location
+    
+    def get_weather(self) -> Weather:
+        res = Weather(self.weather)
+        return res
     
     
     def release_runway(self):
@@ -130,9 +144,20 @@ class ControlTower(Agent):
         self.hangar_availability -= 1
 
     #* Weather qualifiers
-    def is_bad_weather(self, weather):
-        bad_conditions = ["Thunderstorm", "Snow", "Fog", "Haze", "Mist", "Smoke", "Dust", "Ash", "Squall", "Tornado"]
-        return weather in bad_conditions
+    def is_bad_weather(self, weather) -> bool:
+        """Checks if weather conditions prevents takeoffs and landings."""
+        very_bad_conditions = self.BAD_CONDITIONS
+        return weather in very_bad_conditions
+    
+    def is_mid_weather(self, weather) -> bool:
+        """Checks if weather conditions slows down takeoffs and landings."""
+        mid_conditions = self.MID_CONDITIONS
+        return weather in mid_conditions
+    
+    def is_good_weather(self, weather) -> bool:
+        """Checks if weather conditions are optimal for takeoffs and landings."""
+        return not self.is_mid_weather(weather) and not self.is_bad_weather(weather)
+    
 
 
     #> GUI methods

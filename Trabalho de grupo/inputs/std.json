@@ -2,8 +2,7 @@
 {
     "airports": {
         "Lisboa": [2, 6, 3],
-        "Porto":  [4, 6, 3],
-        "Faro":   [3, 6, 3]
+        "Porto":  [4, 6, 3]
     },
     "flights": {
         "random": false,

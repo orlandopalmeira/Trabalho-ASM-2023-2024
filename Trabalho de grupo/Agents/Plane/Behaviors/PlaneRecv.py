@@ -4,8 +4,9 @@ from spade.message import Message
 import jsonpickle
 import asyncio
 
-from Classes.Trip import Trip
 from Config import Config as cfg
+from Classes.Trip import Trip
+from Classes.Weather import Weather
 
 from Agents.Plane.Behaviors.ExecuteFlight import ExecuteFlight
 
@@ -19,16 +20,24 @@ class RecvRequests(CyclicBehaviour):
             return
         msg_body = jsonpickle.decode(msg.body)
         
-        # 1.4. A **CT** envia mensagem para descolar ao **Plane**. (performative: *inform*, body: *Trip*)
+        # 1.4. A **CT** envia mensagem para descolar ao **Plane**. (performative: *inform*, body: *{trip: Trip, weather: Weather}*)
         if msg.metadata["performative"] == "inform" and cfg.identify(msg.sender) == "ct": 
-            trip = msg_body
+            # msg_body: {"trip": Trip, "weather": Weather}
+            trip = msg_body.get("trip")
+            weather = msg_body.get("weather")
+            weather_str = weather.get_weather()
             self.agent.set_trip(trip)
+            self.agent.set_weather_factor_in_takeoff(weather_str)
+            self.agent.print(f"Takeoff will take {self.agent.takeoff_time}s, because {weather_str}.", "green")
             self.agent.add_behaviour(ExecuteFlight())
 
-        # 2.2. A **CT** verifica se as condições permitem aterrar, e envia mensagem de confirmação ao **Plane**. (performative: *confirm*, body: *None*)
+        # 2.2. A **CT** verifica se as condições permitem aterrar, e envia mensagem ao **Plane**. (performative: *confirm*, body: *Weather*)
         elif msg.metadata["performative"] == "confirm" and cfg.identify(msg.sender) == "ct":
-            LANDING_TIME = self.agent.LANDING_TIME
-            await asyncio.sleep(LANDING_TIME)
+            # msg_body: Weather
+            weather_str = msg_body.get_weather()
+            self.agent.set_weather_factor_in_landing(weather_str)
+            self.agent.print(f"Landing will take {self.agent.takeoff_time}s, because {weather_str}.", "green")
+            await asyncio.sleep(self.agent.landing_time)
             destination = self.agent.trip.get_destination()
             self.agent.print(f"Finished landing at {destination}", "green")
             self.agent.set_landed()

@@ -141,14 +141,11 @@ def print_very_bad_weathers(weathers):
 
 
 if __name__ == "__main__":
-    city_name = "Porto"
-    # start_time = "2024-01-01 12:00:00"
-    start_time = "2023-12-01 10:00:00"
-    end_time = "2024-03-03 12:00:00"
+    city_name = "Dubai"
+    start_time = "2023-08-01 10:00:00"
 
-    w = get_exact_past_weather(city_name, start_time)
-    dt = ts_to_date(w["dt"])
+    weathers = get_weathers(city_name, start_time, count=2000)
+    res = map(weatherinfo_to_weather, weathers)
+    res = set(res)
 
-
-    print(w)
-    print(dt)
+    print(res)

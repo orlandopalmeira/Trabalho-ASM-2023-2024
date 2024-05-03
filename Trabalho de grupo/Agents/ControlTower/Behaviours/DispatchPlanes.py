@@ -23,8 +23,9 @@ class DispatchPlanes(OneShotBehaviour):
                 self.agent.increase_hangar_availability() # O avião que vai descolar vai libertar um lugar no hangar
                 plane_req = self.agent.pop_from_takeoff_queue()
                 plane_jid, trip = plane_req
+                msg_body = {"trip": trip, "weather": self.agent.get_weather()}
                 #* Enviar mensagem de descolagem ao avião
-                msg = Message(to=plane_jid, metadata={"performative": "inform"}, body=jsonpickle.encode(trip))
+                msg = Message(to=plane_jid, metadata={"performative": "inform"}, body=jsonpickle.encode(msg_body))
                 await self.send(msg)
                 # Não é preciso release_runway pq o avião é que indica quando acaba de descolar e liberta a runway
             while True:
@@ -35,8 +36,9 @@ class DispatchPlanes(OneShotBehaviour):
                     return
                 self.agent.decrease_hangar_availability() # O avião que vai aterrar vai ocupar um lugar no hangar
                 plane_jid = self.agent.pop_from_landing_queue()
+                msg_body = self.agent.get_weather()
                 #* Enviar mensagem de confirmação de aterragem ao avião
-                msg = Message(to=plane_jid, metadata={"performative": "confirm"}, body=jsonpickle.encode(None))
+                msg = Message(to=plane_jid, metadata={"performative": "confirm"}, body=jsonpickle.encode(msg_body))
                 await self.send(msg)
                 # Não é preciso release_runway pq o avião é que indica quando é que liberta a runway ao acabar de aterrar
         finally:

@@ -76,7 +76,10 @@ class Config:
         return "Clear"
     
     def get_bad_weather():
-        return "Thunderstorm"   
+        return "Thunderstorm"
+
+    def get_mid_weather():
+        return "Rain" 
     
     @staticmethod
     def meteo_file_name():
