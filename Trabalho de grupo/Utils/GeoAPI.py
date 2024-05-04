@@ -4,8 +4,6 @@ from geopy.exc import GeocoderTimedOut
 
 from Utils.Prints import *
 
-#! Talvez estas funcionalidades pudessem ir para dentro da classe Trip
-
 def geocode_city(city_name):
     """Alternativa a geolocator.geocode(city_name) com retries para tentar resolver problema dos timeouts."""
     geocoder = Nominatim(user_agent="my_geocoder")

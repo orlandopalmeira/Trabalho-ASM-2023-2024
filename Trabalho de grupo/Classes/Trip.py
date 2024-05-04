@@ -2,7 +2,7 @@ import random
 import sys, os
 import time
 import json
-import Utils.GeoDistance as geo
+import Utils.GeoAPI as geo
 from Config import Config as cfg
 
 class Trip:

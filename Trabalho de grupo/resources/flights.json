@@ -466,5 +466,41 @@
         "flight": "Porto -> Lisboa",
         "waiting_takeoff": 0.01,
         "waiting_landing": 0.0
+    },
+    {
+        "id": 1,
+        "flight": "Lisboa -> Porto",
+        "waiting_takeoff": 0.01,
+        "waiting_landing": 0.0
+    },
+    {
+        "id": 2,
+        "flight": "Lisboa -> Porto",
+        "waiting_takeoff": 0.01,
+        "waiting_landing": 0.0
+    },
+    {
+        "id": 3,
+        "flight": "Porto -> Lisboa",
+        "waiting_takeoff": 0.01,
+        "waiting_landing": 0.02
+    },
+    {
+        "id": 4,
+        "flight": "Lisboa -> Porto",
+        "waiting_takeoff": 0.15,
+        "waiting_landing": 0.0
+    },
+    {
+        "id": 5,
+        "flight": "Porto -> Lisboa",
+        "waiting_takeoff": 0.01,
+        "waiting_landing": 0.0
+    },
+    {
+        "id": 6,
+        "flight": "Porto -> Lisboa",
+        "waiting_takeoff": 0.01,
+        "waiting_landing": 0.0
     }
 ]

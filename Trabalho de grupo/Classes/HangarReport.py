@@ -34,8 +34,8 @@ class HangarReport:
     def set_timestamp(self, timestamp):
         self.timestamp = timestamp
     
-    def decrease_priority(self):
-        self.priority -= 1
+    # def decrease_priority(self):
+    #     self.priority -= 1
     
     def __str__(self) -> str:
         date = time.strftime("%H:%M:%S", time.localtime(self.timestamp))

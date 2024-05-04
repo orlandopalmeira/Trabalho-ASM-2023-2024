@@ -1,9 +1,8 @@
-import jsonpickle, time
 from spade.behaviour import PeriodicBehaviour
 from spade.message import Message
 from Config import Config as cfg
 
-import Utils.GeoDistance as geo
+import Utils.GeoAPI as geo
 
 from Classes.Trip import Trip
 from Classes.HangarReport import HangarReport
