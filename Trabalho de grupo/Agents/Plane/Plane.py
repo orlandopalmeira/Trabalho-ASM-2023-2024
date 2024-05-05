@@ -23,24 +23,24 @@ class Plane(Agent):
     LANDING_TIME = 2 # STANDARD landing time
     TAKEOFF_TIME = 2 # STANDARD takeoff time
     WEATHER_FACTOR = {
-            "Clear": 1.0,
-            "Clouds": 1.3,
-            "Smoke": 1.3,
-            "Mist": 1.4,
-            "Haze": 1.4,
-            "Dust": 1.5,
-            "Drizzle": 1.6,
-            "Fog": 1.8,
-            "Sand": 1.8,
-            "Rain": 2.0,
-            "Ash": 2.2,
-            "Squalls": 2.3,
-            "Squall": 2.3,
-            "Snow": 2.5,
-            "Volcanic Ash": 3.0,
-            "Tornado": 3.0,
-            "Thunderstorm": 3.0
-        }
+        "Clear": 1.0,
+        "Clouds": 1.3,
+        "Smoke": 1.3,
+        "Mist": 1.4,
+        "Haze": 1.4,
+        "Dust": 1.5,
+        "Drizzle": 1.6,
+        "Fog": 1.8,
+        "Sand": 1.8,
+        "Rain": 2.0,
+        "Ash": 2.2,
+        "Squalls": 2.3,
+        "Squall": 2.3,
+        "Snow": 2.5,
+        "Volcanic Ash": 3.0,
+        "Tornado": 3.0,
+        "Thunderstorm": 3.0
+    }
     
     async def setup(self) -> None:
         self.trip = None
