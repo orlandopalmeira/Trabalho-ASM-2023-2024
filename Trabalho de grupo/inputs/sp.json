@@ -4,15 +4,9 @@
         "São Paulo": {"num_planes": 3, "hangar_capacity": 5, "runways": 2}
     },
     "flights": {
-        "interval": 10, // intervalo de tempo entre voos gerados (opcional. default: 10)
+        "interval": 5, // intervalo de tempo entre voos gerados (opcional. default: 10)
         "num_of_flights_per_interval": 1, // número de voos gerados por intervalo (opcional. default: 1)
-        "plan": [
-            {
-                "origin": "São Paulo",
-                "destination": "Rio de janeiro",
-                "reps": 2
-            }
-        ],
+        "plan": "random",
         "repeat": false // se true, repete o plano de voos infinitamente (opcional. default: false)
     },
     "weather": {
