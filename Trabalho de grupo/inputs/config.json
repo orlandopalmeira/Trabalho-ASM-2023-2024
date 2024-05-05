@@ -2,7 +2,7 @@
     "airports": {
         "Lisboa": {"num_planes": 2, "hangar_capacity": 5, "runways": 4},
         "Porto": {"num_planes": 4, "hangar_capacity": 5, "runways": 3},
-        "São Paulo": {"num_planes": 3, "hangar_capacity": 5, "runways": 2}
+        "Faro": {"num_planes": 3, "hangar_capacity": 5, "runways": 2}
     },
     "flights": {
         "interval": 10, // intervalo de tempo entre voos gerados (opcional. default: 10)
@@ -14,9 +14,9 @@
                 "reps": 2
             },
             {
-                "origin": "São Paulo",
+                "origin": "Faro",
                 "destination": "Lisboa",
-                "reps": 1
+                "reps": 4
             }
         ],
         "repeat": false // se true, repete o plano de voos infinitamente (opcional. default: false)
@@ -24,6 +24,6 @@
     "weather": {
         "mode": "past", // "manual" ou "current" ou "past"
         "from": "2024-01-04 20:00:00", // a data só pode ir no máximo até um ano atrás
-        "period": 10 // em segundos (opcional. default: 30)
+        "period": 15 // em segundos (opcional. default: 30)
     }
 }
