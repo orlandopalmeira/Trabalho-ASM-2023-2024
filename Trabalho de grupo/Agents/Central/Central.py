@@ -28,7 +28,7 @@ class Central(Agent):
         self.interval = flights_cfg.get("interval", 10)
 
         # Auxs
-        if flights_cfg.get("plan") == None:
+        if flights_cfg.get("plan") == None or flights_cfg.get("plan") == "random" or len(flights_cfg["plan"]) == 0:
             self.flight_plan = None
         else:
             plan = flights_cfg["plan"]

@@ -82,6 +82,7 @@ def get_exact_past_weather(city_name: str, datetime_str: str):
     lat, lon = get_coordinates(city_name)
     start_time = date_to_ts(datetime_str)
     full_url = f"https://history.openweathermap.org/data/2.5/history/city?lat={lat}&lon={lon}&type=hour&start={start_time}&cnt=1&appid={api_key}"
+    # print(full_url)
     response = requests.get(full_url)
     data = response.json()
     if data["cod"] != "200":

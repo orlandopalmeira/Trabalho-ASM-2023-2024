@@ -53,7 +53,7 @@ def main():
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
     
-    with open(input_file, "r") as json_file:
+    with open(input_file, "r", encoding="utf-8") as json_file:
         json_cont = json_file.read()
         json_cont = remove_comments(json_cont)
         config = json.loads(json_cont)
@@ -91,7 +91,10 @@ def main():
     current_plane_id = 1
     for location in AIRPORT_LOCATIONS:
         #* Interpretação da configuração
-        num_planes, hangar_capacity, runways = AIRPORTS_CONFIG[location]
+        # num_planes, hangar_capacity, runways = AIRPORTS_CONFIG[location]
+        num_planes = AIRPORTS_CONFIG[location]["num_planes"]
+        hangar_capacity = AIRPORTS_CONFIG[location]["hangar_capacity"]
+        runways = AIRPORTS_CONFIG[location]["runways"]
         hangar_availability = hangar_capacity - num_planes
         #* Criação do agente CT
         ct = ControlTower(cfg.get_ct_jid(location), PASSWORD, location, runways, hangar_availability)
@@ -122,10 +125,11 @@ def main():
     #* Meteo
     meteo_jid = cfg.get_meteo_jid()
     meteo_mode = WEATHER_CONFIG["mode"]
+    period = int(WEATHER_CONFIG.get("period", 30))
     dt = None
     if meteo_mode == Meteo.MODE_PAST:
         dt = WEATHER_CONFIG["from"]
-    meteo = Meteo(meteo_jid, PASSWORD, AIRPORT_LOCATIONS, meteo_mode, datetime=dt)
+    meteo = Meteo(meteo_jid, PASSWORD, AIRPORT_LOCATIONS, meteo_mode, datetime=dt, period=period)
     meteo.start().result()
     agents.append(meteo) 
     

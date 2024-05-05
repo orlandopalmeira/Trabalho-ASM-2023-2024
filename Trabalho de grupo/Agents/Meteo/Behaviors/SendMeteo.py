@@ -24,7 +24,7 @@ class SendMeteo(PeriodicBehaviour):
                 self.agent.print(f"Sending '{weather}' weather to {city} from {dt}", "dark blue")
                 # idx = self.agent.cur_count % len(self.agent.cities[city])
             else:
-                weather = self.agent.get_current_weather(city)
+                weather = get_current_weather(city)
                 self.agent.print(f"Sending '{weather}' weather to {city} from current weather", "dark blue")
 
             weather_obj = Weather(weather)

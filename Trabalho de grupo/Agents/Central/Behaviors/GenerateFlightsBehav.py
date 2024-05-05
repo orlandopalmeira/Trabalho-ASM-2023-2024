@@ -13,6 +13,10 @@ class GenerateFlightsBehav(PeriodicBehaviour):
                     self.agent.print("Flight plan finished. No more flights to generate.", "red")
                     return
                 origin, dest = self.agent.flight_plan[idx]
+                if origin not in self.agent.airport_locations or dest not in self.agent.airport_locations:
+                    self.agent.print(f"Invalid flight plan. Origin '{origin}' or destination '{dest}' not in airport locations. Skipping flight.", "red")
+                    self.agent.flight_plan_index += 1
+                    continue
                 trip = Trip(origin, dest)
                 self.agent.flight_plan_index = (idx + 1)
                 if self.agent.repeat_flight_plan:

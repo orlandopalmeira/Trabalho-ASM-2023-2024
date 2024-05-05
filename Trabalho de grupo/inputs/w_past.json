@@ -1,15 +1,15 @@
-// {localizacao: [num_planes, hangar_capacity, runway_capacity]}
 {
     "airports": {
-        "Lisboa": [2, 5, 4],
-        "Porto": [4, 5, 3],
-        "Faro": [3, 5, 2]
+        "Lisboa": {"num_planes": 2, "hangar_capacity": 5, "runways": 4},
+        "Porto": {"num_planes": 4, "hangar_capacity": 5, "runways": 3},
+        "Faro": {"num_planes": 3, "hangar_capacity": 5, "runways": 2}
     },
     "flights": {
-        "random": true
+        "plan": "random"
     },
     "weather": {
         "mode": "past", // "manual" ou "current" ou "past"
         "from": "2024-01-04 20:00:00" // a data só pode ir no máximo até um ano atrás
+        // "period": 5 // em segundos
     }
 }

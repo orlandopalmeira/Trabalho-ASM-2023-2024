@@ -2,7 +2,7 @@ from spade.agent import Agent
 
 from Agents.Meteo.Behaviors.SendMeteo import SendMeteo
 from Agents.Meteo.Behaviors.SendMeteoFromFile import SendMeteoFromFile
-from Agents.Meteo.MeteoAPI import get_weathers, get_current_weather, get_exact_past_weather, date_to_ts, ts_to_date
+from Agents.Meteo.MeteoAPI import date_to_ts, ts_to_date
 
 from Config import Config as cfg
 from Utils.Prints import print_c
@@ -16,13 +16,13 @@ class Meteo(Agent):
     MODE_CURRENT = "current"
     MODE_MANUAL = "manual"
     
-    def __init__(self, jid, password, cities, mode, datetime = None): # Timestamp indica a partir de que altura se quer a meteorologia, se corrido em "past" mode
+    def __init__(self, jid, password, cities, mode, datetime = None, period = 30): # Timestamp indica a partir de que altura se quer a meteorologia, se corrido em "past" mode
         super().__init__(jid, password)
         self.cities = cities
         self.mode = mode
 
         self.cur_datetime = datetime
-        self.period = 30 # Frequência de envio de informação em segundos
+        self.period = period # Frequência de envio de informação em segundos
 
     def print(self, msg, color = "black"):
         unix_ts = time.time()
@@ -54,8 +54,3 @@ class Meteo(Agent):
         seconds = hours * 3600
         ts = date_to_ts(self.cur_datetime) + seconds
         self.cur_datetime = ts_to_date(ts).strftime("%Y-%m-%d %H:%M:%S")
-
-    
-    def get_current_weather(self, city):
-        return get_current_weather(city)
-    

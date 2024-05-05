@@ -79,16 +79,16 @@ class Trip:
 
         # Check if file is empty
         if not os.path.exists(file_name):
-            with open(file_name, 'w') as f:
+            with open(file_name, 'w', encoding='utf-8') as f:
                 json.dump([], f)
 
         # Load file
-        with open(file_name, 'r') as f:
+        with open(file_name, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        with open(file_name, 'w') as f:
+        with open(file_name, 'w', encoding='utf-8') as f:
             data.append(stats)
-            json.dump(data, f, indent=4)
+            json.dump(data, f, indent=4, ensure_ascii=False)
 
     @staticmethod    
     def generate_random_trip(locations):
