@@ -57,7 +57,6 @@ def main():
         json_cont = json_file.read()
         json_cont = remove_comments(json_cont)
         config = json.loads(json_cont)
-    # AIRPORT_PLANES = {"Lisboa": [3,5,4], "Porto": [3,5,3], "Faro": [3,5,2]} # {localizacao: [num_planes, hangar_capacity, runway_capacity]}
     if config.get("airports") == None:
         print_error("No airports configuration found in configuration file.")
         return

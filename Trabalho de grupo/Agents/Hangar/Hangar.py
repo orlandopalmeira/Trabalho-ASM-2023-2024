@@ -36,10 +36,17 @@ class Hangar(Agent):
         return len(self.planes) / self.capacity
     
     def is_too_full(self) -> bool:
-        return self.get_percent_full() >= 0.8
+        # return self.get_percent_full() >= 0.8
+        perc_hangar = int(self.capacity / 3) + 1 # O mais 1 é para arredondar para cima
+        threshold = self.capacity - min(3, perc_hangar)
+        return len(self.planes) >= threshold
     
     def is_too_empty(self) -> bool:
-        return self.get_percent_full() <= 0.2
+        # return self.get_percent_full() <= 0.2
+        perc_hangar = int(self.capacity / 3) + 1 # O mais 1 é para arredondar para cima
+        threshold = min(3, perc_hangar)
+        return len(self.planes) <= threshold
+
     
     def get_priority(self) -> int:
         if self.is_too_full():

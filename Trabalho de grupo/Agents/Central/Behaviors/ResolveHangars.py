@@ -36,26 +36,28 @@ class ResolveHangars(PeriodicBehaviour):
             self.agent.scarse_hangars  = [hr for hr in scarse_hangars if hr.get_location() != trip.get_destination()]
 
         #??? Func extra (talvez comentar para não confundir)
-        old_crowded_locations = map(lambda obj: obj.get_location(), crowded_hangars)
-        old_scarse_locations  = map(lambda obj: obj.get_location(), scarse_hangars)
+        old_crowded_locations = list(map(lambda obj: obj.get_location(), crowded_hangars))
+        old_scarse_locations  = list(map(lambda obj: obj.get_location(), scarse_hangars))
         crowded_hangars = self.agent.crowded_hangars.copy()
         scarse_hangars = self.agent.scarse_hangars.copy()
         MAX_WAIT = 20
         # Checkar por reports antigos que ainda não foram resolvidos
         if len(crowded_hangars) == 0 and len(scarse_hangars) > 0:
-            possible_locations = [item for item in scarse_hangars if item.get_location() not in old_scarse_locations]
-            for hr in scarse_hangars:
-                if (time.time() - hr.get_timestamp()) < MAX_WAIT: # So faz isto para hangares que estão completamente cheios/vazios e que estão à espera há mais de MAX_WAIT segundos
-                    continue
-                closest_location = geo.get_nearest_city(hr.get_location(), possible_locations)
-                trips.append(Trip(closest_location, hr.get_location(), type_flight="balance"))
+            possible_locations = [city for city in self.agent.airport_locations if city not in old_scarse_locations]
+            if len(possible_locations) > 0: # Se não houver hangares para onde enviar os aviões, não faz nada
+                for hr in scarse_hangars:
+                    if (time.time() - hr.get_timestamp()) < MAX_WAIT: # So faz isto para hangares que estão completamente cheios/vazios e que estão à espera há mais de MAX_WAIT segundos
+                        continue
+                    closest_location = geo.get_nearest_city(hr.get_location(), possible_locations)
+                    trips.append(Trip(closest_location, hr.get_location(), type_flight="balance"))
         elif len(scarse_hangars) == 0 and len(crowded_hangars) > 0:
-            possible_locations = [item for item in crowded_hangars if item.get_location() not in old_crowded_locations]
-            for hr in crowded_hangars:
-                if hr.get_priority() > 0 or time.time() - hr.get_timestamp < MAX_WAIT: # So faz isto para hangares que estão completamente cheios/vazios e que estão à espera há mais de MAX_WAIT segundos
-                    continue
-                closest_location = geo.get_nearest_city(hr.get_location(), possible_locations)
-                trips.append(Trip(hr.get_location(), closest_location, type_flight="balance"))
+            possible_locations = [city for city in self.agent.airport_locations if city not in old_crowded_locations]
+            if len(possible_locations) > 0: # Se não houver hangares para onde enviar os aviões, não faz nada
+                for hr in crowded_hangars:
+                    if time.time() - hr.get_timestamp < MAX_WAIT: # So faz isto para hangares que estão completamente cheios/vazios e que estão à espera há mais de MAX_WAIT segundos
+                        continue
+                    closest_location = geo.get_nearest_city(hr.get_location(), possible_locations)
+                    trips.append(Trip(hr.get_location(), closest_location, type_flight="balance"))
         
         # Remoção de hangars resolvidos
         for trip in trips:
