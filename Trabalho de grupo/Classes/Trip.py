@@ -66,7 +66,7 @@ class Trip:
 
         # Calculate time spent waiting for takeoff, flying and landing
         stats["id"] = self.c_id
-        stats["flight"] = f"{self.origin} -> {self.destination}"
+        stats["flight"] = str(self)
         stats["waiting_takeoff"] = round(self.flight_stats["takeoff"] - self.flight_stats["init"], 2)
         # stats["flying"] = round(self.flight_stats["destination_arrival"] - self.flight_stats["takeoff"], 2)
         stats["waiting_landing"] = round(self.flight_stats["landed"] - self.flight_stats["destination_arrival"], 2)
