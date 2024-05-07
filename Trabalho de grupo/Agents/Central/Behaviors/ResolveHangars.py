@@ -54,7 +54,7 @@ class ResolveHangars(PeriodicBehaviour):
             possible_locations = [city for city in self.agent.airport_locations if city not in old_crowded_locations]
             if len(possible_locations) > 0: # Se não houver hangares para onde enviar os aviões, não faz nada
                 for hr in crowded_hangars:
-                    if time.time() - hr.get_timestamp < MAX_WAIT: # So faz isto para hangares que estão completamente cheios/vazios e que estão à espera há mais de MAX_WAIT segundos
+                    if (time.time() - hr.get_timestamp()) < MAX_WAIT: # So faz isto para hangares que estão completamente cheios/vazios e que estão à espera há mais de MAX_WAIT segundos
                         continue
                     closest_location = geo.get_nearest_city(hr.get_location(), possible_locations)
                     trips.append(Trip(hr.get_location(), closest_location, type_flight="balance"))
