@@ -23,7 +23,8 @@ def get_coordinates(city_name):
         lat = coordinates["lat"]
         lon = coordinates["lon"]
     else:
-        print(f"ERROR 404: Asking for coordinates in {city_name} at {full_url}")
+        # print(f"ERROR 404: Asking for coordinates in {city_name} at {full_url}")
+        raise Exception(f"City {city_name} not found at {full_url}!")
     return lat, lon
 
 def get_weathers_aux(city_name, start_time, end_or_count = 169):
@@ -101,7 +102,7 @@ def weatherinfo_to_weather(weather_instance):
     final_weather = weathers_list[0]["main"]
     for w in weathers_list:
         weather_i = w["main"]
-        if is_bad_weather_ow(weather_i):
+        if is_very_bad_weather_ow(weather_i):
             final_weather = weather_i
             break
     return final_weather
@@ -111,11 +112,13 @@ def weather_datetime(weather_instance):
 
 #> Weather qualifiers
 def is_bad_weather_ow(weather):
-    bad_conditions = ["Thunderstorm", "Snow", "Fog", "Haze", "Mist", "Smoke", "Dust", "Ash", "Squall", "Tornado"]
+    # bad_conditions = ["Thunderstorm", "Snow", "Fog", "Haze", "Mist", "Smoke", "Dust", "Ash", "Squall", "Tornado"]
+    bad_conditions = ["Clouds", "Smoke", "Mist", "Haze", "Dust", "Drizzle", "Fog", "Sand", "Rain", "Ash", "Squalls", "Squall", "Snow"] # Condições que atrasam descolagens e aterragens
     return weather in bad_conditions
     
 def is_very_bad_weather_ow(weather):
-    very_bad_conditions = ["Thunderstorm", "Snow", "Squall", "Tornado", "Smoke"]
+    # very_bad_conditions = ["Thunderstorm", "Snow", "Squall", "Tornado", "Smoke"]
+    very_bad_conditions = ["Thunderstorm", "Tornado", "Volcanic Ash"]
     return weather in very_bad_conditions
 
 
@@ -142,11 +145,13 @@ def print_very_bad_weathers(weathers):
 
 
 if __name__ == "__main__":
+    city_name = "Keflavik"
     city_name = "Dubai"
-    start_time = "2023-08-01 10:00:00"
+    start_time = "2024-04-16 10:00:00"
 
-    weathers = get_weathers(city_name, start_time, count=2000)
-    res = map(weatherinfo_to_weather, weathers)
-    res = set(res)
-
-    print(res)
+    weathers = get_weathers(city_name, start_time, count=12)
+    for w in weathers:
+        wi = weatherinfo_to_weather(w)
+        print(wi)
+    # print(weathers)
+    print_very_bad_weathers(weathers)

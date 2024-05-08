@@ -1,8 +1,8 @@
 {
     "airports": {
-        "Lisboa": {"num_planes": 2, "hangar_capacity": 5, "runways": 4},
-        "Porto": {"num_planes": 4, "hangar_capacity": 5, "runways": 3},
-        "Faro": {"num_planes": 3, "hangar_capacity": 5, "runways": 2}
+        "Reykjavik": {"num_planes": 2, "hangar_capacity": 5, "runways": 4},
+        "Grindavik": {"num_planes": 4, "hangar_capacity": 5, "runways": 3},
+        "Kópavogur": {"num_planes": 3, "hangar_capacity": 5, "runways": 2}
     },
     "flights": {
         "plan": "random"

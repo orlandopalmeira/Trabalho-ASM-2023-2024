@@ -1,0 +1,23 @@
+// impossibilidade de aterragem
+{
+    "airports": {
+        "Lisboa": { "num_planes": 5, "hangar_capacity": 10, "runways": 3 },
+        "Porto": { "num_planes": 5, "hangar_capacity": 10, "runways": 3 },
+        "Faro": { "num_planes": 5, "hangar_capacity": 10, "runways": 3 }
+    },
+    "flights": {
+        "interval": 2, // intervalo de tempo entre voos gerados (opcional. default: 10)
+        "num_of_flights_per_interval": 1, // número de voos gerados por intervalo (opcional. default: 1)
+        "plan": [
+            {
+                "origin": "Lisboa",
+                "destination": "Porto",
+                "reps": 7
+            }
+        ],
+        "repeat": false
+    },
+    "weather": {
+        "mode": "manual" // "manual" ou "current" ou "past"
+    }
+}

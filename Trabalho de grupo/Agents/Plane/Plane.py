@@ -61,11 +61,11 @@ class Plane(Agent):
 
     def set_weather_factor_in_landing(self, weather):
         factor = self.WEATHER_FACTOR.get(weather, "1.0")
-        self.landing_time = Plane.LANDING_TIME * factor
+        self.landing_time = round(Plane.LANDING_TIME * factor, 2)
 
     def set_weather_factor_in_takeoff(self, weather):
         factor = self.WEATHER_FACTOR.get(weather, "1.0")
-        self.takeoff_time = Plane.TAKEOFF_TIME * factor
+        self.takeoff_time = round(Plane.TAKEOFF_TIME * factor, 2)
 
     def set_trip(self, trip):
         self.trip = trip

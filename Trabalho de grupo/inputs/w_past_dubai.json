@@ -1,0 +1,32 @@
+{
+    "airports": {
+        "Dubai": {"num_planes": 5, "hangar_capacity": 8, "runways": 4},
+        "Sharjah": {"num_planes": 4, "hangar_capacity": 8, "runways": 3},
+        "Riad": {"num_planes": 5, "hangar_capacity": 8, "runways": 2}
+    },
+    "flights": {
+        "plan": [
+            {
+                "origin": "Dubai",
+                "destination": "Sharjah",
+                "reps": 2
+            },
+            {
+                "origin": "Sharjah",
+                "destination": "Dubai",
+                "reps": 2
+            },
+            {
+                "origin": "Dubai",
+                "destination": "Riad",
+                "reps": 2
+            }
+        ],
+        "interval": 7
+    },
+    "weather": {
+        "mode": "past", 
+        "from": "2024-04-16 12:00:00", // Data de cheias do Dubai
+        "period": 10 // (default: 30)
+    }
+}
