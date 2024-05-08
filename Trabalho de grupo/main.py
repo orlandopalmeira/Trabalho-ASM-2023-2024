@@ -24,6 +24,7 @@ from Classes.Trip import Trip
 from Config import Config as cfg
 from Utils.Prints import *
 from interface import GUI
+from stats import write_stats
 
 # DOMAIN = "laptop-140rfmpg.home"
 DOMAIN = cfg.DOMAIN #* Para por a correr nos vossos pcs tendes de mudar o DOMAIN no .env
@@ -53,6 +54,7 @@ def main():
     # input_file = "inputs/cenario3.json"
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
+    
     
     with open(input_file, "r", encoding="utf-8") as json_file:
         json_cont = json_file.read()
@@ -163,6 +165,12 @@ def main():
         t.join()
     
     print_warning(f"\nAgents terminated.\n")
+
+    #* Estatisticas
+    results_file = input_file.replace("inputs", "resources").replace(".json", "_results.json")
+    # print(results_file)
+    write_stats(cfg.stats_file_name(), results_file)
+    print("Stats written to", results_file)
 
     # finish all the agents and behaviors running in your process
     quit_spade()
