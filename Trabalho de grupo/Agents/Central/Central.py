@@ -49,7 +49,7 @@ class Central(Agent):
         resolve = ResolveHangars(period=RESOLVE_HANGARS_PERIOD) # Este behavior é periódico para casos em que um hangar fique mt tempo sem solução, ser potencialmente resolvido
         gf = GenerateFlightsBehav(period=self.interval)
         self.add_behaviour(recv)
-        self.add_behaviour(resolve)
+        self.add_behaviour(resolve) #! PARA PERMITIR TESTAR O CONFLITOS, COMENTAR ESTA LINHA
         self.add_behaviour(gf)
 
     def create_trip_msg(self, trip) -> Message:
