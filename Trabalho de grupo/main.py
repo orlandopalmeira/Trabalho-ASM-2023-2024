@@ -50,6 +50,7 @@ def remove_comments(json_str):
 def main():
     #* Configuração
     input_file = "inputs/std.json"
+    # input_file = "inputs/cenario3.json"
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
     

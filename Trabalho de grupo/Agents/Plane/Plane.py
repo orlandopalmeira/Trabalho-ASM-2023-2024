@@ -20,8 +20,8 @@ class Plane(Agent):
     # Normally a plane does 1km in 4.5 seconds
     CONVERSION_KM_TO_SECS = 0.015 # 1 km = 0.015 sec
 
-    LANDING_TIME = 2 # STANDARD landing time
-    TAKEOFF_TIME = 2 # STANDARD takeoff time
+    LANDING_TIME = 3 # STANDARD landing time
+    TAKEOFF_TIME = 3 # STANDARD takeoff time
     WEATHER_FACTOR = {
         "Clear": 1.0,
         "Clouds": 1.3,

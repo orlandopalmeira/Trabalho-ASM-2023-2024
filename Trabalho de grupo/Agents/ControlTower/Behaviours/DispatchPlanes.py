@@ -33,6 +33,7 @@ class DispatchPlanes(OneShotBehaviour):
                     break
                 reserved = self.agent.reserve_runway_for_landing()
                 if not reserved:
+                    self.agent.print("Not permited to land", "red")
                     return
                 self.agent.decrease_hangar_availability() # O avião que vai aterrar vai ocupar um lugar no hangar
                 plane_jid = self.agent.pop_from_landing_queue()
