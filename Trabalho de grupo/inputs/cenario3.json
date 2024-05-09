@@ -1,9 +1,9 @@
-// impossibilidade de aterragem
+// impossibilidade de aterragem por runways ocupadas
 {
     "airports": {
         "Lisboa": { "num_planes": 7, "hangar_capacity": 15, "runways": 6 },
-        "Porto": { "num_planes": 7, "hangar_capacity": 15, "runways": 2 },
-        "Faro": { "num_planes": 5, "hangar_capacity": 15, "runways": 2 }
+        "Porto": { "num_planes": 7, "hangar_capacity": 15, "runways": 1 },
+        "Faro": { "num_planes": 5, "hangar_capacity": 15, "runways": 3 }
     },
     "flights": {
         "interval": 2, // intervalo de tempo entre voos gerados (opcional. default: 10)
