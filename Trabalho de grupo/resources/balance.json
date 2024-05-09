@@ -1,0 +1,177 @@
+{
+    "total_flights": 26,
+    "average": {
+        "waiting_takeoff": 0.49,
+        "waiting_landing": 0.33
+    },
+    "median": {
+        "waiting_takeoff": 0.03,
+        "waiting_landing": 0.01
+    },
+    "min": {
+        "waiting_takeoff": 0.01,
+        "waiting_landing": 0.0
+    },
+    "max": {
+        "waiting_takeoff": 2.83,
+        "waiting_landing": 2.81
+    },
+    "flights": [
+        {
+            "id": 1,
+            "flight": "'1'-(Faro -> Lisboa)",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 2.33
+        },
+        {
+            "id": 4,
+            "flight": "'4'-(Lisboa -> Faro)",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 0.0
+        },
+        {
+            "id": 2,
+            "flight": "'2'-(Faro -> Porto)",
+            "waiting_takeoff": 0.02,
+            "waiting_landing": 2.81
+        },
+        {
+            "id": 3,
+            "flight": "'3'-(Faro -> Porto)",
+            "waiting_takeoff": 0.03,
+            "waiting_landing": 1.15
+        },
+        {
+            "id": 6,
+            "flight": "'6'-(Lisboa -> Faro)*",
+            "waiting_takeoff": 1.16,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 8,
+            "flight": "'8'-(Lisboa -> Porto)",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 0.03
+        },
+        {
+            "id": 7,
+            "flight": "'7'-(Porto -> Faro)",
+            "waiting_takeoff": 0.02,
+            "waiting_landing": 1.04
+        },
+        {
+            "id": 5,
+            "flight": "'5'-(Porto -> Faro)",
+            "waiting_takeoff": 2.34,
+            "waiting_landing": 1.05
+        },
+        {
+            "id": 10,
+            "flight": "'10'-(Porto -> Lisboa)*",
+            "waiting_takeoff": 1.16,
+            "waiting_landing": 0.0
+        },
+        {
+            "id": 9,
+            "flight": "'9'-(Porto -> Lisboa)",
+            "waiting_takeoff": 2.83,
+            "waiting_landing": 0.0
+        },
+        {
+            "id": 12,
+            "flight": "'12'-(Porto -> Lisboa)",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 11,
+            "flight": "'11'-(Faro -> Porto)",
+            "waiting_takeoff": 0.03,
+            "waiting_landing": 0.03
+        },
+        {
+            "id": 13,
+            "flight": "'13'-(Faro -> Lisboa)",
+            "waiting_takeoff": 0.04,
+            "waiting_landing": 0.02
+        },
+        {
+            "id": 14,
+            "flight": "'14'-(Lisboa -> Porto)",
+            "waiting_takeoff": 0.03,
+            "waiting_landing": 0.03
+        },
+        {
+            "id": 15,
+            "flight": "'15'-(Lisboa -> Faro)",
+            "waiting_takeoff": 0.02,
+            "waiting_landing": 0.02
+        },
+        {
+            "id": 16,
+            "flight": "'16'-(Lisboa -> Faro)",
+            "waiting_takeoff": 0.03,
+            "waiting_landing": 0.02
+        },
+        {
+            "id": 17,
+            "flight": "'17'-(Faro -> Porto)",
+            "waiting_takeoff": 0.04,
+            "waiting_landing": 0.0
+        },
+        {
+            "id": 18,
+            "flight": "'18'-(Lisboa -> Faro)",
+            "waiting_takeoff": 2.43,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 20,
+            "flight": "'20'-(Lisboa -> Faro)",
+            "waiting_takeoff": 0.06,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 19,
+            "flight": "'19'-(Faro -> Lisboa)*",
+            "waiting_takeoff": 1.26,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 21,
+            "flight": "'21'-(Porto -> Lisboa)",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 23,
+            "flight": "'23'-(Porto -> Lisboa)",
+            "waiting_takeoff": 0.04,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 22,
+            "flight": "'22'-(Porto -> Lisboa)*",
+            "waiting_takeoff": 1.1,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 24,
+            "flight": "'24'-(Porto -> Lisboa)",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 0.0
+        },
+        {
+            "id": 25,
+            "flight": "'25'-(Faro -> Porto)*",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 0.01
+        },
+        {
+            "id": 26,
+            "flight": "'26'-(Faro -> Porto)*",
+            "waiting_takeoff": 0.01,
+            "waiting_landing": 0.01
+        }
+    ]
+}

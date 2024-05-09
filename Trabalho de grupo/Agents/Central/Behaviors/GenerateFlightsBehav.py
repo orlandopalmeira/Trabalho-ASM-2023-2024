@@ -23,7 +23,12 @@ class GenerateFlightsBehav(PeriodicBehaviour):
                     self.agent.flight_plan_index %= len(self.agent.flight_plan)
             # RANDOM TRIP GENERATION
             else:
+                if self.agent.count <= 0:
+                    self.kill()
+                    self.agent.print("Flight generation finished.", "red")
+                    return
                 trip = Trip.generate_random_trip(self.agent.airport_locations)
+                self.agent.count -= 1
 
             msg = self.agent.create_trip_msg(trip)
             await self.send(msg)

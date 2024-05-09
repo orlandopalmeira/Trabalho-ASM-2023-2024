@@ -5,9 +5,10 @@
         "Faro": { "num_planes": 5, "hangar_capacity": 10, "runways": 3 }
     },
     "flights": {
-        "plan": "random"
+        "plan": "random",
+        "interval": 3
     },
     "weather": {
-        "mode": "manual" // "manual" ou "current" ou "past"
+        "mode": "manual" 
     }
 }

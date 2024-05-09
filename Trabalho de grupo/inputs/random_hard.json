@@ -1,0 +1,15 @@
+{
+    "airports": {
+        "Lisboa": { "num_planes": 6, "hangar_capacity": 8, "runways": 5 },
+        "Porto": { "num_planes": 6, "hangar_capacity": 8, "runways": 5 },
+        "Faro": { "num_planes": 6, "hangar_capacity": 8, "runways": 5 }
+    },
+    "flights": {
+        "plan": "random",
+        "interval": 1,
+        "count": 20
+    },
+    "weather": {
+        "mode": "manual" 
+    }
+}

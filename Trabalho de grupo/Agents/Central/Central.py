@@ -39,7 +39,8 @@ class Central(Agent):
         self.historic_max_size = 5
         self.historic = []
         self.scarse_hangars = []
-        self.crowded_hangars = [] 
+        self.crowded_hangars = []
+        self.count = flights_cfg.get("count", float('inf'))
 
     
     async def setup(self) -> None:
@@ -81,20 +82,30 @@ class Central(Agent):
         return self.crowded_hangars.copy()
     
     def add_to_scarse_hangars(self, hangar_rep: HangarReport):
-        # Remover um pedido se já existir #! talvez fazer mensagens de remover de scrarse/crowded hangar e fazer com que esta remoção de baixo, o seu timestamp fique no novo pedido
+        # Remover um pedido se já existir 
         for hr in self.scarse_hangars:
             if hr.get_location() == hangar_rep.get_location():
                 self.scarse_hangars.remove(hr)
                 break
+        # remover de crowded hangars
+        for hr in self.crowded_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                self.crowded_hangars.remove(hr)
+                break
         # Insert ordenado consoante o __lt__ definido na classe HangarReport e em que os primeiros têm prioridade
         for i, hr in enumerate(self.scarse_hangars):
-            if hr < hangar_rep:
+            if hr > hangar_rep:
                 self.scarse_hangars.insert(i, hangar_rep)
                 return
         self.scarse_hangars.append(hangar_rep)
     
     def add_to_crowded_hangars(self, hangar_rep: HangarReport):
-        # Remover um pedido se já existir #! talvez fazer mensagens de remover de scrarse/crowded hangar
+        # Remover dos scarses hangars
+        for hr in self.scarse_hangars:
+            if hr.get_location() == hangar_rep.get_location():
+                self.scarse_hangars.remove(hr)
+                break
+        # Remover um pedido se já existir
         last_ts = None
         for hr in self.crowded_hangars:
             if hr.get_location() == hangar_rep.get_location():
@@ -106,7 +117,7 @@ class Central(Agent):
             hangar_rep.set_timestamp(last_ts)
         # Insert ordenado consoante o __lt__ definido na classe HangarReport e em que os primeiros têm prioridade
         for i, hr in enumerate(self.crowded_hangars):
-            if hr < hangar_rep:
+            if hr > hangar_rep:
                 self.crowded_hangars.insert(i, hangar_rep)
                 return
         self.crowded_hangars.append(hangar_rep)

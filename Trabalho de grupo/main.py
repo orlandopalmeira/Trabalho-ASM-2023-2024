@@ -161,8 +161,6 @@ def main():
                 agent.stop()
             break
     
-    if INTERFACE == True:
-        t.join()
     
     print_warning(f"\nAgents terminated.\n")
 
@@ -175,6 +173,8 @@ def main():
     # finish all the agents and behaviors running in your process
     quit_spade()
 
+    if INTERFACE == True:
+        t.join()
 
 if __name__ == "__main__":
     main()
