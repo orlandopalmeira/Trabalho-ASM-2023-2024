@@ -15,7 +15,8 @@
 
 </div>
 
-### Nota: X/20
+### Nota do trabalho de investigação: 19/20
+### Nota do trabalho prático: 19/20
 
 <h3><i>Keywords</i></h3>
 ASM, Agentes e Sistemas Multiagente, agentes e sistemas multiagente, uminho, miei, mei, engenharia informatica
